@@ -1,0 +1,26 @@
+{
+  "name": "accstudio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "clean": "turbo run clean",
+    "db:migrate": "pnpm --filter database prisma migrate dev",
+    "db:generate": "pnpm --filter database prisma generate",
+    "db:studio": "pnpm --filter database prisma studio"
+  },
+  "devDependencies": {
+    "turbo": "^2.4.0",
+    "typescript": "^5.7.0"
+  },
+  "packageManager": "pnpm@9.15.0",
+  "dependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/react": "18",
+    "@types/react-dom": "18",
+    "bcryptjs": "^3.0.3",
+    "lucide-react": "^0.454.0"
+  }
+}

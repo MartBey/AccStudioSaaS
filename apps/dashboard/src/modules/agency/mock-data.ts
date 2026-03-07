@@ -1,0 +1,32 @@
+export const agencyRevenueData = [
+  { month: 'Oca', gerceklesen: 45000, beklenen: 48000 },
+  { month: 'Şub', gerceklesen: 52000, beklenen: 50000 },
+  { month: 'Mar', gerceklesen: 48000, beklenen: 55000 },
+  { month: 'Nis', gerceklesen: 61000, beklenen: 58000 },
+  { month: 'May', gerceklesen: 59000, beklenen: 65000 },
+  { month: 'Haz', gerceklesen: 75000, beklenen: 68000 },
+  { month: 'Tem', gerceklesen: 82000, beklenen: 80000 },
+];
+
+export const activeProjects = [
+  { client: "Global Tech", project: "SEO Optimizasyonu", status: "Riskli", color: "destructive" },
+  { client: "Moda E-ticaret", project: "Q3 Sosyal Medya", status: "Devam Ediyor", color: "default" },
+  { client: "Sağlık Kliniği", project: "Web Sitesi Yenileme", status: "İncelemede", color: "secondary" },
+  { client: "Fintek App", project: "Aylık İçerik", status: "Devam Ediyor", color: "default" }
+];
+
+export const teamMembers = [
+  { name: "Ali", role: "Senior React", tasks: 3, initials: "AL" },
+  { name: "Ayşe", role: "SEO Uzmanı", tasks: 0, initials: "AY" },
+  { name: "Can", role: "UX Designer", tasks: 5, initials: "CN" },
+  { name: "Zeynep", role: "Copywriter", tasks: 2, initials: "ZY" }
+];
+
+export const talentFreelancers = [
+  { id: "FL-01", name: "Murat Yılmaz", role: "Senior Frontend Developer", hourlyRate: 450, rating: 4.9, jobsDone: 34, location: "İstanbul", skills: ["React", "Next.js", "Tailwind"], status: "Müsait", avatar: "MY" },
+  { id: "FL-02", name: "Ayşe Demir", role: "SEO Uzmanı", hourlyRate: 250, rating: 4.7, jobsDone: 112, location: "Uzaktan", skills: ["Ahrefs", "Semrush", "Teknik SEO"], status: "Meşgul", avatar: "AD" },
+  { id: "FL-03", name: "Canan Öz", role: "UI/UX Tasarımcısı", hourlyRate: 350, rating: 5.0, jobsDone: 28, location: "İzmir", skills: ["Figma", "Web Tasarım", "Prototipleme"], status: "Müsait", avatar: "CÖ" },
+  { id: "FL-04", name: "Burak Kaya", role: "Full-Stack Developer", hourlyRate: 500, rating: 4.8, jobsDone: 45, location: "Ankara", skills: ["Node.js", "React", "PostgreSQL"], status: "Müsait", avatar: "BK" },
+  { id: "FL-05", name: "Leyla Şahin", role: "Sosyal Medya Yöneticisi", hourlyRate: 200, rating: 4.6, jobsDone: 89, location: "Uzaktan", skills: ["Instagram", "İçerik Stratejisi", "Canva"], status: "Müsait", avatar: "LŞ" },
+  { id: "FL-06", name: "Kerem Tunç", role: "Metin Yazarı", hourlyRate: 150, rating: 4.9, jobsDone: 156, location: "Bursa", skills: ["Blog Yazarlığı", "SEO Copywriting", "PR"], status: "Meşgul", avatar: "KT" }
+];

@@ -1,0 +1,54 @@
+# AccStudio Proje Kuralları (Monorepo + Modüler + Deep Indigo UI)
+
+## Proje Bağlamı
+AccStudio, markalar, ajanslar ve freelancer'lar arasında köprü kuran, proje yönetimi ve gelişmiş SaaS araçları (SEO, SMY, reklam raporlama vb.) sunan bütünleşik bir platformdur.
+
+- **Üç Temel Kullanıcı Rolü**: Marka, Ajans, Freelancer
+- **Mimari**: Modüler Monolith (Turborepo + pnpm)
+- **UI Teması**: Deep Indigo (primary: 226 70% 55%)
+
+## Teknoloji Yığını
+- Monorepo: Turborepo + pnpm workspace
+- Frontend: Next.js 15+ (App Router) + TypeScript + Tailwind CSS
+- UI Kit: packages/ui (Shadcn/ui + Deep Indigo teması)
+- Backend: Next.js API Routes (apps/dashboard/src/app/api)
+- Veritabanı: PostgreSQL + Prisma (packages/database)
+- Cache/Session: Redis
+- Auth: NextAuth.js (Auth.js)
+- State: Zustand (client) + TanStack Query (server state)
+- Form: React Hook Form + Zod
+- Test: Jest, React Testing Library, Playwright
+
+## Dizin Yapısı Kuralları
+- Tüm yeni özellikler önce `packages/modules/*` altında modül olarak tasarlanmalı
+- UI bileşenleri `packages/ui` içinde tutulmalı, uygulamaya özel bileşenler sadece zorunlu hallerde `apps/*/src/components` altında
+- Prisma şeması sadece `packages/database/prisma/schema.prisma` içinde
+- Ortak tipler `packages/types`, sabitler `packages/config` içinde
+
+## Kodlama Standartları
+- **Dosya Adlandırma**: Bileşenler PascalCase (Button.tsx), diğer dosyalar camelCase (utils.ts)
+- **TypeScript**: `any` yasak, strict mode açık
+- **Import Sırası**: Next/React → 3. parti → @/ → ui → database → modules → yerel
+- **Bileşen Tipi**: Varsayılan Server Component, gerektiğinde "use client"
+- **Stil**: Tailwind CSS + `cn()` fonksiyonu
+- **Renk**: Deep Indigo paleti dışına çıkılmamalı
+
+## Modül Geliştirme
+- Her modül kendi `package.json`, `tsconfig.json`, `src/index.ts` dosyasına sahip
+- Dış dünyaya sadece `index.ts` üzerinden API sunulur
+- Modüller arası bağımlılık `package.json`'da workspace referansı ile belirtilir
+- Minimum bağımlılık prensibi uygulanır
+
+## Güvenlik
+- API route'larında rate limiting (@upstash/ratelimit)
+- Kullanıcı girdileri Zod ile doğrulanmalı
+- Dosya yüklemelerinde boyut ve tip kontrolü
+- Next.js Image component'i kullanılmalı
+- Lazy loading için next/dynamic
+
+## Komutlar
+- `pnpm dev` — Tüm uygulamaları başlat
+- `pnpm build` — Tüm uygulamaları derle
+- `pnpm --filter dashboard dev` — Sadece dashboard'u başlat
+- `pnpm db:migrate` — Veritabanı migrasyonu
+- `pnpm db:generate` — Prisma client oluştur

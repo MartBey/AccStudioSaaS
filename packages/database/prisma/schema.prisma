@@ -1,0 +1,652 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+enum Role {
+  BRAND
+  AGENCY
+  FREELANCER
+  ADMIN
+}
+
+enum ProjectStatus {
+  DRAFT
+  ACTIVE
+  IN_REVIEW
+  COMPLETED
+  CANCELLED
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DELIVERED
+  REVISION
+  DONE
+}
+
+enum JobListingStatus {
+  OPEN
+  IN_PROGRESS
+  CLOSED
+  CANCELLED
+}
+
+enum ProposalStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+}
+
+enum NotificationType {
+  PROPOSAL_RECEIVED
+  PROPOSAL_ACCEPTED
+  PROPOSAL_REJECTED
+  TASK_ASSIGNED
+  PROJECT_UPDATED
+  SYSTEM
+}
+
+enum VerificationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum DisputeStatus {
+  OPEN
+  INVESTIGATING
+  RESOLVED_BRAND
+  RESOLVED_FREELANCER
+  CLOSED
+}
+
+// ==========================================
+// NEXTAUTH MODELS
+// ==========================================
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ==========================================
+// CORE PLATFORM MODELS
+// ==========================================
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          Role      @default(BRAND)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  profile       Profile?
+  auditLogs     AuditLog[]
+  notifications Notification[]
+  paymentsMade     Payment[] @relation("PaymentsMade")
+  paymentsReceived Payment[] @relation("PaymentsReceived")
+  messages      Message[]
+  blogPosts     BlogPost[]
+  disputesRaised   Dispute[] @relation("DisputeRaisedBy")
+  disputesResolved Dispute[] @relation("DisputeResolvedBy")
+  usageLogs     UsageLog[]
+  sites         Site[]
+}
+
+model Profile {
+  id          String   @id @default(cuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  bio         String?  @db.Text
+  location    String?
+  website     String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  brand        Brand?
+  agency       Agency?
+  freelancer   Freelancer?
+  verification Verification?
+  userSkills   UserSkill[]
+
+  @@index([userId])
+}
+
+model Verification {
+  id          String             @id @default(cuid())
+  profileId   String             @unique
+  profile     Profile            @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  status      VerificationStatus @default(PENDING)
+  documentUrl String?
+  notes       String?            @db.Text
+  verifiedAt  DateTime?
+  
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([profileId])
+}
+
+// ==========================================
+// ROLE SPECIFIC MODELS
+// ==========================================
+
+model Brand {
+  id          String   @id @default(cuid())
+  profileId   String   @unique
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  companyName String
+  industry    String?
+  taxNumber   String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  projects    Project[]
+
+  @@index([profileId])
+}
+
+model Agency {
+  id          String   @id @default(cuid())
+  profileId   String   @unique
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  agencyName  String
+  teamSize    Int      @default(1)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  projects    Project[]
+  employees   Employee[]
+
+  @@index([profileId])
+}
+
+// ==========================================
+// PORTFOLIO
+// ==========================================
+
+enum PortfolioCategory {
+  VIDEO
+  TASARIM
+  YAZILIM
+  DIGITAL_PAZARLAMA
+  DIGER
+}
+
+model PortfolioItem {
+  id           String            @id @default(cuid())
+  freelancerId String
+  freelancer   Freelancer        @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+  
+  title        String
+  description  String?           @db.Text
+  projectUrl   String?
+  imageUrl     String?
+  date         DateTime?
+  category     PortfolioCategory @default(DIGER)
+  
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([freelancerId])
+}
+
+model Freelancer {
+  id          String   @id @default(cuid())
+  profileId   String   @unique
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  
+  title       String?
+  hourlyRate  Float?
+  portfolio   String?
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  proposals   Proposal[]
+  tasks       Task[]
+  vitrin      Vitrin?
+  portfolioItems PortfolioItem[]
+
+  @@index([profileId])
+}
+
+model Employee {
+  id          String   @id @default(cuid())
+  agencyId    String
+  agency      Agency   @relation(fields: [agencyId], references: [id], onDelete: Cascade)
+  
+  name        String
+  role        String
+  email       String?
+  status      String   @default("ACTIVE")
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  assignedTasks Task[]
+
+  @@index([agencyId])
+}
+
+// ==========================================
+// SKILLS
+// ==========================================
+
+model Skill {
+  id          String      @id @default(cuid())
+  name        String      @unique
+  category    String?
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  userSkills  UserSkill[]
+}
+
+model UserSkill {
+  id          String   @id @default(cuid())
+  profileId   String
+  skillId     String
+  
+  profile     Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  skill       Skill    @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([profileId, skillId])
+  @@index([profileId])
+  @@index([skillId])
+}
+
+// ==========================================
+// WORK & PROJECTS
+// ==========================================
+
+model Project {
+  id          String        @id @default(cuid())
+  name        String
+  description String?       @db.Text
+  budget      Float?
+  status      ProjectStatus @default(DRAFT)
+  dueDate     DateTime?
+  
+  brandId     String?
+  brand       Brand?        @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  
+  agencyId    String?
+  agency      Agency?       @relation(fields: [agencyId], references: [id], onDelete: SetNull)
+  
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  tasks       Task[]
+  jobListings JobListing[]
+  payments    Payment[]
+  messages    Message[]
+  disputes    Dispute[]
+
+  @@index([brandId])
+  @@index([agencyId])
+}
+
+model JobListing {
+  id          String           @id @default(cuid())
+  projectId   String
+  project     Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  title       String
+  description String           @db.Text
+  budget      Float?
+  status      JobListingStatus @default(OPEN)
+  
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  proposals   Proposal[]
+
+  @@index([projectId])
+}
+
+model Proposal {
+  id           String         @id @default(cuid())
+  jobListingId String
+  jobListing   JobListing     @relation(fields: [jobListingId], references: [id], onDelete: Cascade)
+  
+  freelancerId String
+  freelancer   Freelancer     @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+  
+  coverLetter  String         @db.Text
+  amount       Float
+  deliveryTime Int?           // Teslim süresi (gün)
+  currency     String         @default("TRY")
+  sampleUrl    String?        // Örnek çalışma linki
+  status       ProposalStatus @default(PENDING)
+  
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([jobListingId])
+  @@index([freelancerId])
+}
+
+model Task {
+  id           String      @id @default(cuid())
+  projectId    String
+  project      Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  freelancerId String?
+  freelancer   Freelancer? @relation(fields: [freelancerId], references: [id], onDelete: SetNull)
+  
+  employeeId   String?
+  employee     Employee?   @relation(fields: [employeeId], references: [id], onDelete: SetNull)
+  
+  title        String
+  description  String?     @db.Text
+  status       TaskStatus  @default(TODO)
+  dueDate      DateTime?
+  earning      Float?
+  
+  // Teslimat alanları
+  deliveryUrl   String?
+  deliveryNote  String?    @db.Text
+  deliveredAt   DateTime?
+  approvedAt    DateTime?
+  revisionNote  String?    @db.Text
+  
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  @@index([projectId])
+  @@index([freelancerId])
+  @@index([employeeId])
+
+  disputes    Dispute[]
+}
+
+// ==========================================
+// SYSTEM MODELS
+// ==========================================
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  action      String   // e.g. "CREATE_PROPOSAL", "UPDATE_PROJECT_STATUS"
+  entityType  String   // e.g. "Proposal", "Project"
+  entityId    String   // The ID of the affected resource
+  details     String?  @db.Text // JSON string for extra context
+  
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+  @@index([entityType, entityId])
+}
+
+model Dispute {
+  id            String        @id @default(cuid())
+  
+  projectId     String?
+  project       Project?      @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  
+  taskId        String?
+  task          Task?         @relation(fields: [taskId], references: [id], onDelete: SetNull)
+  
+  raisedById    String
+  raisedBy      User          @relation("DisputeRaisedBy", fields: [raisedById], references: [id])
+  
+  resolvedById  String?
+  resolvedBy    User?         @relation("DisputeResolvedBy", fields: [resolvedById], references: [id])
+  
+  reason        String        @db.Text
+  adminNotes    String?       @db.Text
+  status        DisputeStatus @default(OPEN)
+  resolution    String?       @db.Text   // Admin kararının açıklaması
+  
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  resolvedAt    DateTime?
+
+  @@index([projectId])
+  @@index([taskId])
+  @@index([raisedById])
+  @@index([status])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  type      NotificationType @default(SYSTEM)
+  title     String
+  message   String
+  read      Boolean          @default(false)
+  link      String?
+  actorId   String?          // Bildirimi tetikleyen kullanıcı ID'si
+  
+  createdAt DateTime         @default(now())
+
+  @@index([userId])
+  @@index([userId, read])
+}
+
+// ==========================================
+// VITRIN & BLOG
+// ==========================================
+
+enum BlogCategory {
+  GENEL
+  TEKNIK
+  KARIYER
+  HABERLER
+}
+
+model Vitrin {
+  id             String     @id @default(cuid())
+  freelancerId   String     @unique
+  freelancer     Freelancer @relation(fields: [freelancerId], references: [id], onDelete: Cascade)
+  
+  slug           String     @unique
+  headline       String?
+  about          String?    @db.Text
+  theme          String     @default("default") // default, dark, ocean, sunset
+  showEarnings   Boolean    @default(false)
+  showContact    Boolean    @default(true)
+  socialLinks    Json?
+  techStack      String?   // "React,Next.js,TypeScript" şeklinde virgülle ayrılmış
+  
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@index([slug])
+}
+
+model BlogPost {
+  id          String       @id @default(cuid())
+  authorId    String
+  author      User         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  
+  title       String
+  slug        String       @unique
+  content     String       @db.Text
+  excerpt     String?
+  category    BlogCategory @default(GENEL)
+  tags        String?
+  coverImage  String?
+  published   Boolean      @default(false)
+  
+  viewCount   Int          @default(0)
+  likeCount   Int          @default(0)
+  
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([authorId])
+  @@index([slug])
+  @@index([published, category])
+}
+
+// ==========================================
+// PAYMENT & MESSAGING
+// ==========================================
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  CANCELLED
+  REFUNDED
+}
+
+model Payment {
+  id          String        @id @default(cuid())
+  projectId   String
+  project     Project       @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  payerId     String        // Ödemeyi yapan (Brand user)
+  payer       User          @relation("PaymentsMade", fields: [payerId], references: [id])
+  payeeId     String        // Ödemeyi alan (Freelancer user)
+  payee       User          @relation("PaymentsReceived", fields: [payeeId], references: [id])
+  
+  amount      Float
+  currency    String        @default("TRY")
+  status      PaymentStatus @default(PENDING)
+  description String?
+  
+  paidAt      DateTime?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([projectId])
+  @@index([payerId])
+  @@index([payeeId])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  senderId  String
+  sender    User     @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  
+  content   String   @db.Text
+  
+  createdAt DateTime @default(now())
+
+  @@index([projectId])
+  @@index([senderId])
+  @@index([projectId, createdAt])
+}
+
+// ==========================================
+// AI USAGE & COST TRACKING
+// ==========================================
+
+model UsageLog {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  model        String   // "gemini-2.0-flash", "gemini-1.5-pro", etc.
+  action       String   // "AI_JURI", "JOB_DESCRIPTION", "FREELANCER_MATCH", "CONTENT_GENERATION"
+
+  inputTokens  Int      @default(0)
+  outputTokens Int      @default(0)
+  totalTokens  Int
+
+  cost         Float    // USD
+
+  durationMs   Int?
+  success      Boolean  @default(true)
+  errorMessage String?  @db.Text
+
+  metadata     Json?
+
+  createdAt    DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+  @@index([userId, createdAt])
+}
+
+// ==========================================
+// WEB BUILDER
+// ==========================================
+
+model Site {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name        String
+  domain      String?  @unique
+  content     Json?    
+  themeConfig Json?    
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([userId])
+}

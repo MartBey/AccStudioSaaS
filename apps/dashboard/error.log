@@ -1,0 +1,17 @@
+   Ôû▓ Next.js 15.0.3
+
+   Creating an optimized production build ...
+ Ô£ô Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./src/components/layout/Header.tsx:71:24
+Type error: JSX element type 'Icon' does not have any construct or call signatures.
+
+  69 |                       )}
+  70 |                     >
+> 71 |                       <Icon className="h-5 w-5" />
+     |                        ^
+  72 |                       {item.title}
+  73 |                     </Link>
+  74 |                   );
