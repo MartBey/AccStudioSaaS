@@ -5,7 +5,19 @@ import { Editor, Frame, Element } from "@craftjs/core";
 import { BuilderSidebar } from "@/components/builder/BuilderSidebar";
 import { BuilderSettingsPanel } from "@/components/builder/BuilderSettingsPanel";
 import { BuilderTopbar } from "@/components/builder/BuilderTopbar";
-import { ContainerBlock, TextBlock, ButtonBlock, HeroBlock, FeatureBlock } from "@/components/builder/blocks";
+import {
+  ContainerBlock,
+  TextBlock,
+  ButtonBlock,
+  HeroBlock,
+  FeatureBlock,
+  VideoReviewBlock,
+  ImageBlock,
+  FooterBlock,
+  ContactBlock,
+  TestimonialBlock,
+  PricingBlock,
+} from "@/components/builder/blocks";
 import { ContainerSettings } from "@/components/builder/blocks/ContainerBlock";
 
 import { saveSite } from "./actions";
@@ -36,7 +48,7 @@ export const BuilderClient = ({ initialState, initialTheme, siteId }: BuilderCli
 
   return (
     <div className="flex h-screen w-full bg-background" style={{ fontFamily: themeConfig.font, ['--primary' as any]: themeConfig.primary }}>
-      <Editor resolver={{ ContainerBlock, TextBlock, ButtonBlock, HeroBlock, FeatureBlock, ContainerSettings }}>
+      <Editor resolver={{ ContainerBlock, TextBlock, ButtonBlock, HeroBlock, FeatureBlock, VideoReviewBlock, ImageBlock, FooterBlock, ContactBlock, TestimonialBlock, PricingBlock, ContainerSettings }}>
         <div className="flex flex-col flex-1 w-full h-full">
           {/* Üst Bar */}
           <BuilderTopbar 

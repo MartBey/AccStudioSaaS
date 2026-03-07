@@ -1,12 +1,40 @@
 "use client";
 
-import React, { useState } from "react";
-import { useEditor } from "@craftjs/core";
+import React, { useState, useMemo } from "react";
+import { useEditor, Element } from "@craftjs/core";
 import { Button } from "ui";
 import { Wand2, Save, Undo, Redo, LayoutTemplate } from "lucide-react";
-import { parseAITreeToReactNode } from "web-builder/src/utils/craft-parser";
-import { BuilderNode, BuilderSite } from "web-builder/src/schema/builder-types";
-import { TemplatesRegistry } from "web-builder/src/templates";
+import { parseAITreeToReactNode, type ComponentMap } from "web-builder/src/utils/craft-parser";
+import { BuilderNode, BuilderSite, BlockType } from "web-builder/src/schema/builder-types";
+import { TemplatesList } from "web-builder/src/templates";
+import {
+  HeroBlock,
+  FeatureBlock,
+  TextBlock,
+  ButtonBlock,
+  ContainerBlock,
+  VideoReviewBlock,
+  ImageBlock,
+  FooterBlock,
+  ContactBlock,
+  TestimonialBlock,
+  PricingBlock,
+} from "./blocks";
+
+// Dashboard tarafında tanımlanan BlockType -> Craft.js Bileşen eşlemesi
+const dashboardComponentMap: ComponentMap = {
+  [BlockType.Hero]: HeroBlock,
+  [BlockType.Features]: FeatureBlock,
+  [BlockType.Text]: TextBlock,
+  [BlockType.Image]: ImageBlock,
+  [BlockType.Button]: ButtonBlock,
+  [BlockType.Footer]: FooterBlock,
+  [BlockType.Contact]: ContactBlock,
+  [BlockType.Testimonial]: TestimonialBlock,
+  [BlockType.Container]: ContainerBlock,
+  [BlockType.Pricing]: PricingBlock,
+  [BlockType.VideoReview]: VideoReviewBlock,
+};
 
 export const BuilderTopbar = ({ 
   onSave, 
@@ -50,9 +78,9 @@ export const BuilderTopbar = ({
       if (data.success && data.site) {
         console.log("AI Generated Site Structure:", data.site);
         
-        // 1. Yeni düğümleri React Element'lerine çeviriyoruz.
+        // 1. Yeni düğümleri React Element'lerine çeviriyoruz (componentMap ile).
         data.site.nodes.forEach((node: BuilderNode) => {
-          const reactElement = parseAITreeToReactNode(node);
+          const reactElement = parseAITreeToReactNode(node, dashboardComponentMap);
           
           if (reactElement) {
               // 2. Element'i Craft.js Node'una çeviriyoruz.
@@ -85,9 +113,9 @@ export const BuilderTopbar = ({
       }
 
       console.log("Loading Pre-built Template:", template);
-      // Canvas'a enjekte et
+      // Canvas'a enjekte et (componentMap ile)
       template.nodes.forEach((node: BuilderNode) => {
-        const reactElement = parseAITreeToReactNode(node);
+        const reactElement = parseAITreeToReactNode(node, dashboardComponentMap);
         if (reactElement) {
             const craftNodeDesc = query.parseReactElement(reactElement as React.ReactElement).toNodeTree();
             actions.addNodeTree(craftNodeDesc, "ROOT");
@@ -174,29 +202,34 @@ export const BuilderTopbar = ({
           )}
 
           {showTemplatesModal && (
-            <div className="absolute top-10 left-0 w-[600px] z-50 p-4 bg-card border rounded-md shadow-xl flex flex-col gap-4">
-               <div className="flex justify-between items-center border-b pb-2">
-                 <h3 className="font-bold text-lg">Hazır Şablonlar</h3>
+            <div className="absolute top-10 left-0 w-[700px] z-50 p-4 bg-card border rounded-md shadow-xl flex flex-col gap-4 max-h-[70vh] overflow-y-auto">
+               <div className="flex justify-between items-center border-b pb-2 sticky top-0 bg-card z-10">
+                 <h3 className="font-bold text-lg">Hazir Sablonlar</h3>
                  <Button variant="ghost" size="sm" onClick={() => setShowTemplatesModal(false)}>Kapat</Button>
                </div>
                <div className="grid grid-cols-2 gap-4">
-                 <div className="border p-4 rounded-xl hover:border-primary cursor-pointer transition flex flex-col items-center text-center gap-2"
-                      onClick={() => loadTemplate(TemplatesRegistry.AgencyTemplate)}>
-                    <div className="w-full h-24 bg-slate-900 rounded-md mb-2 flex items-center justify-center.">
-                      <span className="text-blue-500 font-bold">Agency UI</span>
-                    </div>
-                    <strong className="text-sm">Modern Ajans Teması</strong>
-                    <p className="text-xs text-muted-foreground">B2B, Yazılım ofisi, Hizmet portföyü.</p>
-                 </div>
-                 
-                 <div className="border p-4 rounded-xl hover:border-primary cursor-pointer transition flex flex-col items-center text-center gap-2"
-                      onClick={() => loadTemplate(TemplatesRegistry.SaaSTemplate)}>
-                    <div className="w-full h-24 bg-indigo-600 rounded-md mb-2 flex items-center justify-center.">
-                      <span className="text-emerald-400 font-bold">SaaS UI</span>
-                    </div>
-                    <strong className="text-sm">Yazılım Ürünü (SaaS)</strong>
-                    <p className="text-xs text-muted-foreground">Uygulama tanıtımı, Fiyatlandırma.</p>
-                 </div>
+                 {TemplatesList.map((entry) => (
+                   <div
+                     key={entry.id}
+                     className="border p-4 rounded-xl hover:border-primary cursor-pointer transition flex flex-col items-center text-center gap-2"
+                     onClick={() => loadTemplate(entry.template)}
+                   >
+                     <div
+                       className="w-full h-24 rounded-md mb-2 flex items-center justify-center"
+                       style={{ backgroundColor: entry.template.themeConfig?.primaryColor || "#0f172a" }}
+                     >
+                       <span
+                         className="font-bold text-sm"
+                         style={{ color: entry.template.themeConfig?.secondaryColor || "#fff" }}
+                       >
+                         {entry.name}
+                       </span>
+                     </div>
+                     <strong className="text-sm">{entry.name}</strong>
+                     <p className="text-xs text-muted-foreground">{entry.description}</p>
+                     <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full">{entry.category}</span>
+                   </div>
+                 ))}
                </div>
             </div>
           )}
