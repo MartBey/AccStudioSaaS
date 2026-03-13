@@ -205,7 +205,7 @@ export const ECommerceTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-1",
+      id: "ecommerce-features",
       type: BlockType.Features,
       props: {
         title: "Neden Bizi Tercih Etmelisiniz?",
@@ -218,7 +218,7 @@ export const ECommerceTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-2",
+      id: "ecommerce-testimonial",
       type: BlockType.Testimonial,
       props: {
         quote:
@@ -229,7 +229,7 @@ export const ECommerceTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-3",
+      id: "ecommerce-contact",
       type: BlockType.Contact,
       props: {
         title: "Sorularınız mı var?",
@@ -239,7 +239,7 @@ export const ECommerceTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-4",
+      id: "ecommerce-footer",
       type: BlockType.Footer,
       props: {
         text: "\u00a9 2026 ShopBrand. Tüm hakları saklıdır.",
@@ -264,7 +264,7 @@ export const PortfolioTemplate: BuilderSite = {
   },
   nodes: [
     {
-      id: "node-5",
+      id: "portfolio-hero",
       type: BlockType.Hero,
       props: {
         title: "Merhaba, Ben Deniz.",
@@ -276,7 +276,7 @@ export const PortfolioTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-6",
+      id: "portfolio-features",
       type: BlockType.Features,
       props: {
         title: "Uzmanlık Alanlarım",
@@ -297,7 +297,7 @@ export const PortfolioTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-7",
+      id: "portfolio-image",
       type: BlockType.Image,
       props: {
         src: "",
@@ -308,7 +308,7 @@ export const PortfolioTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-8",
+      id: "portfolio-testimonial",
       type: BlockType.Testimonial,
       props: {
         quote:
@@ -319,7 +319,7 @@ export const PortfolioTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-9",
+      id: "portfolio-contact",
       type: BlockType.Contact,
       props: {
         title: "Birlikte Çalışalım",
@@ -329,7 +329,7 @@ export const PortfolioTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-10",
+      id: "portfolio-footer",
       type: BlockType.Footer,
       props: {
         text: "\u00a9 2026 Deniz Portfolio. Tüm hakları saklıdır.",
@@ -353,7 +353,7 @@ export const RestaurantTemplate: BuilderSite = {
   },
   nodes: [
     {
-      id: "node-11",
+      id: "restaurant-hero",
       type: BlockType.Hero,
       props: {
         title: "Lezzetin En Saf Hali",
@@ -365,7 +365,7 @@ export const RestaurantTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-12",
+      id: "restaurant-image",
       type: BlockType.Image,
       props: {
         src: "",
@@ -375,7 +375,7 @@ export const RestaurantTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-13",
+      id: "restaurant-features",
       type: BlockType.Features,
       props: {
         title: "Neden Bizi Seçmelisiniz?",
@@ -394,7 +394,7 @@ export const RestaurantTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-14",
+      id: "restaurant-pricing",
       type: BlockType.Pricing,
       props: {
         title: "Menü Önerileri",
@@ -423,7 +423,7 @@ export const RestaurantTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-15",
+      id: "restaurant-contact",
       type: BlockType.Contact,
       props: {
         title: "Rezervasyon",
@@ -433,7 +433,7 @@ export const RestaurantTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-16",
+      id: "restaurant-footer",
       type: BlockType.Footer,
       props: {
         text: "\u00a9 2026 Lezzet Restoran. Tüm hakları saklıdır.",
@@ -458,7 +458,7 @@ export const EventTemplate: BuilderSite = {
   },
   nodes: [
     {
-      id: "node-17",
+      id: "event-hero",
       type: BlockType.Hero,
       props: {
         title: "TechSummit 2026",
@@ -470,7 +470,7 @@ export const EventTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-18",
+      id: "event-features",
       type: BlockType.Features,
       props: {
         title: "Neler Sizi Bekliyor?",
@@ -483,7 +483,7 @@ export const EventTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-19",
+      id: "event-testimonial",
       type: BlockType.Testimonial,
       props: {
         quote:
@@ -494,7 +494,7 @@ export const EventTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-20",
+      id: "event-pricing",
       type: BlockType.Pricing,
       props: {
         title: "Bilet Seçenekleri",
@@ -523,7 +523,7 @@ export const EventTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-21",
+      id: "event-contact",
       type: BlockType.Contact,
       props: {
         title: "Sorularınız mı var?",
@@ -533,7 +533,7 @@ export const EventTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-22",
+      id: "event-footer",
       type: BlockType.Footer,
       props: {
         text: "\u00a9 2026 TechSummit. Tüm hakları saklıdır.",
@@ -558,7 +558,7 @@ export const ApplePremiumTemplate: BuilderSite = {
   },
   nodes: [
     {
-      id: "node-23",
+      id: "premium-hero",
       type: BlockType.AnimatedHero,
       props: {
         title: "Pro. Beyond.",
@@ -570,7 +570,7 @@ export const ApplePremiumTemplate: BuilderSite = {
       },
     },
     {
-      id: "node-24",
+      id: "premium-features",
       type: BlockType.Features,
       props: {
         title: "Brilliant. In every way.",

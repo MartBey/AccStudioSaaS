@@ -41,10 +41,29 @@ export async function createSite(name: string): Promise<Site | null> {
   return site as Site;
 }
 
-export async function getSiteById(siteId: string): Promise<Site | null> {
-  const site = await prisma.site.findUnique({
-    where: { id: siteId },
-  });
+export async function getSiteById(
+  siteId: string,
+  requireOwnership = false
+): Promise<Site | null> {
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  if (requireOwnership && !userId) {
+    return null;
+  }
+
+  const site =
+    requireOwnership && userId
+      ? await prisma.site.findUnique({
+          where: {
+            id: siteId,
+            userId,
+          },
+        })
+      : await prisma.site.findUnique({
+          where: { id: siteId },
+        });
+
   return site as Site | null;
 }
 

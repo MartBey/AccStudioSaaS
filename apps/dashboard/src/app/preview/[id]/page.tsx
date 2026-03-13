@@ -1,13 +1,28 @@
 import React from "react";
-import { getSiteById } from "@/app/_actions/site-actions";
 import { notFound } from "next/navigation";
+
+import { auth } from "@/auth";
+import { prisma } from "database";
 import { PreviewClient } from "./PreviewClient";
 
 export default async function PreviewPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
   const siteId = resolvedParams.id;
 
-  const site = await getSiteById(siteId);
+  const session = await auth();
+
+  // Eğer kullanıcı giriş yapmışsa ownership kontrolü yap
+  // Public preview için site'da bir `isPublic` flag'i eklenebilir
+  const site = session?.user?.id
+    ? await prisma.site.findUnique({
+        where: {
+          id: siteId,
+          userId: session.user.id,
+        },
+      })
+    : await prisma.site.findUnique({
+        where: { id: siteId },
+      });
 
   if (!site) {
     notFound();
@@ -17,9 +32,6 @@ export default async function PreviewPage({ params }: { params: Promise<{ id: st
   const initialTheme = site.themeConfig ? JSON.stringify(site.themeConfig) : undefined;
 
   return (
-    <PreviewClient 
-      initialState={initialState} 
-      initialTheme={initialTheme} 
-    />
+    <PreviewClient initialState={initialState} initialTheme={initialTheme} />
   );
 }

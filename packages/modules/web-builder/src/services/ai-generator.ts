@@ -18,6 +18,7 @@ Aşağıdaki BlockType bileşen havuzunu kullanarak yukarıdan aşağıya mantı
 
 [Mevcut BlockType Havuzu]:
 - "Hero": Sayfanın dikkat çekici giriş bölümü (Başlık, alt başlık, CTA butonu).
+- "AnimatedHero": Premium animasyonlu hero bölümü (Framer Motion ile). Apple tarzı, yumuşak fade-in ve slide-up animasyonları içerir. Badge, başlık, alt başlık ve CTA butonları destekler. Koyu tema (#0a0a0a) ile kullanılır.
 - "Features": Ürün/Hizmet özelliklerini grid yapısında listelemek için.
 - "Pricing": Fiyatlandırma planlarını göstermek için.
 - "Testimonial": Müşteri yorumlarını göstermek için.

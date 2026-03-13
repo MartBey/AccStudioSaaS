@@ -92,6 +92,8 @@ function renderNode(node: BuilderNode, theme: ThemeConfig): string {
   switch (node.type) {
     case BlockType.Hero:
       return renderHero(node, theme);
+    case BlockType.AnimatedHero:
+      return renderAnimatedHero(node, theme);
     case BlockType.Features:
       return renderFeatures(node, theme);
     case BlockType.Pricing:
@@ -127,6 +129,24 @@ function renderHero(node: BuilderNode, theme: ThemeConfig): string {
         <div style="display: flex; gap: 12px; justify-content: ${align === "left" ? "flex-start" : "center"}; flex-wrap: wrap;">
           ${primaryButtonText ? `<a href="#" style="display: inline-block; padding: 14px 32px; background: ${theme.secondaryColor}; color: #fff; border-radius: 8px; font-weight: 600; font-size: 16px; transition: opacity 0.2s;">${primaryButtonText}</a>` : ""}
           ${secondaryButtonText ? `<a href="#" style="display: inline-block; padding: 14px 32px; background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.3); border-radius: 8px; font-weight: 600; font-size: 16px;">${secondaryButtonText}</a>` : ""}
+        </div>
+      </div>
+    </section>`;
+}
+
+function renderAnimatedHero(node: BuilderNode, theme: ThemeConfig): string {
+  const { title, subtitle, badge, primaryButtonText, secondaryButtonText } = node.props;
+  return `
+    <section style="padding: 120px 20px; background: #0a0a0a; text-align: center;">
+      <div class="container">
+        ${badge ? `<div style="display: inline-block; padding: 6px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); margin-bottom: 24px;">
+          <span style="font-size: 14px; font-weight: 500; color: #a78bfa;">${badge}</span>
+        </div>` : ""}
+        <h1 style="font-size: 64px; font-weight: 700; color: #ffffff; margin-bottom: 24px; line-height: 1.2;">${title || ""}</h1>
+        ${subtitle ? `<p style="font-size: 20px; color: #a1a1aa; max-width: 672px; margin: 0 auto 32px; line-height: 1.6;">${subtitle}</p>` : ""}
+        <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+          ${primaryButtonText ? `<a href="#" style="display: inline-block; padding: 14px 32px; background: ${theme.secondaryColor}; color: #fff; border-radius: 8px; font-weight: 600; font-size: 16px; transition: opacity 0.2s;">${primaryButtonText}</a>` : ""}
+          ${secondaryButtonText ? `<a href="#" style="display: inline-block; padding: 14px 32px; background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.2); border-radius: 8px; font-weight: 600; font-size: 16px;">${secondaryButtonText}</a>` : ""}
         </div>
       </div>
     </section>`;

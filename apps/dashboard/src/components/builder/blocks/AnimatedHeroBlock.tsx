@@ -132,12 +132,96 @@ export const AnimatedHeroBlock = ({
 };
 
 export const AnimatedHeroSettings = () => {
+  const {
+    actions: { setProp },
+    title,
+    subtitle,
+    badge,
+    primaryButtonText,
+    secondaryButtonText,
+  } = useNode((node) => ({
+    title: node.data.props.title,
+    subtitle: node.data.props.subtitle,
+    badge: node.data.props.badge,
+    primaryButtonText: node.data.props.primaryButtonText,
+    secondaryButtonText: node.data.props.secondaryButtonText,
+  }));
+
   return (
     <div className="flex flex-col gap-4 rounded-md border bg-card p-4 text-card-foreground">
-      <h3 className="text-sm font-semibold">Animated Hero</h3>
+      <h3 className="text-sm font-semibold">Animated Hero Settings</h3>
       <p className="text-xs text-muted-foreground">
         Premium Apple-style animated hero section. Elements fade and slide up automatically.
       </p>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-xs font-medium">Badge Text</label>
+        <input
+          type="text"
+          className="rounded-md border bg-background p-2 text-sm"
+          value={badge || ""}
+          onChange={(e) =>
+            setProp((props: AnimatedHeroBlockProps) => (props.badge = e.target.value))
+          }
+          placeholder="✨ Premium Quality"
+        />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-xs font-medium">Title</label>
+        <input
+          type="text"
+          className="rounded-md border bg-background p-2 text-sm"
+          value={title || ""}
+          onChange={(e) =>
+            setProp((props: AnimatedHeroBlockProps) => (props.title = e.target.value))
+          }
+          placeholder="Design Meets Motion"
+        />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-xs font-medium">Subtitle</label>
+        <textarea
+          className="resize-none rounded-md border bg-background p-2 text-sm"
+          rows={3}
+          value={subtitle || ""}
+          onChange={(e) =>
+            setProp((props: AnimatedHeroBlockProps) => (props.subtitle = e.target.value))
+          }
+          placeholder="Experience a new level of aesthetic..."
+        />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-xs font-medium">Primary Button Text</label>
+        <input
+          type="text"
+          className="rounded-md border bg-background p-2 text-sm"
+          value={primaryButtonText || ""}
+          onChange={(e) =>
+            setProp(
+              (props: AnimatedHeroBlockProps) => (props.primaryButtonText = e.target.value)
+            )
+          }
+          placeholder="Start Building"
+        />
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label className="text-xs font-medium">Secondary Button Text</label>
+        <input
+          type="text"
+          className="rounded-md border bg-background p-2 text-sm"
+          value={secondaryButtonText || ""}
+          onChange={(e) =>
+            setProp(
+              (props: AnimatedHeroBlockProps) => (props.secondaryButtonText = e.target.value)
+            )
+          }
+          placeholder="View Showcase"
+        />
+      </div>
     </div>
   );
 };
