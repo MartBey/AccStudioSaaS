@@ -3,8 +3,8 @@
 import { Editor, Element, Frame } from "@craftjs/core";
 import React, { useState } from "react";
 
+import { AnimatedHeroBlock } from "@/components/builder/blocks/AnimatedHeroBlock";
 import {
-  AnimatedHeroBlock,
   ButtonBlock,
   ContactBlock,
   ContainerBlock,
@@ -17,6 +17,7 @@ import {
   TextBlock,
   VideoReviewBlock,
 } from "@/components/builder/blocks";
+
 import { ContainerSettings } from "@/components/builder/blocks/ContainerBlock";
 import { BuilderSettingsPanel } from "@/components/builder/BuilderSettingsPanel";
 import { BuilderSidebar } from "@/components/builder/BuilderSidebar";

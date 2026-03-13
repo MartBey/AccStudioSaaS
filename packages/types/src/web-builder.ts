@@ -40,4 +40,6 @@ export interface WebBuilderResponse {
   status?: string;
   createdAt?: Date;
   siteStructure?: any;
+  subdomain?: string;
 }
+

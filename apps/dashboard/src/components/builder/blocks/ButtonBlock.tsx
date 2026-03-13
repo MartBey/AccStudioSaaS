@@ -15,7 +15,6 @@ export const ButtonBlock = ({
   text = "Button",
   variant = "default",
   size = "default",
-  href,
 }: ButtonBlockProps) => {
   const {
     connectors: { connect, drag },
@@ -28,7 +27,7 @@ export const ButtonBlock = ({
       }}
       style={{ display: "inline-block", margin: "5px 0" }}
     >
-      <Button variant={variant as any} size={size as any}>
+      <Button variant={variant} size={size}>
         {text}
       </Button>
     </div>
@@ -69,7 +68,7 @@ const ButtonSettings = () => {
           className="rounded-md border bg-background p-2 text-sm"
           value={variant}
           onChange={(e) =>
-            setProp((props: ButtonBlockProps) => (props.variant = e.target.value as any))
+            setProp((props: ButtonBlockProps) => (props.variant = e.target.value as ButtonBlockProps["variant"]))
           }
         >
           <option value="default">Default</option>
@@ -87,7 +86,7 @@ const ButtonSettings = () => {
           className="rounded-md border bg-background p-2 text-sm"
           value={size}
           onChange={(e) =>
-            setProp((props: ButtonBlockProps) => (props.size = e.target.value as any))
+            setProp((props: ButtonBlockProps) => (props.size = e.target.value as ButtonBlockProps["size"]))
           }
         >
           <option value="default">Default</option>

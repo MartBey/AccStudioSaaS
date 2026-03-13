@@ -119,7 +119,7 @@ export const ContainerSettings = () => {
           className="rounded-md border bg-background p-2 text-sm"
           value={flexDirection}
           onChange={(e) =>
-            setProp((props: ContainerBlockProps) => (props.flexDirection = e.target.value as any))
+            setProp((props: ContainerBlockProps) => (props.flexDirection = e.target.value as ContainerBlockProps["flexDirection"]))
           }
         >
           <option value="column">Vertical</option>
@@ -133,7 +133,7 @@ export const ContainerSettings = () => {
           className="rounded-md border bg-background p-2 text-sm"
           value={alignItems}
           onChange={(e) =>
-            setProp((props: ContainerBlockProps) => (props.alignItems = e.target.value as any))
+            setProp((props: ContainerBlockProps) => (props.alignItems = e.target.value as ContainerBlockProps["alignItems"]))
           }
         >
           <option value="flex-start">Start</option>

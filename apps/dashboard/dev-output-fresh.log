@@ -1,0 +1,217 @@
+
+> dashboard@0.1.0 dev C:\AccStudioAGENT\apps\dashboard
+> next dev
+
+   Ôû▓ Next.js 15.0.3
+   - Local:        http://localhost:3000
+   - Environments: .env.local
+
+ Ô£ô Starting...
+ Ô£ô Ready in 1987ms
+ Ôùï Compiling /src/middleware ...
+ Ô£ô Compiled /src/middleware in 770ms (284 modules)
+[Middleware] Request: localhost:3000 / -> Type: main
+(node:9708) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ Ôùï Compiling / ...
+ Ô£ô Compiled / in 4.4s (974 modules)
+ HEAD / 200 in 4648ms
+ Ô£ô Compiled in 532ms (446 modules)
+[Middleware] Request: localhost:3000 /ajans/ekip -> Type: main
+ Ôùï Compiling /ajans/ekip ...
+ Ô¿» ./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+Error:   x You're importing a component that needs `useState`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+  | 
+  |  Learn more: https://nextjs.org/docs/app/building-your-application/rendering/client-components
+  | 
+  | 
+   ,-[C:\AccStudioAGENT\apps\dashboard\src\app\(ajans)\ajans\ekip\_components\ekip-client.tsx:2:1]
+ 1 | import { Mail, MoreHorizontal, Search } from "lucide-react";
+ 2 | import { useState } from "react";
+   :          ^^^^^^^^
+ 3 | import {
+ 4 |   Avatar,
+ 5 |   AvatarFallback,
+   `----
+
+Import trace for requested module:
+./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+./src/app/(ajans)/ajans/ekip/page.tsx
+ Ô¿» ./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+Error:   x You're importing a component that needs `useState`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+  | 
+  |  Learn more: https://nextjs.org/docs/app/building-your-application/rendering/client-components
+  | 
+  | 
+   ,-[C:\AccStudioAGENT\apps\dashboard\src\app\(ajans)\ajans\ekip\_components\ekip-client.tsx:2:1]
+ 1 | import { Mail, MoreHorizontal, Search } from "lucide-react";
+ 2 | import { useState } from "react";
+   :          ^^^^^^^^
+ 3 | import {
+ 4 |   Avatar,
+ 5 |   AvatarFallback,
+   `----
+
+Import trace for requested module:
+./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+./src/app/(ajans)/ajans/ekip/page.tsx
+ Ô¿» ./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+Error:   x You're importing a component that needs `useState`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+  | 
+  |  Learn more: https://nextjs.org/docs/app/building-your-application/rendering/client-components
+  | 
+  | 
+   ,-[C:\AccStudioAGENT\apps\dashboard\src\app\(ajans)\ajans\ekip\_components\ekip-client.tsx:2:1]
+ 1 | import { Mail, MoreHorizontal, Search } from "lucide-react";
+ 2 | import { useState } from "react";
+   :          ^^^^^^^^
+ 3 | import {
+ 4 |   Avatar,
+ 5 |   AvatarFallback,
+   `----
+
+Import trace for requested module:
+./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+./src/app/(ajans)/ajans/ekip/page.tsx
+ GET /ajans/ekip 500 in 6986ms
+[Middleware] Request: localhost:3000 /ajans/ekip -> Type: main
+ GET /ajans/ekip 500 in 23ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 17ms
+ GET /_next/static/chunks/fallback/main.js 500 in 14ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 13ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 11ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 10ms
+[Middleware] Request: localhost:3000 /ajans/ekip -> Type: main
+ GET /ajans/ekip 500 in 27ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 15ms
+ GET /_next/static/chunks/fallback/main.js 500 in 20ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 20ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 11ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 11ms
+[Middleware] Request: localhost:3000 /ajans/ekip -> Type: main
+ GET /ajans/ekip 500 in 16ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 12ms
+ GET /_next/static/chunks/fallback/main.js 500 in 12ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 12ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 11ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 10ms
+[Middleware] Request: localhost:3000 /ajans/ekip -> Type: main
+ GET /ajans/ekip 500 in 14ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 7ms
+ GET /_next/static/chunks/fallback/main.js 500 in 8ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 7ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 7ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 6ms
+[Middleware] Request: localhost:3000 /ajans/ekip -> Type: main
+ GET /ajans/ekip 500 in 19ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 12ms
+ GET /_next/static/chunks/fallback/main.js 500 in 11ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 10ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 10ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 8ms
+[Middleware] Request: localhost:3000 /ajans -> Type: main
+ Ô¿» ./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+Error:   x You're importing a component that needs `useState`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+  | 
+  |  Learn more: https://nextjs.org/docs/app/building-your-application/rendering/client-components
+  | 
+  | 
+   ,-[C:\AccStudioAGENT\apps\dashboard\src\app\(ajans)\ajans\ekip\_components\ekip-client.tsx:2:1]
+ 1 | import { Mail, MoreHorizontal, Search } from "lucide-react";
+ 2 | import { useState } from "react";
+   :          ^^^^^^^^
+ 3 | import {
+ 4 |   Avatar,
+ 5 |   AvatarFallback,
+   `----
+
+Import trace for requested module:
+./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+./src/app/(ajans)/ajans/ekip/page.tsx
+ GET /ajans 500 in 1268ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 8ms
+ GET /_next/static/chunks/fallback/main.js 500 in 12ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 11ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 5ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 4ms
+[Middleware] Request: localhost:3000 / -> Type: main
+ Ô¿» ./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+Error:   x You're importing a component that needs `useState`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+  | 
+  |  Learn more: https://nextjs.org/docs/app/building-your-application/rendering/client-components
+  | 
+  | 
+   ,-[C:\AccStudioAGENT\apps\dashboard\src\app\(ajans)\ajans\ekip\_components\ekip-client.tsx:2:1]
+ 1 | import { Mail, MoreHorizontal, Search } from "lucide-react";
+ 2 | import { useState } from "react";
+   :          ^^^^^^^^
+ 3 | import {
+ 4 |   Avatar,
+ 5 |   AvatarFallback,
+   `----
+
+Import trace for requested module:
+./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+./src/app/(ajans)/ajans/ekip/page.tsx
+ GET / 500 in 628ms
+[Middleware] Request: localhost:3000 / -> Type: main
+ GET / 500 in 8ms
+ GET /_next/static/chunks/fallback/webpack.js 500 in 5ms
+ GET /_next/static/chunks/fallback/main.js 500 in 4ms
+ GET /_next/static/chunks/fallback/react-refresh.js 500 in 4ms
+ GET /_next/static/chunks/fallback/pages/_app.js 500 in 8ms
+ GET /_next/static/chunks/fallback/pages/_error.js 500 in 7ms
+[Middleware] Request: localhost:3000 /api/sites/by-domain -> Type: main
+ Ô¿» ./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+Error:   x You're importing a component that needs `useState`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+  | 
+  |  Learn more: https://nextjs.org/docs/app/building-your-application/rendering/client-components
+  | 
+  | 
+   ,-[C:\AccStudioAGENT\apps\dashboard\src\app\(ajans)\ajans\ekip\_components\ekip-client.tsx:2:1]
+ 1 | import { Mail, MoreHorizontal, Search } from "lucide-react";
+ 2 | import { useState } from "react";
+   :          ^^^^^^^^
+ 3 | import {
+ 4 |   Avatar,
+ 5 |   AvatarFallback,
+   `----
+
+Import trace for requested module:
+./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+./src/app/(ajans)/ajans/ekip/page.tsx
+ GET /api/sites/by-domain?hostname=localhost:3001 500 in 644ms
+[Middleware] Request: localhost:3000 /404 -> Type: main
+ GET /404 500 in 4ms
+[Middleware] Request: localhost:3000 /api/sites/by-domain -> Type: main
+ GET /api/sites/by-domain?hostname=localhost:3001 500 in 15ms
+[Middleware] Request: localhost:3000 /404 -> Type: main
+ GET /404 500 in 6ms
+[Middleware] Request: localhost:3000 /api/sites/by-domain -> Type: main
+ GET /api/sites/by-domain?hostname=localhost:3001 500 in 10ms
+[Middleware] Request: localhost:3000 /404 -> Type: main
+ GET /404 500 in 2ms
+[Middleware] Request: localhost:3000 /api/sites/by-domain -> Type: main
+ GET /api/sites/by-domain?hostname=localhost:3001 500 in 7ms
+[Middleware] Request: localhost:3000 /404 -> Type: main
+ GET /404 500 in 3ms
+[Middleware] Request: localhost:3000 /api/sites/by-domain -> Type: main
+ GET /api/sites/by-domain?hostname=localhost:3001 500 in 17ms
+[Middleware] Request: localhost:3000 /404 -> Type: main
+ GET /404 500 in 5ms
+[Middleware] Request: localhost:3000 /api/sites/by-domain -> Type: main
+ GET /api/sites/by-domain?hostname=localhost:3001 500 in 18ms
+[Middleware] Request: localhost:3000 /404 -> Type: main
+ GET /404 500 in 7ms
+<w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: ENOENT: no such file or directory, lstat 'C:\AccStudioAGENT\apps\dashboard\.next\server\app\page.js'
+<w> [webpack.cache.PackFileCacheStrategy/webpack.FileSystemInfo] Resolving '../../../../../../../apps/dashboard/.next/server/app/page' in C:\AccStudioAGENT\node_modules\.pnpm\next@15.0.3_@opentelemetry+api@1.9.0_react-dom@19.0.0-rc-66855b96-20241106_react@19.0.0-rc-66_ml7g6eyuhjpume243rmimlrmf4\node_modules\next\dist\server for build dependencies doesn't lead to expected result 'C:\AccStudioAGENT\apps\dashboard\.next\server\app\page.js', but to 'Error: Can't resolve '../../../../../../../apps/dashboard/.next/server/app/page' in 'C:\AccStudioAGENT\node_modules\.pnpm\next@15.0.3_@opentelemetry+api@1.9.0_react-dom@19.0.0-rc-66855b96-20241106_react@19.0.0-rc-66_ml7g6eyuhjpume243rmimlrmf4\node_modules\next\dist\server'' instead. Resolving dependencies are ignored for this path.
+<w>  at resolve commonjs file ../../../../../../../apps/dashboard/.next/server/app/page (expected C:\AccStudioAGENT\apps\dashboard\.next\server\app\page.js)
+<w>  at file dependencies C:\AccStudioAGENT\node_modules\.pnpm\next@15.0.3_@opentelemetry+api@1.9.0_react-dom@19.0.0-rc-66855b96-20241106_react@19.0.0-rc-66_ml7g6eyuhjpume243rmimlrmf4\node_modules\next\dist\server\require.js
+<w>  at file C:\AccStudioAGENT\node_modules\.pnpm\next@15.0.3_@opentelemetry+api@1.9.0_react-dom@19.0.0-rc-66855b96-20241106_react@19.0.0-rc-66_ml7g6eyuhjpume243rmimlrmf4\node_modules\next\dist\server\require.js
+<w>  at file dependencies C:\AccStudioAGENT\node_modules\.pnpm\next@15.0.3_@opentelemetry+api@1.9.0_react-dom@19.0.0-rc-66855b96-20241106_react@19.0.0-rc-66_ml7g6eyuhjpume243rmimlrmf4\node_modules\next\dist\server\load-components.js
+<w>  at file C:\AccStudioAGENT\node_modules\.pnpm\next@15.0.3_@opentelemetry+api@1.9.0_react-dom@19.0.0-rc-66855b96-20241106_react@19.0.0-rc-66_ml7g6eyuhjpume243rmimlrmf4\node_modules\next\dist\server\load-components.js
+<w>  at file dependencies C:\AccStudioAGENT\node_modules\.pnpm\next@15.0.3_@opentelemetry+api@1.9.0_react-dom@19.0.0-rc-66855b96-20241106_react@19.0.0-rc-66_ml7g6eyuhjpume243rmimlrmf4\node_modules\next\dist\build\utils.js
+<w>  at file C:\AccStudioAGENT\node_modules\.pnpm\next@15.0.3_@opentelemetry+api@1.9.0_react-dom@19.0.0-rc-66855b96-20241106_react@19.0.0-rc-66_ml7g6eyuhjpume243rmimlrmf4\node_modules\next\dist\build\utils.js
+<w>  at file dependencies C:\AccStudioAGENT\node_modules\.pnpm\next@15.0.3_@opentelemetry+api@1.9.0_react-dom@19.0.0-rc-66855b96-20241106_react@19.0.0-rc-66_ml7g6eyuhjpume243rmimlrmf4\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at file C:\AccStudioAGENT\node_modules\.pnpm\next@15.0.3_@opentelemetry+api@1.9.0_react-dom@19.0.0-rc-66855b96-20241106_react@19.0.0-rc-66_ml7g6eyuhjpume243rmimlrmf4\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js
+<w>  at resolve commonjs C:\AccStudioAGENT\node_modules\.pnpm\next@15.0.3_@opentelemetry+api@1.9.0_react-dom@19.0.0-rc-66855b96-20241106_react@19.0.0-rc-66_ml7g6eyuhjpume243rmimlrmf4\node_modules\next\dist\build\webpack\loaders\next-route-loader\index.js

@@ -104,7 +104,7 @@ const TextSettings = () => {
           className="rounded-md border bg-background p-2 text-sm"
           value={textAlign}
           onChange={(e) =>
-            setProp((props: TextBlockProps) => (props.textAlign = e.target.value as any))
+            setProp((props: TextBlockProps) => (props.textAlign = e.target.value as TextBlockProps["textAlign"]))
           }
         >
           <option value="left">Left</option>
@@ -119,7 +119,7 @@ const TextSettings = () => {
           className="rounded-md border bg-background p-2 text-sm"
           value={fontWeight}
           onChange={(e) =>
-            setProp((props: TextBlockProps) => (props.fontWeight = e.target.value as any))
+            setProp((props: TextBlockProps) => (props.fontWeight = e.target.value as TextBlockProps["fontWeight"]))
           }
         >
           <option value="normal">Normal</option>

@@ -6,7 +6,14 @@ import { auth } from "@/auth";
 import { prisma } from "database";
 import { BuilderClient } from "./BuilderClient";
 
-export default async function BuilderPage({ params }: { params: Promise<{ id: string }> }) {
+export default async function BuilderPage({ 
+  params,
+  searchParams 
+}: { 
+  params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+
   const session = await auth();
 
   if (!session?.user?.id) {

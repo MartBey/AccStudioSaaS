@@ -229,22 +229,43 @@ export default function WebBuilderPage() {
                     <p className="text-xs font-semibold uppercase text-muted-foreground">
                       Önizleme Bağlantısı
                     </p>
-                    <a
-                      href="#"
-                      className="truncate font-medium text-blue-600 hover:underline"
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      {result.previewUrl}
-                    </a>
+                    {(() => {
+                      const isDev = window.location.hostname === "localhost" || window.location.hostname.includes(".local");
+                      const domain = isDev ? "accstudio.local:3000" : "accstudio.co";
+                      const protocol = isDev ? "http" : "https";
+                      const previewUrl = result.subdomain 
+                        ? `${protocol}://${result.subdomain}.${domain}`
+                        : `${protocol}://${domain}/preview/${result.id}`;
+                      
+                      return (
+                        <a
+                          href={previewUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="truncate font-medium text-blue-600 hover:underline"
+                        >
+                          {previewUrl}
+                        </a>
+                      );
+                    })()}
                   </div>
                 </div>
                 <Button
                   variant="secondary"
-                  onClick={() => window.open(result?.previewUrl, "_blank")}
+                  onClick={() => {
+                    const isDev = window.location.hostname === "localhost" || window.location.hostname.includes(".local");
+                    const domain = isDev ? "accstudio.local:3000" : "accstudio.co";
+                    const protocol = isDev ? "http" : "https";
+                    const previewUrl = result.subdomain 
+                      ? `${protocol}://${result.subdomain}.${domain}`
+                      : `${protocol}://${domain}/preview/${result.id}`;
+                    window.open(previewUrl, "_blank");
+                  }}
                 >
                   Canlı Önizleme
                 </Button>
               </div>
+
 
               <div className="flex w-full gap-4">
                 <Button
