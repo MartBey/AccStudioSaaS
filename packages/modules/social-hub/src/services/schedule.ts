@@ -4,7 +4,8 @@ import { SocialPostRequest, SocialPostResponse } from "types";
 let mockPosts: SocialPostResponse[] = [
   {
     id: "post_1",
-    content: "Yeni ofisimizde ilk gün heyecanı! Ekibimizle birlikte harika projelere imza atmaya hazırız. 🚀 #AccStudio #YeniBaşlangıçlar",
+    content:
+      "Yeni ofisimizde ilk gün heyecanı! Ekibimizle birlikte harika projelere imza atmaya hazırız. 🚀 #AccStudio #YeniBaşlangıçlar",
     platform: "linkedin",
     scheduledFor: new Date(new Date().getTime() - 24 * 60 * 60 * 1000), // Yesterday
     status: "published",
@@ -13,7 +14,8 @@ let mockPosts: SocialPostResponse[] = [
   },
   {
     id: "post_2",
-    content: "Yaz kampanyamız başladı! Web sitemizdeki tüm ürünlerde %20 indirim sizi bekliyor. 🔥 Kampanya linki profilde.",
+    content:
+      "Yaz kampanyamız başladı! Web sitemizdeki tüm ürünlerde %20 indirim sizi bekliyor. 🔥 Kampanya linki profilde.",
     platform: "instagram",
     scheduledFor: new Date(new Date().getTime() + 2 * 60 * 60 * 1000), // In 2 hours
     status: "scheduled",
@@ -28,26 +30,26 @@ let mockPosts: SocialPostResponse[] = [
     status: "draft",
     mediaUrls: [],
     createdAt: new Date(),
-  }
+  },
 ];
 
 export async function fetchScheduledPosts(): Promise<SocialPostResponse[]> {
   // Simulate network latency
-  await new Promise(resolve => setTimeout(resolve, 800));
-  
+  await new Promise((resolve) => setTimeout(resolve, 800));
+
   // Sort by scheduledDate ascending
   return [...mockPosts].sort((a, b) => a.scheduledFor.getTime() - b.scheduledFor.getTime());
 }
 
 export async function scheduleNewPost(request: SocialPostRequest): Promise<SocialPostResponse[]> {
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  await new Promise((resolve) => setTimeout(resolve, 1500));
 
   const newPosts: SocialPostResponse[] = request.platforms.map((platform, idx) => ({
     id: `post_new_${Date.now()}_${idx}`,
     content: request.content,
     platform: platform,
     scheduledFor: request.scheduledFor || new Date(),
-    status: request.scheduledFor && request.scheduledFor > new Date() ? 'scheduled' : 'published',
+    status: request.scheduledFor && request.scheduledFor > new Date() ? "scheduled" : "published",
     mediaUrls: request.mediaUrls || [],
     createdAt: new Date(),
   }));

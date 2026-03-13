@@ -1,8 +1,9 @@
 "use server";
 
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+
+import { auth } from "@/auth";
 
 // Freelancer: Görevi teslim et
 export async function deliverTask(data: {
@@ -24,7 +25,7 @@ export async function deliverTask(data: {
         deliveryNote: data.deliveryNote || null,
         deliveredAt: new Date(),
         status: "DELIVERED",
-      }
+      },
     });
 
     await prisma.auditLog.create({
@@ -33,7 +34,7 @@ export async function deliverTask(data: {
         action: "DELIVER_TASK",
         entityType: "Task",
         entityId: data.taskId,
-      }
+      },
     });
 
     revalidatePath("/");
@@ -56,7 +57,7 @@ export async function approveDelivery(taskId: string) {
       data: {
         status: "DONE",
         approvedAt: new Date(),
-      }
+      },
     });
 
     await prisma.auditLog.create({
@@ -65,7 +66,7 @@ export async function approveDelivery(taskId: string) {
         action: "APPROVE_DELIVERY",
         entityType: "Task",
         entityId: taskId,
-      }
+      },
     });
 
     revalidatePath("/");
@@ -78,10 +79,7 @@ export async function approveDelivery(taskId: string) {
 }
 
 // Marka/Ajans: Revizyon iste
-export async function requestRevision(data: {
-  taskId: string;
-  revisionNote: string;
-}) {
+export async function requestRevision(data: { taskId: string; revisionNote: string }) {
   try {
     const session = await auth();
     if (!session?.user?.id) throw new Error("Oturum bulunamadı.");
@@ -92,7 +90,7 @@ export async function requestRevision(data: {
         status: "REVISION",
         revisionNote: data.revisionNote,
         deliveredAt: null, // Teslimat sıfırla
-      }
+      },
     });
 
     await prisma.auditLog.create({
@@ -101,7 +99,7 @@ export async function requestRevision(data: {
         action: "REQUEST_REVISION",
         entityType: "Task",
         entityId: data.taskId,
-      }
+      },
     });
 
     revalidatePath("/");
@@ -114,17 +112,14 @@ export async function requestRevision(data: {
 }
 
 // Ajans: Görevi çalışana ata
-export async function assignTaskToEmployee(data: {
-  taskId: string;
-  employeeId: string;
-}) {
+export async function assignTaskToEmployee(data: { taskId: string; employeeId: string }) {
   try {
     const session = await auth();
     if (!session?.user?.id) throw new Error("Oturum bulunamadı.");
 
     await prisma.task.update({
       where: { id: data.taskId },
-      data: { employeeId: data.employeeId }
+      data: { employeeId: data.employeeId },
     });
 
     await prisma.auditLog.create({
@@ -134,7 +129,7 @@ export async function assignTaskToEmployee(data: {
         entityType: "Task",
         entityId: data.taskId,
         details: JSON.stringify({ employeeId: data.employeeId }),
-      }
+      },
     });
 
     revalidatePath("/");

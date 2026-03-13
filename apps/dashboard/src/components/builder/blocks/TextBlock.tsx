@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
 import { useNode } from "@craftjs/core";
+import React, { useEffect, useState } from "react";
 import ContentEditable from "react-contenteditable";
 
 export interface TextBlockProps {
@@ -12,8 +12,18 @@ export interface TextBlockProps {
   fontWeight?: "normal" | "bold" | "500" | "600" | "700";
 }
 
-export const TextBlock = ({ text = "Text", fontSize = "16px", textAlign = "left", color = "#000000", fontWeight = "normal" }: TextBlockProps) => {
-  const { connectors: { connect, drag }, hasSelected, actions: { setProp } } = useNode((node) => ({
+export const TextBlock = ({
+  text = "Text",
+  fontSize = "16px",
+  textAlign = "left",
+  color = "#000000",
+  fontWeight = "normal",
+}: TextBlockProps) => {
+  const {
+    connectors: { connect, drag },
+    hasSelected,
+    actions: { setProp },
+  } = useNode((node) => ({
     hasSelected: node.events.selected,
   }));
 
@@ -27,7 +37,9 @@ export const TextBlock = ({ text = "Text", fontSize = "16px", textAlign = "left"
 
   return (
     <div
-      ref={(ref) => { if (ref) connect(drag(ref)); }}
+      ref={(ref) => {
+        if (ref) connect(drag(ref));
+      }}
       onClick={() => setEditable(true)}
       style={{ margin: "5px 0" }}
     >
@@ -35,7 +47,9 @@ export const TextBlock = ({ text = "Text", fontSize = "16px", textAlign = "left"
         html={text}
         disabled={!editable}
         onChange={(e) => {
-          setProp((props: TextBlockProps) => (props.text = e.target.value.replace(/<\/?[^>]+(>|$)/g, "")));
+          setProp(
+            (props: TextBlockProps) => (props.text = e.target.value.replace(/<\/?[^>]+(>|$)/g, ""))
+          );
         }}
         tagName="p"
         style={{
@@ -52,7 +66,13 @@ export const TextBlock = ({ text = "Text", fontSize = "16px", textAlign = "left"
 };
 
 const TextSettings = () => {
-  const { actions: { setProp }, fontSize, textAlign, color, fontWeight } = useNode((node) => ({
+  const {
+    actions: { setProp },
+    fontSize,
+    textAlign,
+    color,
+    fontWeight,
+  } = useNode((node) => ({
     fontSize: node.data.props.fontSize,
     textAlign: node.data.props.textAlign,
     color: node.data.props.color,
@@ -60,19 +80,19 @@ const TextSettings = () => {
   }));
 
   return (
-    <div className="flex flex-col gap-4 p-4 border rounded-md bg-card text-card-foreground">
-      <h3 className="font-semibold text-sm">Text Settings</h3>
-      
+    <div className="flex flex-col gap-4 rounded-md border bg-card p-4 text-card-foreground">
+      <h3 className="text-sm font-semibold">Text Settings</h3>
+
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Font Size</label>
         <div className="flex gap-2">
           {["12px", "14px", "16px", "20px", "24px", "32px", "48px"].map((size) => (
             <button
               key={size}
-              className={`px-2 py-1 border text-xs rounded ${fontSize === size ? "bg-primary text-primary-foreground" : ""}`}
+              className={`rounded border px-2 py-1 text-xs ${fontSize === size ? "bg-primary text-primary-foreground" : ""}`}
               onClick={() => setProp((props: TextBlockProps) => (props.fontSize = size))}
             >
-              {size.replace('px', '')}
+              {size.replace("px", "")}
             </button>
           ))}
         </div>
@@ -81,9 +101,11 @@ const TextSettings = () => {
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Text Align</label>
         <select
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={textAlign}
-          onChange={(e) => setProp((props: TextBlockProps) => (props.textAlign = e.target.value))}
+          onChange={(e) =>
+            setProp((props: TextBlockProps) => (props.textAlign = e.target.value as any))
+          }
         >
           <option value="left">Left</option>
           <option value="center">Center</option>
@@ -94,9 +116,11 @@ const TextSettings = () => {
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Font Weight</label>
         <select
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={fontWeight}
-          onChange={(e) => setProp((props: TextBlockProps) => (props.fontWeight = e.target.value))}
+          onChange={(e) =>
+            setProp((props: TextBlockProps) => (props.fontWeight = e.target.value as any))
+          }
         >
           <option value="normal">Normal</option>
           <option value="500">Medium</option>
@@ -104,12 +128,12 @@ const TextSettings = () => {
           <option value="bold">Bold</option>
         </select>
       </div>
-      
-       <div className="flex flex-col gap-2">
+
+      <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Color (Hex/CSS)</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={color}
           onChange={(e) => setProp((props: TextBlockProps) => (props.color = e.target.value))}
         />

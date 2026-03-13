@@ -1,0 +1,12 @@
+.next/types/app/(dashboard)/builder/[id]/page.ts(34,29): error TS2344: Type '{ params: { id: string; }; }' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ id: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+src/app/(dashboard)/builder/[id]/BuilderClient.tsx(20,3): error TS2305: Module '"@/components/builder/blocks"' has no exported member 'AnimatedHeroBlock'.
+src/components/builder/blocks/ButtonBlock.tsx(53,66): error TS2322: Type 'string' is not assignable to type '"link" | "default" | "secondary" | "destructive" | "outline" | "ghost" | undefined'.
+src/components/builder/blocks/ButtonBlock.tsx(69,66): error TS2322: Type 'string' is not assignable to type '"default" | "lg" | "sm" | "icon" | undefined'.
+src/components/builder/blocks/ContainerBlock.tsx(104,69): error TS2322: Type 'string' is not assignable to type '"row" | "column" | undefined'.
+src/components/builder/blocks/ContainerBlock.tsx(116,69): error TS2322: Type 'string' is not assignable to type '"center" | "flex-start" | "flex-end" | "stretch" | undefined'.
+src/components/builder/blocks/TextBlock.tsx(86,64): error TS2322: Type 'string' is not assignable to type '"center" | "left" | "right" | undefined'.
+src/components/builder/blocks/TextBlock.tsx(99,64): error TS2322: Type 'string' is not assignable to type '"bold" | "normal" | "500" | "600" | "700" | undefined'.
+src/components/builder/BuilderSidebar.tsx(17,3): error TS2305: Module '"./blocks"' has no exported member 'AnimatedHeroBlock'.
+src/components/builder/BuilderTopbar.tsx(22,3): error TS2305: Module '"./blocks"' has no exported member 'AnimatedHeroBlock'.

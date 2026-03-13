@@ -2,8 +2,9 @@
 
 import { prisma } from "database";
 import { revalidatePath } from "next/cache";
-import { auth } from "@/auth";
 import { z } from "zod";
+
+import { auth } from "@/auth";
 
 const portfolioSchema = z.object({
   title: z.string().min(1, "Başlık zorunludur"),
@@ -27,7 +28,7 @@ export async function addPortfolioItem(data: PortfolioItemData) {
     const freelancer = await prisma.freelancer.findFirst({
       where: { profile: { userId: session.user.id } },
     });
-    
+
     if (!freelancer) throw new Error("Freelancer profili bulunamadı");
 
     await prisma.portfolioItem.create({
@@ -58,13 +59,13 @@ export async function deletePortfolioItem(itemId: string) {
     const freelancer = await prisma.freelancer.findFirst({
       where: { profile: { userId: session.user.id } },
     });
-    
+
     if (!freelancer) throw new Error("Freelancer profili bulunamadı");
 
     const item = await prisma.portfolioItem.findFirst({
       where: { id: itemId, freelancerId: freelancer.id },
     });
-    
+
     if (!item) throw new Error("Bu öğeyi silme yetkiniz yok veya öğe bulunamadı");
 
     await prisma.portfolioItem.delete({ where: { id: itemId } });

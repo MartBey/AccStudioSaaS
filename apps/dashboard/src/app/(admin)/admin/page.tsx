@@ -1,6 +1,7 @@
-import { getAdminStats } from "@/app/_actions/admin-actions";
-import { Users, Briefcase, FileText, TrendingUp, ShieldCheck, ActivitySquare } from "lucide-react";
+import { ActivitySquare, Briefcase, FileText, ShieldCheck, TrendingUp, Users } from "lucide-react";
 import Link from "next/link";
+
+import { getAdminStats } from "@/app/_actions/admin-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -54,9 +55,7 @@ export default async function AdminHomePage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold tracking-tight">Genel Bakış</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Platformun anlık durumu
-        </p>
+        <p className="mt-1 text-sm text-muted-foreground">Platformun anlık durumu</p>
       </div>
 
       {/* Stat Cards */}
@@ -67,13 +66,15 @@ export default async function AdminHomePage() {
             className={`relative rounded-xl border p-4 transition-all hover:shadow-sm ${s.alert ? "border-orange-400/40" : "border-border"}`}
           >
             {s.alert && (
-              <span className="absolute -top-1.5 -right-1.5 h-3 w-3 rounded-full bg-orange-400 ring-2 ring-background animate-pulse" />
+              <span className="absolute -right-1.5 -top-1.5 h-3 w-3 animate-pulse rounded-full bg-orange-400 ring-2 ring-background" />
             )}
-            <div className={`inline-flex h-9 w-9 items-center justify-center rounded-md ring-1 mb-3 ${s.bg}`}>
+            <div
+              className={`mb-3 inline-flex h-9 w-9 items-center justify-center rounded-md ring-1 ${s.bg}`}
+            >
               <s.icon className={`h-4 w-4 ${s.color}`} />
             </div>
             <p className="text-2xl font-bold tabular-nums">{s.value}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">{s.label}</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">{s.label}</p>
             {s.href && (
               <Link href={s.href} className="absolute inset-0 rounded-xl" aria-label={s.label} />
             )}
@@ -85,15 +86,17 @@ export default async function AdminHomePage() {
       <div className="grid gap-4 md:grid-cols-2">
         <Link
           href="/admin/logs"
-          className="group rounded-xl border border-border p-5 hover:border-primary/40 hover:bg-primary/5 transition-all"
+          className="group rounded-xl border border-border p-5 transition-all hover:border-primary/40 hover:bg-primary/5"
         >
           <div className="flex items-start gap-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20 group-hover:bg-primary/20 transition-colors">
+            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary/10 ring-1 ring-primary/20 transition-colors group-hover:bg-primary/20">
               <ActivitySquare className="h-5 w-5 text-primary" />
             </div>
             <div>
-              <h3 className="font-semibold text-sm group-hover:text-primary transition-colors">Aktivite Akışı</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <h3 className="text-sm font-semibold transition-colors group-hover:text-primary">
+                Aktivite Akışı
+              </h3>
+              <p className="mt-0.5 text-xs text-muted-foreground">
                 Platformdaki tüm olayları filtreli şekilde izle
               </p>
             </div>
@@ -101,15 +104,17 @@ export default async function AdminHomePage() {
         </Link>
         <Link
           href="/admin/verification"
-          className="group rounded-xl border border-border p-5 hover:border-primary/40 hover:bg-primary/5 transition-all"
+          className="group rounded-xl border border-border p-5 transition-all hover:border-primary/40 hover:bg-primary/5"
         >
           <div className="flex items-start gap-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-orange-500/10 ring-1 ring-orange-500/20 group-hover:bg-orange-500/20 transition-colors">
+            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-orange-500/10 ring-1 ring-orange-500/20 transition-colors group-hover:bg-orange-500/20">
               <ShieldCheck className="h-5 w-5 text-orange-400" />
             </div>
             <div>
-              <h3 className="font-semibold text-sm group-hover:text-primary transition-colors">Doğrulama Talepleri</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <h3 className="text-sm font-semibold transition-colors group-hover:text-primary">
+                Doğrulama Talepleri
+              </h3>
+              <p className="mt-0.5 text-xs text-muted-foreground">
                 {stats.pendingVerifications > 0
                   ? `${stats.pendingVerifications} bekleyen talep var`
                   : "Bekleyen talep yok"}

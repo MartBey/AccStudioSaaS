@@ -1,7 +1,7 @@
 "use server";
 
-import { prisma } from "database";
 import bcrypt from "bcryptjs";
+import { prisma } from "database";
 
 interface RegisterInput {
   name: string;
@@ -16,7 +16,7 @@ export async function registerUser(input: RegisterInput) {
 
     // Email kontrolü
     const existingUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     });
 
     if (existingUser) {
@@ -37,17 +37,17 @@ export async function registerUser(input: RegisterInput) {
           create: {
             // Rol bazlı alt profil oluştur
             ...(role === "BRAND" && {
-              brand: { create: { companyName: name } }
+              brand: { create: { companyName: name } },
             }),
             ...(role === "AGENCY" && {
-              agency: { create: { agencyName: name } }
+              agency: { create: { agencyName: name } },
             }),
             ...(role === "FREELANCER" && {
-              freelancer: { create: { title: "Yeni Freelancer" } }
+              freelancer: { create: { title: "Yeni Freelancer" } },
             }),
-          }
-        }
-      }
+          },
+        },
+      },
     });
 
     // AuditLog kaydı
@@ -57,8 +57,8 @@ export async function registerUser(input: RegisterInput) {
         action: "USER_REGISTERED",
         entityType: "User",
         entityId: user.id,
-        details: JSON.stringify({ role, email })
-      }
+        details: JSON.stringify({ role, email }),
+      },
     });
 
     return { success: true };

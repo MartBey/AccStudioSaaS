@@ -1,13 +1,14 @@
 "use server";
 
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+
+import { auth } from "@/auth";
 
 export async function applyToJob(jobId: string, coverLetter: string) {
   try {
     const session = await auth();
-    
+
     if (!session?.user?.id) {
       throw new Error("Oturum bulunamadı. Lütfen giriş yapın.");
     }
@@ -18,10 +19,10 @@ export async function applyToJob(jobId: string, coverLetter: string) {
       include: {
         profile: {
           include: {
-            freelancer: true
-          }
-        }
-      }
+            freelancer: true,
+          },
+        },
+      },
     });
 
     const freelancerId = userWithProfile?.profile?.freelancer?.id;
@@ -34,8 +35,8 @@ export async function applyToJob(jobId: string, coverLetter: string) {
     const existingProposal = await prisma.proposal.findFirst({
       where: {
         jobListingId: jobId,
-        freelancerId: freelancerId
-      }
+        freelancerId: freelancerId,
+      },
     });
 
     if (existingProposal) {
@@ -49,8 +50,8 @@ export async function applyToJob(jobId: string, coverLetter: string) {
         freelancerId: freelancerId,
         coverLetter: coverLetter,
         amount: 0,
-        status: "PENDING"
-      }
+        status: "PENDING",
+      },
     });
 
     // AuditLog kaydı at
@@ -60,13 +61,12 @@ export async function applyToJob(jobId: string, coverLetter: string) {
         action: "CREATE_PROPOSAL",
         entityType: "JobListing",
         entityId: jobId,
-        details: JSON.stringify({ message: "Freelancer ilana başvurdu" })
-      }
+        details: JSON.stringify({ message: "Freelancer ilana başvurdu" }),
+      },
     });
 
     revalidatePath("/freelancer/ilanlar");
     return { success: true };
-
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error("applyToJob_error:", error.message);

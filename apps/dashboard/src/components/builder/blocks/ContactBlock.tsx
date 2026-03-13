@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import { useNode } from "@craftjs/core";
+import React from "react";
 
 export interface ContactBlockProps {
   title?: string;
@@ -22,11 +22,15 @@ export const ContactBlock = ({
   textColor = "#0f172a",
   accentColor = "#3b82f6",
 }: ContactBlockProps) => {
-  const { connectors: { connect, drag } } = useNode();
+  const {
+    connectors: { connect, drag },
+  } = useNode();
 
   return (
     <div
-      ref={(ref) => { if (ref) connect(drag(ref)); }}
+      ref={(ref) => {
+        if (ref) connect(drag(ref));
+      }}
       style={{ width: "100%" }}
     >
       <section
@@ -51,7 +55,9 @@ export const ContactBlock = ({
           {/* Heading */}
           <div style={{ textAlign: "center" }}>
             <h2 style={{ fontSize: "32px", fontWeight: "bold", margin: "0 0 8px 0" }}>{title}</h2>
-            <p style={{ fontSize: "16px", color: "#64748b", maxWidth: "500px", margin: "0 auto" }}>{subtitle}</p>
+            <p style={{ fontSize: "16px", color: "#64748b", maxWidth: "500px", margin: "0 auto" }}>
+              {subtitle}
+            </p>
           </div>
 
           <div
@@ -139,13 +145,31 @@ export const ContactBlock = ({
               }}
             >
               <div>
-                <p style={{ fontSize: "13px", fontWeight: "600", margin: "0 0 4px 0", textTransform: "uppercase", letterSpacing: "0.05em", color: "#64748b" }}>
+                <p
+                  style={{
+                    fontSize: "13px",
+                    fontWeight: "600",
+                    margin: "0 0 4px 0",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    color: "#64748b",
+                  }}
+                >
                   Email
                 </p>
                 <p style={{ fontSize: "15px", margin: 0 }}>{email}</p>
               </div>
               <div>
-                <p style={{ fontSize: "13px", fontWeight: "600", margin: "0 0 4px 0", textTransform: "uppercase", letterSpacing: "0.05em", color: "#64748b" }}>
+                <p
+                  style={{
+                    fontSize: "13px",
+                    fontWeight: "600",
+                    margin: "0 0 4px 0",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    color: "#64748b",
+                  }}
+                >
                   Phone
                 </p>
                 <p style={{ fontSize: "15px", margin: 0 }}>{phone}</p>
@@ -159,7 +183,15 @@ export const ContactBlock = ({
 };
 
 const ContactSettings = () => {
-  const { actions: { setProp }, title, subtitle, email, phone, backgroundColor, accentColor } = useNode((node) => ({
+  const {
+    actions: { setProp },
+    title,
+    subtitle,
+    email,
+    phone,
+    backgroundColor,
+    accentColor,
+  } = useNode((node) => ({
     title: node.data.props.title,
     subtitle: node.data.props.subtitle,
     email: node.data.props.email,
@@ -169,14 +201,14 @@ const ContactSettings = () => {
   }));
 
   return (
-    <div className="flex flex-col gap-4 p-4 border rounded-md bg-card text-card-foreground">
-      <h3 className="font-semibold text-sm">Contact Settings</h3>
+    <div className="flex flex-col gap-4 rounded-md border bg-card p-4 text-card-foreground">
+      <h3 className="text-sm font-semibold">Contact Settings</h3>
 
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Title</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={title}
           onChange={(e) => setProp((props: ContactBlockProps) => (props.title = e.target.value))}
         />
@@ -185,7 +217,7 @@ const ContactSettings = () => {
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Subtitle</label>
         <textarea
-          className="p-2 border rounded-md text-sm bg-background resize-none"
+          className="resize-none rounded-md border bg-background p-2 text-sm"
           rows={2}
           value={subtitle}
           onChange={(e) => setProp((props: ContactBlockProps) => (props.subtitle = e.target.value))}
@@ -196,7 +228,7 @@ const ContactSettings = () => {
         <label className="text-xs font-medium">Email</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={email}
           onChange={(e) => setProp((props: ContactBlockProps) => (props.email = e.target.value))}
         />
@@ -206,7 +238,7 @@ const ContactSettings = () => {
         <label className="text-xs font-medium">Phone</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={phone}
           onChange={(e) => setProp((props: ContactBlockProps) => (props.phone = e.target.value))}
         />
@@ -214,12 +246,14 @@ const ContactSettings = () => {
 
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Background Color</label>
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           <input
             type="color"
             value={backgroundColor}
-            onChange={(e) => setProp((props: ContactBlockProps) => (props.backgroundColor = e.target.value))}
-            className="w-8 h-8 rounded border"
+            onChange={(e) =>
+              setProp((props: ContactBlockProps) => (props.backgroundColor = e.target.value))
+            }
+            className="h-8 w-8 rounded border"
           />
           <span className="text-xs">{backgroundColor}</span>
         </div>
@@ -227,12 +261,14 @@ const ContactSettings = () => {
 
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Accent Color (Button)</label>
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           <input
             type="color"
             value={accentColor}
-            onChange={(e) => setProp((props: ContactBlockProps) => (props.accentColor = e.target.value))}
-            className="w-8 h-8 rounded border"
+            onChange={(e) =>
+              setProp((props: ContactBlockProps) => (props.accentColor = e.target.value))
+            }
+            className="h-8 w-8 rounded border"
           />
           <span className="text-xs">{accentColor}</span>
         </div>
@@ -244,7 +280,8 @@ const ContactSettings = () => {
 ContactBlock.craft = {
   defaultProps: {
     title: "Get In Touch",
-    subtitle: "We'd love to hear from you. Send us a message and we'll get back to you as soon as possible.",
+    subtitle:
+      "We'd love to hear from you. Send us a message and we'll get back to you as soon as possible.",
     email: "hello@example.com",
     phone: "+90 555 123 45 67",
     backgroundColor: "#f8fafc",

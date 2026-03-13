@@ -1,15 +1,22 @@
 "use client";
 
-import { useTransition } from "react";
-import { 
-  Card, CardContent,
-  Badge, toast,
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "ui";
-import { Users, Briefcase, UserCheck, ArrowLeft } from "lucide-react";
+import { ArrowLeft, Briefcase, UserCheck, Users } from "lucide-react";
 import Link from "next/link";
-import { assignTaskToEmployee } from "@/app/_actions/delivery-actions";
 import { useRouter } from "next/navigation";
+import { useTransition } from "react";
+import {
+  Badge,
+  Card,
+  CardContent,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  toast,
+} from "ui";
+
+import { assignTaskToEmployee } from "@/app/_actions/delivery-actions";
 
 interface TaskItem {
   id: string;
@@ -38,7 +45,11 @@ const statusMap: Record<string, { label: string; color: string }> = {
   DONE: { label: "Tamamlandı", color: "bg-emerald-100 text-emerald-700" },
 };
 
-export default function GorevAtamaClient({ projectTitle, tasks, employees }: GorevAtamaClientProps) {
+export default function GorevAtamaClient({
+  projectTitle,
+  tasks,
+  employees,
+}: GorevAtamaClientProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -53,27 +64,30 @@ export default function GorevAtamaClient({ projectTitle, tasks, employees }: Gor
   };
 
   return (
-    <div className="flex flex-col gap-6 max-w-4xl">
-      <Link href="/ajans/musteriler" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground w-fit">
+    <div className="flex max-w-4xl flex-col gap-6">
+      <Link
+        href="/ajans/musteriler"
+        className="flex w-fit items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
+      >
         <ArrowLeft className="h-4 w-4" /> Projelere Dön
       </Link>
 
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Görev Ataması</h1>
-        <p className="text-muted-foreground mt-1">{projectTitle} — Çalışanlarınıza görev atayın</p>
+        <p className="mt-1 text-muted-foreground">{projectTitle} — Çalışanlarınıza görev atayın</p>
       </div>
 
       {tasks.length === 0 ? (
         <Card className="border-dashed">
-          <CardContent className="text-center py-16 text-muted-foreground">
-            <Briefcase className="h-10 w-10 mx-auto mb-3 opacity-50" />
+          <CardContent className="py-16 text-center text-muted-foreground">
+            <Briefcase className="mx-auto mb-3 h-10 w-10 opacity-50" />
             <p>Bu projede henüz görev yok.</p>
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-3">
           {tasks.map((task) => (
-            <Card key={task.id} className="hover:shadow-md transition-shadow">
+            <Card key={task.id} className="transition-shadow hover:shadow-md">
               <CardContent className="py-4">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex-1">
@@ -84,17 +98,19 @@ export default function GorevAtamaClient({ projectTitle, tasks, employees }: Gor
                       </Badge>
                     </div>
                     {task.freelancerName && (
-                      <p className="text-xs text-muted-foreground mt-1">Freelancer: {task.freelancerName}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        Freelancer: {task.freelancerName}
+                      </p>
                     )}
                     {task.assignedEmployeeName && (
-                      <p className="text-xs text-emerald-600 mt-1 flex items-center gap-1">
+                      <p className="mt-1 flex items-center gap-1 text-xs text-emerald-600">
                         <UserCheck className="h-3 w-3" /> Atanmış: {task.assignedEmployeeName}
                       </p>
                     )}
                   </div>
 
-                  <div className="flex-shrink-0 w-48">
-                    <Select 
+                  <div className="w-48 flex-shrink-0">
+                    <Select
                       onValueChange={(val) => handleAssign(task.id, val)}
                       disabled={isPending}
                       defaultValue={undefined}

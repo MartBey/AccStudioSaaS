@@ -1,9 +1,25 @@
 "use client";
 
-import { useState } from "react";
-import { Button, Input, Label, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "ui";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "ui";
+
 import { registerUser } from "./_actions/register-action";
 
 export default function RegisterPage() {
@@ -44,17 +60,15 @@ export default function RegisterPage() {
   };
 
   return (
-    <Card className="border-none shadow-none bg-transparent">
+    <Card className="border-none bg-transparent shadow-none">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl tracking-tight">Yeni Hesap Oluşturun</CardTitle>
-        <CardDescription>
-          Platformumuza katılmak için hesap bilgilerinizi girin.
-        </CardDescription>
+        <CardDescription>Platformumuza katılmak için hesap bilgilerinizi girin.</CardDescription>
       </CardHeader>
       <form onSubmit={onSubmit}>
         <CardContent className="space-y-4">
           {error && (
-            <div className="p-3 text-sm font-medium text-destructive bg-destructive/10 rounded-md">
+            <div className="rounded-md bg-destructive/10 p-3 text-sm font-medium text-destructive">
               {error}
             </div>
           )}
@@ -88,7 +102,7 @@ export default function RegisterPage() {
           <Button className="w-full" type="submit" disabled={loading}>
             {loading ? "Hesap Oluşturuluyor..." : "Kayıt Ol"}
           </Button>
-          <div className="text-sm text-center text-muted-foreground">
+          <div className="text-center text-sm text-muted-foreground">
             {"Zaten hesabınız var mı? "}
             <Link href="/login" className="font-semibold text-primary hover:underline">
               Giriş Yapın

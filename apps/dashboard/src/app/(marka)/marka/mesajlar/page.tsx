@@ -1,7 +1,8 @@
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
 import { getMessageThreads } from "@/app/_actions/message-actions";
 import MesajlarClient from "@/app/_components/mesajlar-client";
+import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
 

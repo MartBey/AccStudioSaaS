@@ -1,11 +1,31 @@
 "use client";
 
-import { useState } from "react";
-import { Button, Input, Card, CardHeader, CardTitle, CardContent, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "ui";
-import { Palette, CheckCircle2, MonitorSmartphone, LayoutTemplate, Rocket, Building2, Paintbrush } from "lucide-react";
-import { buildSiteAction } from "web-builder";
-import { WebBuilderResponse } from "types";
+import {
+  Building2,
+  CheckCircle2,
+  LayoutTemplate,
+  MonitorSmartphone,
+  Paintbrush,
+  Palette,
+  Rocket,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { WebBuilderResponse } from "types";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "ui";
+import { buildSiteAction } from "web-builder";
 
 export default function WebBuilderPage() {
   const router = useRouter();
@@ -24,7 +44,7 @@ export default function WebBuilderPage() {
       const site = await buildSiteAction({
         brandDetails: brandName,
         colors: { primary: themeColor, secondary: "#ffffff" },
-        templateId: template
+        templateId: template,
       });
       setResult(site);
       setStep(4); // Result step
@@ -38,8 +58,8 @@ export default function WebBuilderPage() {
   const isStep1Valid = brandName.trim().length > 2;
 
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      <div className="text-center space-y-2 mt-6">
+    <div className="mx-auto max-w-4xl space-y-6">
+      <div className="mt-6 space-y-2 text-center">
         <h1 className="text-3xl font-bold tracking-tight">Ücretsiz Landing Page Jeneratörü</h1>
         <p className="text-muted-foreground">
           Saniyeler içinde müşterileriniz için profesyonel açılış sayfaları oluşturun.
@@ -47,38 +67,44 @@ export default function WebBuilderPage() {
       </div>
 
       {/* Stepper Header */}
-      <div className="flex items-center justify-center gap-2 mb-8">
+      <div className="mb-8 flex items-center justify-center gap-2">
         {[1, 2, 3].map((s) => (
           <div key={s} className="flex items-center">
-            <div className={`flex items-center justify-center w-10 h-10 rounded-full border-2 font-bold ${step >= s ? 'bg-primary text-primary-foreground border-primary' : 'bg-card text-muted-foreground border-muted'}`}>
+            <div
+              className={`flex h-10 w-10 items-center justify-center rounded-full border-2 font-bold ${step >= s ? "border-primary bg-primary text-primary-foreground" : "border-muted bg-card text-muted-foreground"}`}
+            >
               {s}
             </div>
-            {s < 3 && <div className={`w-16 h-1 mx-2 rounded ${step > s ? 'bg-primary' : 'bg-muted'}`} />}
+            {s < 3 && (
+              <div className={`mx-2 h-1 w-16 rounded ${step > s ? "bg-primary" : "bg-muted"}`} />
+            )}
           </div>
         ))}
       </div>
 
       <Card className="border-t-4 border-t-blue-500 shadow-md">
         {step === 1 && (
-          <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+          <div className="duration-500 animate-in fade-in slide-in-from-right-4">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl flex items-center justify-center gap-2">
+              <CardTitle className="flex items-center justify-center gap-2 text-2xl">
                 <Building2 className="text-blue-500" /> Marka Bilgileri
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6 max-w-xl mx-auto">
+            <CardContent className="mx-auto max-w-xl space-y-6">
               <div className="space-y-2">
-                <label className="text-sm font-medium">Hangi marka için sayfa oluşturuyorsunuz?</label>
-                <Input 
-                  placeholder="Örn: X Kozmetik Yaz Kampanyası" 
+                <label className="text-sm font-medium">
+                  Hangi marka için sayfa oluşturuyorsunuz?
+                </label>
+                <Input
+                  placeholder="Örn: X Kozmetik Yaz Kampanyası"
                   className="h-12"
                   value={brandName}
                   onChange={(e) => setBrandName(e.target.value)}
                   autoFocus
                 />
               </div>
-              <Button 
-                className="w-full h-12 text-md transition-transform active:scale-95" 
+              <Button
+                className="text-md h-12 w-full transition-transform active:scale-95"
                 disabled={!isStep1Valid}
                 onClick={() => setStep(2)}
               >
@@ -89,24 +115,28 @@ export default function WebBuilderPage() {
         )}
 
         {step === 2 && (
-          <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+          <div className="duration-500 animate-in fade-in slide-in-from-right-4">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl flex items-center justify-center gap-2">
+              <CardTitle className="flex items-center justify-center gap-2 text-2xl">
                 <Palette className="text-blue-500" /> Görsel Kimlik
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6 max-w-xl mx-auto">
+            <CardContent className="mx-auto max-w-xl space-y-6">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Ana Renk Kodu</label>
                   <div className="flex gap-2">
-                    <input 
-                      type="color" 
-                      value={themeColor} 
-                      onChange={(e) => setThemeColor(e.target.value)} 
-                      className="h-12 w-16 p-1 border rounded-md cursor-pointer"
+                    <input
+                      type="color"
+                      value={themeColor}
+                      onChange={(e) => setThemeColor(e.target.value)}
+                      className="h-12 w-16 cursor-pointer rounded-md border p-1"
                     />
-                    <Input className="h-12 flex-1 uppercase font-mono" value={themeColor} readOnly />
+                    <Input
+                      className="h-12 flex-1 font-mono uppercase"
+                      value={themeColor}
+                      readOnly
+                    />
                   </div>
                 </div>
                 <div className="space-y-2">
@@ -124,10 +154,10 @@ export default function WebBuilderPage() {
                 </div>
               </div>
               <div className="flex gap-4">
-                <Button variant="outline" className="w-1/3 h-12 text-md" onClick={() => setStep(1)}>
+                <Button variant="outline" className="text-md h-12 w-1/3" onClick={() => setStep(1)}>
                   Geri
                 </Button>
-                <Button className="w-2/3 h-12 text-md" onClick={() => setStep(3)}>
+                <Button className="text-md h-12 w-2/3" onClick={() => setStep(3)}>
                   İleri: Son Onay
                 </Button>
               </div>
@@ -136,33 +166,41 @@ export default function WebBuilderPage() {
         )}
 
         {step === 3 && (
-          <div className="animate-in fade-in slide-in-from-right-4 duration-500">
+          <div className="duration-500 animate-in fade-in slide-in-from-right-4">
             <CardHeader className="text-center">
-              <CardTitle className="text-2xl flex items-center justify-center gap-2">
+              <CardTitle className="flex items-center justify-center gap-2 text-2xl">
                 <Rocket className="text-blue-500" /> Hazır Mıyız?
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-6 max-w-xl mx-auto text-center">
-              <div className="p-6 bg-muted/30 rounded-lg space-y-4 border border-dashed">
-                <LayoutTemplate className="w-12 h-12 text-muted-foreground mx-auto" />
-                <p className="text-lg"><strong>{brandName}</strong> için <em>&quot;{template}&quot;</em> şablonunu ve <span style={{ color: themeColor }} className="font-bold">bu marka rengini</span> kullanarak siteyi yayına alıyoruz.</p>
+            <CardContent className="mx-auto max-w-xl space-y-6 text-center">
+              <div className="space-y-4 rounded-lg border border-dashed bg-muted/30 p-6">
+                <LayoutTemplate className="mx-auto h-12 w-12 text-muted-foreground" />
+                <p className="text-lg">
+                  <strong>{brandName}</strong> için <em>&quot;{template}&quot;</em> şablonunu ve{" "}
+                  <span style={{ color: themeColor }} className="font-bold">
+                    bu marka rengini
+                  </span>{" "}
+                  kullanarak siteyi yayına alıyoruz.
+                </p>
               </div>
-              
+
               <div className="flex gap-4">
-                <Button variant="outline" className="w-1/3 h-12 text-md" onClick={() => setStep(2)}>
+                <Button variant="outline" className="text-md h-12 w-1/3" onClick={() => setStep(2)}>
                   Düzenle
                 </Button>
-                <Button 
-                  className="w-2/3 h-12 text-lg font-bold shadow-lg" 
+                <Button
+                  className="h-12 w-2/3 text-lg font-bold shadow-lg"
                   onClick={buildSite}
                   disabled={loading}
                 >
                   {loading ? (
                     <span className="flex items-center gap-2">
-                      <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      <span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
                       İnşa Ediliyor...
                     </span>
-                  ) : "🚀 Hemen Yayına Al"}
+                  ) : (
+                    "🚀 Hemen Yayına Al"
+                  )}
                 </Button>
               </div>
             </CardContent>
@@ -170,39 +208,58 @@ export default function WebBuilderPage() {
         )}
 
         {step === 4 && result && (
-          <div className="animate-in fade-in zoom-in-95 duration-500">
-            <CardContent className="space-y-8 py-10 text-center max-w-2xl mx-auto">
-              <div className="flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mx-auto relative">
-                <span className="absolute inset-0 bg-green-400 animate-ping rounded-full opacity-25" />
-                <CheckCircle2 className="w-10 h-10 text-green-600" />
-              </div>
-              
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold">Harika! Siteniz Yayında.</h2>
-                <p className="text-muted-foreground text-lg">Landing page başarıyla simüle edildi ve yayımlandı.</p>
+          <div className="duration-500 animate-in fade-in zoom-in-95">
+            <CardContent className="mx-auto max-w-2xl space-y-8 py-10 text-center">
+              <div className="relative mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100">
+                <span className="absolute inset-0 animate-ping rounded-full bg-green-400 opacity-25" />
+                <CheckCircle2 className="h-10 w-10 text-green-600" />
               </div>
 
-              <div className="bg-muted p-4 rounded-xl border flex items-center justify-between">
+              <div className="space-y-2">
+                <h2 className="text-3xl font-bold">Harika! Siteniz Yayında.</h2>
+                <p className="text-lg text-muted-foreground">
+                  Landing page başarıyla simüle edildi ve yayımlandı.
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between rounded-xl border bg-muted p-4">
                 <div className="flex items-center gap-3 overflow-hidden text-left">
-                  <MonitorSmartphone className="text-blue-500 flex-shrink-0" />
+                  <MonitorSmartphone className="flex-shrink-0 text-blue-500" />
                   <div>
-                    <p className="text-xs text-muted-foreground font-semibold uppercase">Önizleme Bağlantısı</p>
-                    <a href="#" className="font-medium text-blue-600 hover:underline truncate" onClick={(e) => e.preventDefault()}>
+                    <p className="text-xs font-semibold uppercase text-muted-foreground">
+                      Önizleme Bağlantısı
+                    </p>
+                    <a
+                      href="#"
+                      className="truncate font-medium text-blue-600 hover:underline"
+                      onClick={(e) => e.preventDefault()}
+                    >
                       {result.previewUrl}
                     </a>
                   </div>
                 </div>
-                <Button variant="secondary" onClick={() => window.open(result?.previewUrl, '_blank')}>
+                <Button
+                  variant="secondary"
+                  onClick={() => window.open(result?.previewUrl, "_blank")}
+                >
                   Canlı Önizleme
                 </Button>
               </div>
 
-              <div className="flex gap-4 w-full">
-                <Button variant="outline" className="w-1/2" onClick={() => { setStep(1); setBrandName(""); setResult(null); }}>
+              <div className="flex w-full gap-4">
+                <Button
+                  variant="outline"
+                  className="w-1/2"
+                  onClick={() => {
+                    setStep(1);
+                    setBrandName("");
+                    setResult(null);
+                  }}
+                >
                   Yeni Bir Kurgu
                 </Button>
                 <Button className="w-1/2" onClick={() => router.push(`/builder/${result?.id}`)}>
-                  <Paintbrush className="w-4 h-4 mr-2" /> Gelişmiş Editörde Aç
+                  <Paintbrush className="mr-2 h-4 w-4" /> Gelişmiş Editörde Aç
                 </Button>
               </div>
             </CardContent>

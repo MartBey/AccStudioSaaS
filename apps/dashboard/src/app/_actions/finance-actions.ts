@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "database";
+
 import { auth } from "@/auth";
 
 // ── Finance Overview ──
@@ -27,7 +28,9 @@ export async function getFinanceOverview() {
   const totalPaid = paidPayments.reduce((s, p) => s + p.amount, 0);
   const pendingPayments = payments.filter((p) => p.status === "PENDING");
   const totalPending = pendingPayments.reduce((s, p) => s + p.amount, 0);
-  const cancelledPayments = payments.filter((p) => p.status === "CANCELLED" || p.status === "REFUNDED");
+  const cancelledPayments = payments.filter(
+    (p) => p.status === "CANCELLED" || p.status === "REFUNDED"
+  );
   const totalCancelled = cancelledPayments.reduce((s, p) => s + p.amount, 0);
 
   // Aylık bazda gelir (son 12 ay)

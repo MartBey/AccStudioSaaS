@@ -1,12 +1,24 @@
 "use client";
 
+import { Mail, MoreHorizontal, Search, UserPlus } from "lucide-react";
 import { useState } from "react";
-import { 
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
-  Badge, Button, Input, Avatar, AvatarFallback,
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+import {
+  Avatar,
+  AvatarFallback,
+  Badge,
+  Button,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  Input,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "ui";
-import { Search, MoreHorizontal, UserPlus, Mail } from "lucide-react";
 
 interface TeamMember {
   id: string;
@@ -24,30 +36,31 @@ interface EkipClientProps {
 export default function EkipClient({ members }: EkipClientProps) {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredTeam = members.filter(t => 
-    t.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    t.role.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredTeam = members.filter(
+    (t) =>
+      t.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      t.role.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Ekip Yönetimi</h1>
           <p className="text-muted-foreground">
             Ajans ekibinizdeki üyeleri, rollerini ve kapasitelerini yönetin.
           </p>
         </div>
-        <Badge variant="outline" className="text-sm px-3 py-1.5">
+        <Badge variant="outline" className="px-3 py-1.5 text-sm">
           {members.length} üye
         </Badge>
       </div>
 
-      <div className="flex justify-between items-center gap-4 bg-card p-4 rounded-xl border shadow-sm">
+      <div className="flex items-center justify-between gap-4 rounded-xl border bg-card p-4 shadow-sm">
         <div className="relative w-full max-w-sm">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input 
-            placeholder="İsim veya rol ara..." 
+          <Input
+            placeholder="İsim veya rol ara..."
             className="pl-9"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -55,7 +68,7 @@ export default function EkipClient({ members }: EkipClientProps) {
         </div>
       </div>
 
-      <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
+      <div className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/50">
@@ -69,7 +82,7 @@ export default function EkipClient({ members }: EkipClientProps) {
           <TableBody>
             {filteredTeam.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
+                <TableCell colSpan={5} className="py-10 text-center text-muted-foreground">
                   {members.length === 0
                     ? "Henüz ekip üyeniz yok."
                     : "Arama kriterlerine uygun ekip üyesi bulunamadı."}
@@ -81,13 +94,16 @@ export default function EkipClient({ members }: EkipClientProps) {
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10 border border-primary/20">
-                        <AvatarFallback className="text-sm bg-primary/10 text-primary">
-                          {member.name.split(' ').map(n => n[0]).join('')}
+                        <AvatarFallback className="bg-primary/10 text-sm text-primary">
+                          {member.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
                         </AvatarFallback>
                       </Avatar>
                       <div className="flex flex-col">
                         <span className="font-medium">{member.name}</span>
-                        <span className="text-xs text-muted-foreground flex items-center gap-1">
+                        <span className="flex items-center gap-1 text-xs text-muted-foreground">
                           <Mail className="h-3 w-3" />
                           {member.email}
                         </span>
@@ -97,9 +113,9 @@ export default function EkipClient({ members }: EkipClientProps) {
                   <TableCell className="font-medium">{member.role}</TableCell>
                   <TableCell>
                     <span className="font-semibold">{member.projectCount}</span>
-                    <span className="text-xs text-muted-foreground ml-1">Proje</span>
+                    <span className="ml-1 text-xs text-muted-foreground">Proje</span>
                   </TableCell>
-                  <TableCell className="text-muted-foreground text-sm">{member.joinedAt}</TableCell>
+                  <TableCell className="text-sm text-muted-foreground">{member.joinedAt}</TableCell>
                   <TableCell className="text-right">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -110,7 +126,9 @@ export default function EkipClient({ members }: EkipClientProps) {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>Profili İncele</DropdownMenuItem>
                         <DropdownMenuItem>Rolü Değiştir</DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">Ekipten Çıkar</DropdownMenuItem>
+                        <DropdownMenuItem className="text-destructive">
+                          Ekipten Çıkar
+                        </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>

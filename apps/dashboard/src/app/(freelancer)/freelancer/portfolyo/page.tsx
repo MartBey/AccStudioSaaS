@@ -1,6 +1,8 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
 import PortfoyClient from "./_components/portfolyo-client";
 
 export const dynamic = "force-dynamic";
@@ -28,38 +30,41 @@ export default async function FreelancerPortfoyPage() {
               portfolioItems: {
                 orderBy: { date: "desc" },
               },
-            }
-          }
-        }
-      }
-    }
+            },
+          },
+        },
+      },
+    },
   });
 
   const freelancer = user?.profile?.freelancer;
   const profile = user?.profile;
 
-  const completedProjects = freelancer?.tasks.map((t: any) => ({
-    title: t.title,
-    projectName: t.project?.name || "",
-    earning: t.earning || 0,
-    completedAt: t.updatedAt.toISOString(),
-    deliveryUrl: t.deliveryUrl || null,
-  })) || [];
+  const completedProjects =
+    freelancer?.tasks.map((t: any) => ({
+      title: t.title,
+      projectName: t.project?.name || "",
+      earning: t.earning || 0,
+      completedAt: t.updatedAt.toISOString(),
+      deliveryUrl: t.deliveryUrl || null,
+    })) || [];
 
   const totalEarnings = completedProjects.reduce((s: number, p: any) => s + p.earning, 0);
-  const sampleWorks = freelancer?.proposals
-    .filter((p: any) => p.sampleUrl)
-    .map((p: any) => ({ url: p.sampleUrl!, title: p.jobListing.title })) || [];
+  const sampleWorks =
+    freelancer?.proposals
+      .filter((p: any) => p.sampleUrl)
+      .map((p: any) => ({ url: p.sampleUrl!, title: p.jobListing.title })) || [];
 
-  const portfolioItems = freelancer?.portfolioItems?.map((p: any) => ({
-    id: p.id,
-    title: p.title || "İsimsiz Proje",
-    description: p.description,
-    projectUrl: p.projectUrl,
-    imageUrl: p.imageUrl,
-    date: p.date ? new Date(p.date) : null,
-    category: p.category,
-  })) || [];
+  const portfolioItems =
+    freelancer?.portfolioItems?.map((p: any) => ({
+      id: p.id,
+      title: p.title || "İsimsiz Proje",
+      description: p.description,
+      projectUrl: p.projectUrl,
+      imageUrl: p.imageUrl,
+      date: p.date ? new Date(p.date) : null,
+      category: p.category,
+    })) || [];
 
   return (
     <PortfoyClient
@@ -78,7 +83,9 @@ export default async function FreelancerPortfoyPage() {
       stats={{
         totalEarnings,
         completedCount: completedProjects.length,
-        successRate: freelancer?.tasks.length ? Math.round((completedProjects.length / freelancer.tasks.length) * 100) : 0,
+        successRate: freelancer?.tasks.length
+          ? Math.round((completedProjects.length / freelancer.tasks.length) * 100)
+          : 0,
       }}
     />
   );

@@ -1,6 +1,8 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
 import TeslimClient from "./_components/teslim-client";
 
 export const dynamic = "force-dynamic";
@@ -13,19 +15,19 @@ export default async function GorevTeslimPage({ params }: { params: { id: string
     where: { id: params.id },
     include: {
       project: { select: { name: true } },
-    }
+    },
   });
 
   if (!task) {
     return (
-      <div className="text-center py-20">
+      <div className="py-20 text-center">
         <h2 className="text-xl font-bold text-muted-foreground">Görev bulunamadı</h2>
       </div>
     );
   }
 
   return (
-    <TeslimClient 
+    <TeslimClient
       task={{
         id: task.id,
         title: task.title,

@@ -9,8 +9,12 @@ export interface SeoAnalysisRequest {
 const SeoAnalysisResultSchema = z.object({
   score: z.number().describe("1 ile 100 arasında genel SEO skoru"),
   strengths: z.array(z.string()).describe("Sitenin SEO açısından güçlü yönleri"),
-  weaknesses: z.array(z.string()).describe("Sitenin SEO açısından zayıf ve düzeltilmesi gereken yönleri"),
-  recommendations: z.array(z.string()).describe("Hız puanını 95+ yapmak ve SEO'yu iyileştirmek için HTML/yapısal öneriler")
+  weaknesses: z
+    .array(z.string())
+    .describe("Sitenin SEO açısından zayıf ve düzeltilmesi gereken yönleri"),
+  recommendations: z
+    .array(z.string())
+    .describe("Hız puanını 95+ yapmak ve SEO'yu iyileştirmek için HTML/yapısal öneriler"),
 });
 
 export type SeoAnalysisResult = z.infer<typeof SeoAnalysisResultSchema>;

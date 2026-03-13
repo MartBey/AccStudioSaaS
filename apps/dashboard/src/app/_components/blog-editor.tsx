@@ -1,13 +1,11 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { 
-  Card, CardContent, CardHeader, CardTitle,
-  Button, Input, toast, Label,
-} from "ui";
 import { PenLine, Save } from "lucide-react";
-import { createBlogPost } from "@/app/_actions/blog-actions";
 import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
+import { Button, Card, CardContent, CardHeader, CardTitle, Input, Label, toast } from "ui";
+
+import { createBlogPost } from "@/app/_actions/blog-actions";
 
 const categories = [
   { value: "GENEL", label: "Genel" },
@@ -38,7 +36,13 @@ export default function BlogEditor() {
 
     startTransition(async () => {
       const res = await createBlogPost({
-        title, content, excerpt, category, tags, coverImage, published,
+        title,
+        content,
+        excerpt,
+        category,
+        tags,
+        coverImage,
+        published,
       });
       if (res.success) {
         toast.success(published ? "Makale yayınlandı! 🎉" : "Taslak kaydedildi ✅");
@@ -50,32 +54,42 @@ export default function BlogEditor() {
   };
 
   return (
-    <div className="flex flex-col gap-6 max-w-4xl">
+    <div className="flex max-w-4xl flex-col gap-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
+        <h1 className="flex items-center gap-2 text-3xl font-bold tracking-tight">
           <PenLine className="h-7 w-7" /> Makale Yaz
         </h1>
-        <p className="text-muted-foreground mt-1">
+        <p className="mt-1 text-muted-foreground">
           Deneyimlerinizi paylaşın, topluluğa katkıda bulunun
         </p>
       </div>
 
       <div className="grid gap-5 md:grid-cols-3">
-        <div className="md:col-span-2 space-y-4">
+        <div className="space-y-4 md:col-span-2">
           <Card>
-            <CardContent className="py-5 space-y-4">
+            <CardContent className="space-y-4 py-5">
               <div>
                 <Label>Başlık *</Label>
-                <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Dikkat çekici bir başlık..." className="text-lg font-medium" />
+                <Input
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  placeholder="Dikkat çekici bir başlık..."
+                  className="text-lg font-medium"
+                />
               </div>
               <div>
-                <Label>İçerik * <span className="text-muted-foreground text-xs ml-1">({readingTime} dk okuma)</span></Label>
+                <Label>
+                  İçerik *{" "}
+                  <span className="ml-1 text-xs text-muted-foreground">
+                    ({readingTime} dk okuma)
+                  </span>
+                </Label>
                 <textarea
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   placeholder="Makalenizi buraya yazın... HTML desteklenir."
                   rows={15}
-                  className="w-full rounded-md border px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/20 leading-relaxed"
+                  className="w-full resize-none rounded-md border px-3 py-2 text-sm leading-relaxed focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
               <div>
@@ -85,7 +99,7 @@ export default function BlogEditor() {
                   onChange={(e) => setExcerpt(e.target.value)}
                   placeholder="Makalenin listede görünecek kısa tanıtımı..."
                   rows={2}
-                  className="w-full rounded-md border px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-primary/20"
+                  className="w-full resize-none rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                 />
               </div>
             </CardContent>
@@ -94,7 +108,9 @@ export default function BlogEditor() {
 
         <div className="space-y-4">
           <Card>
-            <CardHeader><CardTitle className="text-sm">Ayarlar</CardTitle></CardHeader>
+            <CardHeader>
+              <CardTitle className="text-sm">Ayarlar</CardTitle>
+            </CardHeader>
             <CardContent className="space-y-4">
               <div>
                 <Label>Kategori</Label>
@@ -103,35 +119,51 @@ export default function BlogEditor() {
                   onChange={(e) => setCategory(e.target.value)}
                   className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
                 >
-                  {categories.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+                  {categories.map((c) => (
+                    <option key={c.value} value={c.value}>
+                      {c.label}
+                    </option>
+                  ))}
                 </select>
               </div>
               <div>
                 <Label>Etiketler</Label>
-                <Input value={tags} onChange={(e) => setTags(e.target.value)} placeholder="react, nextjs, freelancer" />
-                <p className="text-[10px] text-muted-foreground mt-1">Virgülle ayırın</p>
+                <Input
+                  value={tags}
+                  onChange={(e) => setTags(e.target.value)}
+                  placeholder="react, nextjs, freelancer"
+                />
+                <p className="mt-1 text-[10px] text-muted-foreground">Virgülle ayırın</p>
               </div>
               <div>
                 <Label>Kapak Görseli (URL)</Label>
-                <Input value={coverImage} onChange={(e) => setCoverImage(e.target.value)} placeholder="https://..." />
+                <Input
+                  value={coverImage}
+                  onChange={(e) => setCoverImage(e.target.value)}
+                  placeholder="https://..."
+                />
               </div>
               <div className="flex items-center justify-between pt-2">
                 <div>
                   <p className="text-sm font-medium">Hemen Yayınla</p>
-                  <p className="text-[10px] text-muted-foreground">Kapalıysa taslak olarak kaydedilir</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    Kapalıysa taslak olarak kaydedilir
+                  </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setPublished(!published)}
-                  className={`w-11 h-6 rounded-full transition-colors ${published ? "bg-primary" : "bg-gray-300"} relative`}
+                  className={`h-6 w-11 rounded-full transition-colors ${published ? "bg-primary" : "bg-gray-300"} relative`}
                 >
-                  <span className={`block w-4 h-4 rounded-full bg-white absolute top-1 transition-all ${published ? "left-6" : "left-1"}`} />
+                  <span
+                    className={`absolute top-1 block h-4 w-4 rounded-full bg-white transition-all ${published ? "left-6" : "left-1"}`}
+                  />
                 </button>
               </div>
             </CardContent>
           </Card>
 
-          <Button onClick={handleSubmit} disabled={isPending} className="w-full gap-2 h-11">
+          <Button onClick={handleSubmit} disabled={isPending} className="h-11 w-full gap-2">
             <Save className="h-4 w-4" /> {published ? "Yayınla" : "Taslak Kaydet"}
           </Button>
         </div>

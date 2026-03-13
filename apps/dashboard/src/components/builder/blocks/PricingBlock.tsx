@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import { useNode } from "@craftjs/core";
+import React from "react";
 
 export interface PricingPlan {
   name: string;
@@ -50,11 +50,15 @@ export const PricingBlock = ({
   backgroundColor = "#ffffff",
   accentColor = "#3b82f6",
 }: PricingBlockProps) => {
-  const { connectors: { connect, drag } } = useNode();
+  const {
+    connectors: { connect, drag },
+  } = useNode();
 
   return (
     <div
-      ref={(ref) => { if (ref) connect(drag(ref)); }}
+      ref={(ref) => {
+        if (ref) connect(drag(ref));
+      }}
       style={{ width: "100%" }}
     >
       <section
@@ -77,7 +81,16 @@ export const PricingBlock = ({
         >
           {/* Heading */}
           <div style={{ textAlign: "center" }}>
-            <h2 style={{ fontSize: "32px", fontWeight: "bold", margin: "0 0 8px 0", color: "#0f172a" }}>{title}</h2>
+            <h2
+              style={{
+                fontSize: "32px",
+                fontWeight: "bold",
+                margin: "0 0 8px 0",
+                color: "#0f172a",
+              }}
+            >
+              {title}
+            </h2>
             <p style={{ fontSize: "16px", color: "#64748b", margin: 0 }}>{subtitle}</p>
           </div>
 
@@ -128,10 +141,24 @@ export const PricingBlock = ({
                   </span>
                 )}
 
-                <h3 style={{ fontSize: "18px", fontWeight: "600", margin: 0, color: "#0f172a" }}>{plan.name}</h3>
-                <p style={{ fontSize: "36px", fontWeight: "bold", margin: 0, color: "#0f172a" }}>{plan.price}</p>
+                <h3 style={{ fontSize: "18px", fontWeight: "600", margin: 0, color: "#0f172a" }}>
+                  {plan.name}
+                </h3>
+                <p style={{ fontSize: "36px", fontWeight: "bold", margin: 0, color: "#0f172a" }}>
+                  {plan.price}
+                </p>
 
-                <ul style={{ listStyle: "none", padding: 0, margin: 0, width: "100%", display: "flex", flexDirection: "column", gap: "10px" }}>
+                <ul
+                  style={{
+                    listStyle: "none",
+                    padding: 0,
+                    margin: 0,
+                    width: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
                   {plan.features.map((feature, j) => (
                     <li
                       key={j}
@@ -176,7 +203,14 @@ export const PricingBlock = ({
 };
 
 const PricingSettings = () => {
-  const { actions: { setProp }, title, subtitle, backgroundColor, accentColor, plans } = useNode((node) => ({
+  const {
+    actions: { setProp },
+    title,
+    subtitle,
+    backgroundColor,
+    accentColor,
+    plans,
+  } = useNode((node) => ({
     title: node.data.props.title,
     subtitle: node.data.props.subtitle,
     backgroundColor: node.data.props.backgroundColor,
@@ -184,7 +218,11 @@ const PricingSettings = () => {
     plans: node.data.props.plans,
   }));
 
-  const updatePlan = (index: number, field: keyof PricingPlan, value: string | boolean | string[]) => {
+  const updatePlan = (
+    index: number,
+    field: keyof PricingPlan,
+    value: string | boolean | string[]
+  ) => {
     setProp((props: PricingBlockProps) => {
       if (props.plans) {
         const updated = [...props.plans];
@@ -195,14 +233,14 @@ const PricingSettings = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4 p-4 border rounded-md bg-card text-card-foreground">
-      <h3 className="font-semibold text-sm">Pricing Settings</h3>
+    <div className="flex flex-col gap-4 rounded-md border bg-card p-4 text-card-foreground">
+      <h3 className="text-sm font-semibold">Pricing Settings</h3>
 
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Title</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={title}
           onChange={(e) => setProp((props: PricingBlockProps) => (props.title = e.target.value))}
         />
@@ -212,7 +250,7 @@ const PricingSettings = () => {
         <label className="text-xs font-medium">Subtitle</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={subtitle}
           onChange={(e) => setProp((props: PricingBlockProps) => (props.subtitle = e.target.value))}
         />
@@ -220,12 +258,14 @@ const PricingSettings = () => {
 
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Accent Color</label>
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           <input
             type="color"
             value={accentColor}
-            onChange={(e) => setProp((props: PricingBlockProps) => (props.accentColor = e.target.value))}
-            className="w-8 h-8 rounded border"
+            onChange={(e) =>
+              setProp((props: PricingBlockProps) => (props.accentColor = e.target.value))
+            }
+            className="h-8 w-8 rounded border"
           />
           <span className="text-xs">{accentColor}</span>
         </div>
@@ -233,60 +273,65 @@ const PricingSettings = () => {
 
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Background Color</label>
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           <input
             type="color"
             value={backgroundColor}
-            onChange={(e) => setProp((props: PricingBlockProps) => (props.backgroundColor = e.target.value))}
-            className="w-8 h-8 rounded border"
+            onChange={(e) =>
+              setProp((props: PricingBlockProps) => (props.backgroundColor = e.target.value))
+            }
+            className="h-8 w-8 rounded border"
           />
           <span className="text-xs">{backgroundColor}</span>
         </div>
       </div>
 
       {/* Plan editors */}
-      {plans && plans.map((plan: PricingPlan, i: number) => (
-        <div key={i} className="border rounded-md p-3 flex flex-col gap-2 bg-muted/50">
-          <span className="text-xs font-semibold text-muted-foreground uppercase">Plan {i + 1}</span>
-          <input
-            type="text"
-            className="p-1.5 border rounded text-xs bg-background"
-            value={plan.name}
-            onChange={(e) => updatePlan(i, "name", e.target.value)}
-            placeholder="Plan name"
-          />
-          <input
-            type="text"
-            className="p-1.5 border rounded text-xs bg-background"
-            value={plan.price}
-            onChange={(e) => updatePlan(i, "price", e.target.value)}
-            placeholder="Price"
-          />
-          <input
-            type="text"
-            className="p-1.5 border rounded text-xs bg-background"
-            value={plan.ctaText || ""}
-            onChange={(e) => updatePlan(i, "ctaText", e.target.value)}
-            placeholder="CTA Button text"
-          />
-          <textarea
-            className="p-1.5 border rounded text-xs bg-background resize-none"
-            rows={2}
-            value={plan.features.join("\n")}
-            onChange={(e) => updatePlan(i, "features", e.target.value.split("\n"))}
-            placeholder="One feature per line"
-          />
-          <label className="flex items-center gap-2 text-xs">
+      {plans &&
+        plans.map((plan: PricingPlan, i: number) => (
+          <div key={i} className="flex flex-col gap-2 rounded-md border bg-muted/50 p-3">
+            <span className="text-xs font-semibold uppercase text-muted-foreground">
+              Plan {i + 1}
+            </span>
             <input
-              type="checkbox"
-              checked={plan.highlighted || false}
-              onChange={(e) => updatePlan(i, "highlighted", e.target.checked)}
-              className="rounded"
+              type="text"
+              className="rounded border bg-background p-1.5 text-xs"
+              value={plan.name}
+              onChange={(e) => updatePlan(i, "name", e.target.value)}
+              placeholder="Plan name"
             />
-            Highlighted (Popular)
-          </label>
-        </div>
-      ))}
+            <input
+              type="text"
+              className="rounded border bg-background p-1.5 text-xs"
+              value={plan.price}
+              onChange={(e) => updatePlan(i, "price", e.target.value)}
+              placeholder="Price"
+            />
+            <input
+              type="text"
+              className="rounded border bg-background p-1.5 text-xs"
+              value={plan.ctaText || ""}
+              onChange={(e) => updatePlan(i, "ctaText", e.target.value)}
+              placeholder="CTA Button text"
+            />
+            <textarea
+              className="resize-none rounded border bg-background p-1.5 text-xs"
+              rows={2}
+              value={plan.features.join("\n")}
+              onChange={(e) => updatePlan(i, "features", e.target.value.split("\n"))}
+              placeholder="One feature per line"
+            />
+            <label className="flex items-center gap-2 text-xs">
+              <input
+                type="checkbox"
+                checked={plan.highlighted || false}
+                onChange={(e) => updatePlan(i, "highlighted", e.target.checked)}
+                className="rounded"
+              />
+              Highlighted (Popular)
+            </label>
+          </div>
+        ))}
     </div>
   );
 };

@@ -6,7 +6,7 @@ let pusherInstance: PusherClient | null = null;
 
 export function getPusherClient(): PusherClient | null {
   if (typeof window === "undefined") return null;
-  
+
   if (pusherInstance) return pusherInstance;
 
   const key = process.env.NEXT_PUBLIC_PUSHER_KEY;

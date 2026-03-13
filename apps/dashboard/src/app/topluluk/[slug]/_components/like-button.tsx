@@ -1,11 +1,18 @@
 "use client";
 
+import { Heart } from "lucide-react";
 import { useState, useTransition } from "react";
 import { Button } from "ui";
-import { Heart } from "lucide-react";
+
 import { likeBlogPost } from "@/app/_actions/blog-actions";
 
-export default function LikeButton({ postId, initialCount }: { postId: string; initialCount: number }) {
+export default function LikeButton({
+  postId,
+  initialCount,
+}: {
+  postId: string;
+  initialCount: number;
+}) {
   const [count, setCount] = useState(initialCount);
   const [liked, setLiked] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -13,16 +20,16 @@ export default function LikeButton({ postId, initialCount }: { postId: string; i
   const handleLike = () => {
     if (liked) return;
     setLiked(true);
-    setCount(c => c + 1);
+    setCount((c) => c + 1);
     startTransition(async () => {
       await likeBlogPost(postId);
     });
   };
 
   return (
-    <Button 
-      variant={liked ? "default" : "outline"} 
-      onClick={handleLike} 
+    <Button
+      variant={liked ? "default" : "outline"}
+      onClick={handleLike}
       disabled={isPending || liked}
       className="gap-2"
     >

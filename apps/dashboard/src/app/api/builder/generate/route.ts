@@ -1,11 +1,15 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
-import { auth } from "@/auth";
 import { generateSiteFromPrompt } from "web-builder/src/services/ai-generator";
+import { z } from "zod";
+
+import { auth } from "@/auth";
 
 // Zod validasyon semalari
 const GenerateRequestSchema = z.object({
-  prompt: z.string().min(3, "Prompt en az 3 karakter olmali").max(2000, "Prompt en fazla 2000 karakter olabilir"),
+  prompt: z
+    .string()
+    .min(3, "Prompt en az 3 karakter olmali")
+    .max(2000, "Prompt en fazla 2000 karakter olabilir"),
   brandPersona: z.string().max(5000).optional(),
 });
 
@@ -69,9 +73,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, site: siteStructure });
   } catch (error) {
     console.error("[Builder Generate API Error]", error);
-    return NextResponse.json(
-      { error: "Failed to generate site structure." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to generate site structure." }, { status: 500 });
   }
 }

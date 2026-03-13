@@ -1,7 +1,8 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
 import ProjeDetayClient from "@/app/_components/proje-detay-client";
+import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -25,11 +26,15 @@ export default async function MarkaProjeDetayPage({ params }: { params: { id: st
   });
 
   if (!project) {
-    return <div className="text-center py-20"><h2 className="text-xl font-bold text-muted-foreground">Proje bulunamadı</h2></div>;
+    return (
+      <div className="py-20 text-center">
+        <h2 className="text-xl font-bold text-muted-foreground">Proje bulunamadı</h2>
+      </div>
+    );
   }
 
   // Tasks
-  const tasks = project.tasks.map(t => ({
+  const tasks = project.tasks.map((t) => ({
     id: t.id,
     title: t.title,
     status: t.status,
@@ -41,24 +46,32 @@ export default async function MarkaProjeDetayPage({ params }: { params: { id: st
   }));
 
   // Stats
-  const completedTasks = project.tasks.filter(t => t.status === "DONE").length;
+  const completedTasks = project.tasks.filter((t) => t.status === "DONE").length;
   const totalBudget = project.tasks.reduce((s, t) => s + (t.earning || 0), 0);
-  const paidAmount = project.payments.filter(p => p.status === "PAID").reduce((s, p) => s + p.amount, 0);
-  const pendingAmount = project.payments.filter(p => p.status === "PENDING").reduce((s, p) => s + p.amount, 0);
+  const paidAmount = project.payments
+    .filter((p) => p.status === "PAID")
+    .reduce((s, p) => s + p.amount, 0);
+  const pendingAmount = project.payments
+    .filter((p) => p.status === "PENDING")
+    .reduce((s, p) => s + p.amount, 0);
 
   // Timeline
   const timeline = [
     { date: project.createdAt.toISOString(), label: "Proje oluşturuldu", type: "info" as const },
-    ...project.tasks.filter(t => t.deliveredAt).map(t => ({
-      date: t.deliveredAt!.toISOString(),
-      label: `"${t.title}" teslim edildi`,
-      type: "warning" as const,
-    })),
-    ...project.tasks.filter(t => t.approvedAt).map(t => ({
-      date: t.approvedAt!.toISOString(),
-      label: `"${t.title}" onaylandı`,
-      type: "success" as const,
-    })),
+    ...project.tasks
+      .filter((t) => t.deliveredAt)
+      .map((t) => ({
+        date: t.deliveredAt!.toISOString(),
+        label: `"${t.title}" teslim edildi`,
+        type: "warning" as const,
+      })),
+    ...project.tasks
+      .filter((t) => t.approvedAt)
+      .map((t) => ({
+        date: t.approvedAt!.toISOString(),
+        label: `"${t.title}" onaylandı`,
+        type: "success" as const,
+      })),
   ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (

@@ -8,10 +8,10 @@ export interface CompetitorAnalysis {
 
 export async function analyzeCompetitor(url: string): Promise<CompetitorAnalysis> {
   const seoMetrics = await analyzeUrl(url);
-  
+
   return {
     competitorUrl: url,
     seoMetrics,
-    sharedKeywords: ["marketing", "b2b", "saas"]
+    sharedKeywords: ["marketing", "b2b", "saas"],
   };
 }

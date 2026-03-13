@@ -1,7 +1,7 @@
 // ── Lib Wrapper ────────────────────────────────────────────
 
-import { prisma } from "database";
 import { calculateCost } from "config";
+import { prisma } from "database";
 
 // ── Types ──────────────────────────────────────────────────
 
@@ -56,7 +56,7 @@ export async function withCostTracking<T>({
         cost,
         durationMs,
         success: true,
-        metadata: metadata ?? undefined,
+        metadata: metadata ? (metadata as any) : undefined,
       },
     });
 
@@ -79,7 +79,7 @@ export async function withCostTracking<T>({
           durationMs,
           success: false,
           errorMessage,
-          metadata: metadata ?? undefined,
+          metadata: metadata ? (metadata as any) : undefined,
         },
       });
     } catch (logError) {

@@ -1,10 +1,20 @@
 "use client";
 
-import { useState } from "react";
-import { Button, Input, Label, Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "ui";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { useState } from "react";
+import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+} from "ui";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -21,12 +31,12 @@ export default function LoginPage() {
     const password = formData.get("password") as string;
 
     try {
-      const res = await signIn("credentials", { 
-        email, 
-        password, 
-        redirect: false 
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
       });
-      
+
       if (res?.error) {
         setError("E-posta veya şifre hatalı.");
       } else {
@@ -53,17 +63,15 @@ export default function LoginPage() {
   };
 
   return (
-    <Card className="border-none shadow-none bg-transparent">
+    <Card className="border-none bg-transparent shadow-none">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl tracking-tight">Hesabınıza Giriş Yapın</CardTitle>
-        <CardDescription>
-          Projelerinizi yönetmek için e-posta ve şifrenizi girin.
-        </CardDescription>
+        <CardDescription>Projelerinizi yönetmek için e-posta ve şifrenizi girin.</CardDescription>
       </CardHeader>
       <form onSubmit={onSubmit}>
         <CardContent className="space-y-4">
           {error && (
-            <div className="p-3 text-sm font-medium text-destructive bg-destructive/10 rounded-md">
+            <div className="rounded-md bg-destructive/10 p-3 text-sm font-medium text-destructive">
               {error}
             </div>
           )}
@@ -85,7 +93,7 @@ export default function LoginPage() {
           <Button className="w-full" type="submit" disabled={loading}>
             {loading ? "Giriş yapılıyor..." : "Giriş Yap"}
           </Button>
-          <div className="text-sm text-center text-muted-foreground">
+          <div className="text-center text-sm text-muted-foreground">
             {"Hesabınız yok mu? "}
             <Link href="/register" className="font-semibold text-primary hover:underline">
               Kayıt Olun

@@ -1,6 +1,8 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { notFound } from "next/navigation";
+
+import { auth } from "@/auth";
+
 import IlanDetayClient from "./_components/ilan-detay-client";
 
 export const dynamic = "force-dynamic";
@@ -17,10 +19,10 @@ export default async function IlanDetayPage({ params }: { params: Promise<{ id: 
         include: {
           brand: { include: { profile: { include: { verification: true } } } },
           agency: { include: { profile: { include: { verification: true } } } },
-        }
+        },
       },
-      proposals: { select: { id: true, freelancerId: true } }
-    }
+      proposals: { select: { id: true, freelancerId: true } },
+    },
   });
 
   if (!job) notFound();
@@ -32,12 +34,12 @@ export default async function IlanDetayPage({ params }: { params: Promise<{ id: 
   if (session?.user?.id) {
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      include: { profile: { include: { freelancer: true } } }
+      include: { profile: { include: { freelancer: true } } },
     });
     freelancerId = user?.profile?.freelancer?.id || null;
 
     if (freelancerId) {
-      alreadyApplied = job.proposals.some(p => p.freelancerId === freelancerId);
+      alreadyApplied = job.proposals.some((p) => p.freelancerId === freelancerId);
     }
   }
 
@@ -60,10 +62,10 @@ export default async function IlanDetayPage({ params }: { params: Promise<{ id: 
   };
 
   return (
-    <IlanDetayClient 
-      job={formattedJob} 
-      alreadyApplied={alreadyApplied} 
-      freelancerId={freelancerId} 
+    <IlanDetayClient
+      job={formattedJob}
+      alreadyApplied={alreadyApplied}
+      freelancerId={freelancerId}
     />
   );
 }

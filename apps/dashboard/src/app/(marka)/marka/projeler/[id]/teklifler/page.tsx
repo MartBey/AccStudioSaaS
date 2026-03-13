@@ -1,6 +1,8 @@
 import { prisma } from "database";
+import { notFound, redirect } from "next/navigation";
+
 import { auth } from "@/auth";
-import { redirect, notFound } from "next/navigation";
+
 import TekliflerClient from "./_components/teklifler-client";
 
 export const dynamic = "force-dynamic";
@@ -20,15 +22,15 @@ export default async function MarkaTekliflerPage({ params }: { params: Promise<{
             include: {
               freelancer: {
                 include: {
-                  profile: { include: { user: { select: { name: true } } } }
-                }
-              }
+                  profile: { include: { user: { select: { name: true } } } },
+                },
+              },
             },
-            orderBy: { createdAt: "desc" }
-          }
-        }
-      }
-    }
+            orderBy: { createdAt: "desc" },
+          },
+        },
+      },
+    },
   });
 
   if (!project) notFound();
@@ -48,10 +50,6 @@ export default async function MarkaTekliflerPage({ params }: { params: Promise<{
   );
 
   return (
-    <TekliflerClient
-      projectName={project.name}
-      projectId={project.id}
-      proposals={allProposals}
-    />
+    <TekliflerClient projectName={project.name} projectId={project.id} proposals={allProposals} />
   );
 }

@@ -1,6 +1,8 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
 import EkipClient from "./_components/ekip-client";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +14,7 @@ export default async function AjansEkipPage() {
   // Kullanıcının Agency profilini bul
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { profile: { include: { agency: true } } }
+    include: { profile: { include: { agency: true } } },
   });
 
   const agencyId = user?.profile?.agency?.id;
@@ -30,7 +32,11 @@ export default async function AjansEkipPage() {
     role: e.role || "Çalışan",
     email: e.email || "",
     projectCount: 0,
-    joinedAt: e.createdAt.toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" }),
+    joinedAt: e.createdAt.toLocaleDateString("tr-TR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }),
   }));
 
   return <EkipClient members={formattedMembers} />;

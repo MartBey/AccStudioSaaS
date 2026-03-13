@@ -1,8 +1,10 @@
 "use server";
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
+
 import { auth } from "@/auth";
-import { withCostTracking, extractGeminiTokens } from "./lib/with-cost-tracking";
+
+import { extractGeminiTokens, withCostTracking } from "./lib/with-cost-tracking";
 
 export interface JuriRequest {
   content: string;

@@ -1,4 +1,5 @@
 import { prisma } from "database";
+
 import JobBoardClient from "./_components/job-board-client";
 
 // Bu sayfa her istekte dinamik olarak render edilir (DB bağlantısı gerektirir)
@@ -26,25 +27,25 @@ export default async function JobBoardPage() {
             include: {
               profile: {
                 include: {
-                  verification: true
-                }
-              }
-            }
+                  verification: true,
+                },
+              },
+            },
           },
           agency: {
             include: {
               profile: {
                 include: {
-                  verification: true
-                }
-              }
-            }
-          }
-        }
+                  verification: true,
+                },
+              },
+            },
+          },
+        },
       },
       proposals: {
-        select: { id: true }
-      }
+        select: { id: true },
+      },
     },
     orderBy: { createdAt: "desc" },
   });
@@ -71,10 +72,5 @@ export default async function JobBoardPage() {
     };
   });
 
-  return (
-    <JobBoardClient 
-      jobs={formattedJobs} 
-      filterCategories={filterCategories} 
-    />
-  );
+  return <JobBoardClient jobs={formattedJobs} filterCategories={filterCategories} />;
 }

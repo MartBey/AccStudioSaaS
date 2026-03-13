@@ -23,41 +23,52 @@ export const AgencyTemplate: BuilderSite = {
   },
   nodes: [
     {
-      id: uuidv4(),
+      id: "agency-hero",
       type: BlockType.Hero,
       props: {
         title: "Geleceği İnşa Eden Dijital Ajans",
-        subtitle: "Markanızı dijital dünyada bir adım öne taşıyoruz. Kusursuz tasarım ve güçlü mühendislik vizyonu.",
+        subtitle:
+          "Markanızı dijital dünyada bir adım öne taşıyoruz. Kusursuz tasarım ve güçlü mühendislik vizyonu.",
         align: "center",
         primaryButtonText: "Projelerimizi İncele",
         secondaryButtonText: "Bize Ulaşın",
       },
     },
     {
-      id: uuidv4(),
+      id: "agency-features",
       type: BlockType.Features,
       props: {
         title: "Neler Yapıyoruz?",
         subtitle: "İşletmenizi büyütmek için uçtan uca dijital çözümler sunuyoruz.",
         features: [
-          { title: "Web Geliştirme", description: "Modern, hızlı ve SEO uyumlu web uygulamaları tasarlıyoruz." },
-          { title: "UI/UX Tasarım", description: "Kullanıcı deneyimi odaklı, çarpıcı marka kimlikleri oluşturuyoruz." },
-          { title: "Dijital Pazarlama", description: "Veri odaklı büyüme stratejileriyle dönüşüm oranlarınızı artırıyoruz." },
+          {
+            title: "Web Geliştirme",
+            description: "Modern, hızlı ve SEO uyumlu web uygulamaları tasarlıyoruz.",
+          },
+          {
+            title: "UI/UX Tasarım",
+            description: "Kullanıcı deneyimi odaklı, çarpıcı marka kimlikleri oluşturuyoruz.",
+          },
+          {
+            title: "Dijital Pazarlama",
+            description: "Veri odaklı büyüme stratejileriyle dönüşüm oranlarınızı artırıyoruz.",
+          },
         ],
       },
     },
     {
-      id: uuidv4(),
+      id: "agency-testimonial",
       type: BlockType.Testimonial,
       props: {
-        quote: "Bu ekip ile çalışmak, projelerimize büyük bir ivme kazandırdı. Profesyonellik ve yaratıcılık bir arada!",
+        quote:
+          "Bu ekip ile çalışmak, projelerimize büyük bir ivme kazandırdı. Profesyonellik ve yaratıcılık bir arada!",
         author: "Ayşe Kaya",
         role: "Pazarlama Direktörü, TechBrand",
         rating: 5,
       },
     },
     {
-      id: uuidv4(),
+      id: "agency-contact",
       type: BlockType.Contact,
       props: {
         title: "Kahve İçmeye Bekleriz",
@@ -67,7 +78,7 @@ export const AgencyTemplate: BuilderSite = {
       },
     },
     {
-      id: uuidv4(),
+      id: "agency-footer",
       type: BlockType.Footer,
       props: {
         text: "\u00a9 2026 Dijital Ajans. Tüm hakları saklıdır.",
@@ -91,17 +102,18 @@ export const SaaSTemplate: BuilderSite = {
   },
   nodes: [
     {
-      id: uuidv4(),
+      id: "saas-hero",
       type: BlockType.Hero,
       props: {
         title: "İşletmeniz İçin Akıllı Büyüme Motoru",
-        subtitle: "Satışlarınızı, pazarlamanızı ve müşteri ilişkilerinizi tek bir platformdan yönetin.",
+        subtitle:
+          "Satışlarınızı, pazarlamanızı ve müşteri ilişkilerinizi tek bir platformdan yönetin.",
         align: "left",
         primaryButtonText: "Ücretsiz Dene",
       },
     },
     {
-      id: uuidv4(),
+      id: "saas-features",
       type: BlockType.Features,
       props: {
         title: "Neden Bizi Seçmelisiniz?",
@@ -113,19 +125,35 @@ export const SaaSTemplate: BuilderSite = {
       },
     },
     {
-      id: uuidv4(),
+      id: "saas-pricing",
       type: BlockType.Pricing,
       props: {
         title: "Basit ve Şeffaf Fiyatlandırma",
         plans: [
-          { name: "Başlangıç", price: "₺299/ay", features: ["1 Kullanıcı", "Temel Özellikler"], ctaText: "Başla" },
-          { name: "Pro", price: "₺899/ay", features: ["Sınırsız Kullanıcı", "Tüm Özellikler", "Öncelikli Destek"], highlighted: true, ctaText: "Ücretsiz Dene" },
-          { name: "Kurumsal", price: "Özel Fiyat", features: ["Sınırsız Her Şey", "Özel Destek", "SLA Garantisi"], ctaText: "İletişime Geç" },
+          {
+            name: "Başlangıç",
+            price: "₺299/ay",
+            features: ["1 Kullanıcı", "Temel Özellikler"],
+            ctaText: "Başla",
+          },
+          {
+            name: "Pro",
+            price: "₺899/ay",
+            features: ["Sınırsız Kullanıcı", "Tüm Özellikler", "Öncelikli Destek"],
+            highlighted: true,
+            ctaText: "Ücretsiz Dene",
+          },
+          {
+            name: "Kurumsal",
+            price: "Özel Fiyat",
+            features: ["Sınırsız Her Şey", "Özel Destek", "SLA Garantisi"],
+            ctaText: "İletişime Geç",
+          },
         ],
       },
     },
     {
-      id: uuidv4(),
+      id: "saas-testimonial",
       type: BlockType.Testimonial,
       props: {
         quote: "Bu platform sayesinde müşteri destek sürelerimizi %40 azalttık. Harika bir araç!",
@@ -135,7 +163,7 @@ export const SaaSTemplate: BuilderSite = {
       },
     },
     {
-      id: uuidv4(),
+      id: "saas-footer",
       type: BlockType.Footer,
       props: {
         text: "\u00a9 2026 SaaS Inc. Tüm hakları saklıdır.",
@@ -155,18 +183,19 @@ export const ECommerceTemplate: BuilderSite = {
   },
   nodes: [
     {
-      id: uuidv4(),
+      id: "ecommerce-hero",
       type: BlockType.Hero,
       props: {
         title: "Yeni Sezon Koleksiyonu",
-        subtitle: "Tarzınızı yansıtan, kaliteden ödün vermeyen ürünlerle tanışın. İlk siparişinize özel %20 indirim.",
+        subtitle:
+          "Tarzınızı yansıtan, kaliteden ödün vermeyen ürünlerle tanışın. İlk siparişinize özel %20 indirim.",
         align: "center",
         primaryButtonText: "Alışverişe Başla",
         secondaryButtonText: "Koleksiyonu Keşfet",
       },
     },
     {
-      id: uuidv4(),
+      id: "ecommerce-image",
       type: BlockType.Image,
       props: {
         src: "",
@@ -176,7 +205,7 @@ export const ECommerceTemplate: BuilderSite = {
       },
     },
     {
-      id: uuidv4(),
+      id: "node-1",
       type: BlockType.Features,
       props: {
         title: "Neden Bizi Tercih Etmelisiniz?",
@@ -189,17 +218,18 @@ export const ECommerceTemplate: BuilderSite = {
       },
     },
     {
-      id: uuidv4(),
+      id: "node-2",
       type: BlockType.Testimonial,
       props: {
-        quote: "Ürün kalitesi ve hızlı teslimat konusunda çok memnun kaldım. Kesinlikle tekrar alışveriş yapacağım!",
+        quote:
+          "Ürün kalitesi ve hızlı teslimat konusunda çok memnun kaldım. Kesinlikle tekrar alışveriş yapacağım!",
         author: "Zeynep Acar",
         role: "Sadık Müşteri",
         rating: 5,
       },
     },
     {
-      id: uuidv4(),
+      id: "node-3",
       type: BlockType.Contact,
       props: {
         title: "Sorularınız mı var?",
@@ -209,7 +239,7 @@ export const ECommerceTemplate: BuilderSite = {
       },
     },
     {
-      id: uuidv4(),
+      id: "node-4",
       type: BlockType.Footer,
       props: {
         text: "\u00a9 2026 ShopBrand. Tüm hakları saklıdır.",
@@ -234,30 +264,40 @@ export const PortfolioTemplate: BuilderSite = {
   },
   nodes: [
     {
-      id: uuidv4(),
+      id: "node-5",
       type: BlockType.Hero,
       props: {
         title: "Merhaba, Ben Deniz.",
-        subtitle: "Full-stack geliştirici ve UI/UX tasarımcıyım. Modern, performanslı ve kullanıcı dostu dijital ürünler inşa ediyorum.",
+        subtitle:
+          "Full-stack geliştirici ve UI/UX tasarımcıyım. Modern, performanslı ve kullanıcı dostu dijital ürünler inşa ediyorum.",
         align: "center",
         primaryButtonText: "Projelerimi Gör",
         secondaryButtonText: "İletişime Geç",
       },
     },
     {
-      id: uuidv4(),
+      id: "node-6",
       type: BlockType.Features,
       props: {
         title: "Uzmanlık Alanlarım",
         features: [
-          { title: "Web Uygulamaları", description: "Next.js, React, TypeScript ile modern SPA & SSR projeler." },
-          { title: "Mobil Geliştirme", description: "React Native ile cross-platform mobil uygulamalar." },
-          { title: "UI/UX Tasarım", description: "Figma ile kullanıcı odaklı arayüz ve deneyim tasarımı." },
+          {
+            title: "Web Uygulamaları",
+            description: "Next.js, React, TypeScript ile modern SPA & SSR projeler.",
+          },
+          {
+            title: "Mobil Geliştirme",
+            description: "React Native ile cross-platform mobil uygulamalar.",
+          },
+          {
+            title: "UI/UX Tasarım",
+            description: "Figma ile kullanıcı odaklı arayüz ve deneyim tasarımı.",
+          },
         ],
       },
     },
     {
-      id: uuidv4(),
+      id: "node-7",
       type: BlockType.Image,
       props: {
         src: "",
@@ -268,17 +308,18 @@ export const PortfolioTemplate: BuilderSite = {
       },
     },
     {
-      id: uuidv4(),
+      id: "node-8",
       type: BlockType.Testimonial,
       props: {
-        quote: "Deniz ile çalışmak harika bir deneyimdi. Projeyi zamanında, beklentilerin üzerinde teslim etti.",
+        quote:
+          "Deniz ile çalışmak harika bir deneyimdi. Projeyi zamanında, beklentilerin üzerinde teslim etti.",
         author: "Mehmet Kılıç",
         role: "CTO, StartupXYZ",
         rating: 5,
       },
     },
     {
-      id: uuidv4(),
+      id: "node-9",
       type: BlockType.Contact,
       props: {
         title: "Birlikte Çalışalım",
@@ -288,7 +329,7 @@ export const PortfolioTemplate: BuilderSite = {
       },
     },
     {
-      id: uuidv4(),
+      id: "node-10",
       type: BlockType.Footer,
       props: {
         text: "\u00a9 2026 Deniz Portfolio. Tüm hakları saklıdır.",
@@ -312,18 +353,19 @@ export const RestaurantTemplate: BuilderSite = {
   },
   nodes: [
     {
-      id: uuidv4(),
+      id: "node-11",
       type: BlockType.Hero,
       props: {
         title: "Lezzetin En Saf Hali",
-        subtitle: "Taze malzemeler, ustaca hazırlanmış tarifler ve unutulmaz bir gastronomi deneyimi sizi bekliyor.",
+        subtitle:
+          "Taze malzemeler, ustaca hazırlanmış tarifler ve unutulmaz bir gastronomi deneyimi sizi bekliyor.",
         align: "center",
         primaryButtonText: "Menüyü İncele",
         secondaryButtonText: "Rezervasyon Yap",
       },
     },
     {
-      id: uuidv4(),
+      id: "node-12",
       type: BlockType.Image,
       props: {
         src: "",
@@ -333,33 +375,55 @@ export const RestaurantTemplate: BuilderSite = {
       },
     },
     {
-      id: uuidv4(),
+      id: "node-13",
       type: BlockType.Features,
       props: {
         title: "Neden Bizi Seçmelisiniz?",
         subtitle: "Her detayda mükemmelliği hedefliyoruz.",
         features: [
-          { title: "Taze Malzemeler", description: "Her gün çiftlikten soframıza taze ve organik malzemeler." },
+          {
+            title: "Taze Malzemeler",
+            description: "Her gün çiftlikten soframıza taze ve organik malzemeler.",
+          },
           { title: "Ödüllü Şefler", description: "Michelin deneyimli şeflerimizden eşsiz tatlar." },
-          { title: "Benzersiz Ambiyans", description: "Şehrin kalbinde, huzurlu ve şık bir ortam." },
+          {
+            title: "Benzersiz Ambiyans",
+            description: "Şehrin kalbinde, huzurlu ve şık bir ortam.",
+          },
         ],
       },
     },
     {
-      id: uuidv4(),
+      id: "node-14",
       type: BlockType.Pricing,
       props: {
         title: "Menü Önerileri",
         subtitle: "En sevilen lezzetlerimiz",
         plans: [
-          { name: "Başlangıçlar", price: "₺85'den", features: ["Mevsim Salatası", "Humus Tabağı", "Çorba Çeşitleri"], ctaText: "Sipariş Ver" },
-          { name: "Ana Yemekler", price: "₺195'den", features: ["Kuzu Tandır", "Levrek Izgara", "Mantarlı Risotto"], highlighted: true, ctaText: "Sipariş Ver" },
-          { name: "Tatlılar", price: "₺75'den", features: ["Künefe", "Cheesecake", "Sufle"], ctaText: "Sipariş Ver" },
+          {
+            name: "Başlangıçlar",
+            price: "₺85'den",
+            features: ["Mevsim Salatası", "Humus Tabağı", "Çorba Çeşitleri"],
+            ctaText: "Sipariş Ver",
+          },
+          {
+            name: "Ana Yemekler",
+            price: "₺195'den",
+            features: ["Kuzu Tandır", "Levrek Izgara", "Mantarlı Risotto"],
+            highlighted: true,
+            ctaText: "Sipariş Ver",
+          },
+          {
+            name: "Tatlılar",
+            price: "₺75'den",
+            features: ["Künefe", "Cheesecake", "Sufle"],
+            ctaText: "Sipariş Ver",
+          },
         ],
       },
     },
     {
-      id: uuidv4(),
+      id: "node-15",
       type: BlockType.Contact,
       props: {
         title: "Rezervasyon",
@@ -369,7 +433,7 @@ export const RestaurantTemplate: BuilderSite = {
       },
     },
     {
-      id: uuidv4(),
+      id: "node-16",
       type: BlockType.Footer,
       props: {
         text: "\u00a9 2026 Lezzet Restoran. Tüm hakları saklıdır.",
@@ -394,18 +458,19 @@ export const EventTemplate: BuilderSite = {
   },
   nodes: [
     {
-      id: uuidv4(),
+      id: "node-17",
       type: BlockType.Hero,
       props: {
         title: "TechSummit 2026",
-        subtitle: "Türkiye'nin en büyük teknoloji konferansı. 50+ konuşmacı, 2000+ katılımcı, 3 gün dolu dolu içerik.",
+        subtitle:
+          "Türkiye'nin en büyük teknoloji konferansı. 50+ konuşmacı, 2000+ katılımcı, 3 gün dolu dolu içerik.",
         align: "center",
         primaryButtonText: "Hemen Kayıt Ol",
         secondaryButtonText: "Program Detayları",
       },
     },
     {
-      id: uuidv4(),
+      id: "node-18",
       type: BlockType.Features,
       props: {
         title: "Neler Sizi Bekliyor?",
@@ -418,30 +483,47 @@ export const EventTemplate: BuilderSite = {
       },
     },
     {
-      id: uuidv4(),
+      id: "node-19",
       type: BlockType.Testimonial,
       props: {
-        quote: "Geçen yılki TechSummit kariyerimde bir dönüm noktası oldu. İnanılmaz bağlantılar ve ilham verici konuşmalar!",
+        quote:
+          "Geçen yılki TechSummit kariyerimde bir dönüm noktası oldu. İnanılmaz bağlantılar ve ilham verici konuşmalar!",
         author: "Cem Demir",
         role: "Yazılım Mühendisi, BigTech",
         rating: 5,
       },
     },
     {
-      id: uuidv4(),
+      id: "node-20",
       type: BlockType.Pricing,
       props: {
         title: "Bilet Seçenekleri",
         subtitle: "Size en uygun paketi seçin.",
         plans: [
-          { name: "Standart", price: "₺499", features: ["Tüm Oturumlar", "Networking Alanı", "Yemek Dahil"], ctaText: "Satın Al" },
-          { name: "VIP", price: "₺999", features: ["Ön Sıra Koltuk", "VIP Lounge", "Speaker Dinner", "Özel Hediye Paketi"], highlighted: true, ctaText: "VIP Al" },
-          { name: "Grup (5+)", price: "₺399/kişi", features: ["Grup İndirimi", "Tüm Oturumlar", "Yemek Dahil"], ctaText: "Grup Kaydı" },
+          {
+            name: "Standart",
+            price: "₺499",
+            features: ["Tüm Oturumlar", "Networking Alanı", "Yemek Dahil"],
+            ctaText: "Satın Al",
+          },
+          {
+            name: "VIP",
+            price: "₺999",
+            features: ["Ön Sıra Koltuk", "VIP Lounge", "Speaker Dinner", "Özel Hediye Paketi"],
+            highlighted: true,
+            ctaText: "VIP Al",
+          },
+          {
+            name: "Grup (5+)",
+            price: "₺399/kişi",
+            features: ["Grup İndirimi", "Tüm Oturumlar", "Yemek Dahil"],
+            ctaText: "Grup Kaydı",
+          },
         ],
       },
     },
     {
-      id: uuidv4(),
+      id: "node-21",
       type: BlockType.Contact,
       props: {
         title: "Sorularınız mı var?",
@@ -451,7 +533,7 @@ export const EventTemplate: BuilderSite = {
       },
     },
     {
-      id: uuidv4(),
+      id: "node-22",
       type: BlockType.Footer,
       props: {
         text: "\u00a9 2026 TechSummit. Tüm hakları saklıdır.",
@@ -459,6 +541,44 @@ export const EventTemplate: BuilderSite = {
           { label: "Program", url: "#" },
           { label: "Sponsorlar", url: "#" },
           { label: "İletişim", url: "#" },
+        ],
+      },
+    },
+  ],
+};
+
+// ============================================
+// 7. Premium Animated / Apple-like Teması
+// ============================================
+export const ApplePremiumTemplate: BuilderSite = {
+  themeConfig: {
+    primaryColor: "#000000",
+    secondaryColor: "#ffffff",
+    fontFamily: "Inter",
+  },
+  nodes: [
+    {
+      id: "node-23",
+      type: BlockType.AnimatedHero,
+      props: {
+        title: "Pro. Beyond.",
+        subtitle:
+          "A magical new way to interact with your site. Groundbreaking safety features. Innovative design.",
+        badge: "New Release",
+        primaryButtonText: "Buy",
+        secondaryButtonText: "Learn more",
+      },
+    },
+    {
+      id: "node-24",
+      type: BlockType.Features,
+      props: {
+        title: "Brilliant. In every way.",
+        subtitle: "Advanced features that just make sense.",
+        features: [
+          { title: "Dynamic Island", description: "A new way to interact with your device." },
+          { title: "Pro Camera System", description: "Mind-blowing detail." },
+          { title: "All-day Battery life", description: "Power through your day." },
         ],
       },
     },
@@ -475,6 +595,7 @@ export const TemplatesRegistry = {
   PortfolioTemplate,
   RestaurantTemplate,
   EventTemplate,
+  ApplePremiumTemplate,
 };
 
 // ============================================
@@ -491,21 +612,24 @@ export const TemplatesList: TemplateRegistryEntry[] = [
   {
     id: "saas",
     name: "SaaS Ürünü",
-    description: "Yazılım ürünü tanıtımı, fiyatlandırma ve müşteri yorumları ile dönüşüm odaklı sayfa.",
+    description:
+      "Yazılım ürünü tanıtımı, fiyatlandırma ve müşteri yorumları ile dönüşüm odaklı sayfa.",
     category: "Teknoloji",
     template: SaaSTemplate,
   },
   {
     id: "ecommerce",
     name: "E-Ticaret Landing",
-    description: "Ürün vitrini, güven sinyalleri ve müşteri yorumları ile satış odaklı landing page.",
+    description:
+      "Ürün vitrini, güven sinyalleri ve müşteri yorumları ile satış odaklı landing page.",
     category: "E-Ticaret",
     template: ECommerceTemplate,
   },
   {
     id: "portfolio",
     name: "Portfolio / Freelancer",
-    description: "Kişisel marka, proje portföyü ve iletişim bilgileri ile profesyonel tanıtım sayfası.",
+    description:
+      "Kişisel marka, proje portföyü ve iletişim bilgileri ile profesyonel tanıtım sayfası.",
     category: "Kişisel",
     template: PortfolioTemplate,
   },
@@ -522,5 +646,13 @@ export const TemplatesList: TemplateRegistryEntry[] = [
     description: "Konferans, summit veya ürün lansmanı için bilet satışı ve program detayları.",
     category: "Etkinlik",
     template: EventTemplate,
+  },
+  {
+    id: "premium-apple",
+    name: "Premium Animated",
+    description:
+      "Apple, Framer ve GSAP tarzında üst düzey animasyonlu şablon. Siyah tema yoğunluklu.",
+    category: "Premium",
+    template: ApplePremiumTemplate,
   },
 ];

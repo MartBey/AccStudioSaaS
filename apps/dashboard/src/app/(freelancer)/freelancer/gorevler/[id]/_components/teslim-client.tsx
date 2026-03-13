@@ -1,14 +1,31 @@
 "use client";
 
-import { useState } from "react";
-import { 
-  Card, CardContent, CardHeader, CardTitle,
-  Button, Input, Textarea, Label, Badge, toast,
-} from "ui";
-import { Upload, FileText, Clock, CheckCircle2, AlertTriangle, ArrowLeft, ExternalLink } from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowLeft,
+  CheckCircle2,
+  Clock,
+  ExternalLink,
+  FileText,
+  Upload,
+} from "lucide-react";
 import Link from "next/link";
-import { deliverTask } from "@/app/_actions/delivery-actions";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  Textarea,
+  toast,
+} from "ui";
+
+import { deliverTask } from "@/app/_actions/delivery-actions";
 
 interface TaskDetail {
   id: string;
@@ -75,15 +92,18 @@ export default function TeslimClient({ task }: TeslimClientProps) {
   };
 
   return (
-    <div className="flex flex-col gap-6 max-w-3xl">
-      <Link href="/freelancer/gorevler" className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors w-fit">
+    <div className="flex max-w-3xl flex-col gap-6">
+      <Link
+        href="/freelancer/gorevler"
+        className="flex w-fit items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      >
         <ArrowLeft className="h-4 w-4" /> Görevlere Dön
       </Link>
 
-      <div className="flex justify-between items-start">
+      <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">{task.title}</h1>
-          <p className="text-muted-foreground mt-1">{task.projectName} projesi</p>
+          <p className="mt-1 text-muted-foreground">{task.projectName} projesi</p>
         </div>
         <Badge className={statusMap[task.status]?.color || ""}>
           {statusMap[task.status]?.label || task.status}
@@ -93,7 +113,7 @@ export default function TeslimClient({ task }: TeslimClientProps) {
       {/* Görev Detayları */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-lg">
             <FileText className="h-5 w-5 text-primary" /> Görev Bilgileri
           </CardTitle>
         </CardHeader>
@@ -102,8 +122,10 @@ export default function TeslimClient({ task }: TeslimClientProps) {
           <div className="grid grid-cols-2 gap-4 text-sm">
             {task.earning && (
               <div>
-                <span className="text-muted-foreground">Kazanç:</span> 
-                <span className="font-semibold text-emerald-600 ml-1">₺{task.earning.toLocaleString("tr-TR")}</span>
+                <span className="text-muted-foreground">Kazanç:</span>
+                <span className="ml-1 font-semibold text-emerald-600">
+                  ₺{task.earning.toLocaleString("tr-TR")}
+                </span>
               </div>
             )}
             {task.dueDate && (
@@ -121,10 +143,10 @@ export default function TeslimClient({ task }: TeslimClientProps) {
         <Card className="border-l-4 border-l-red-500 bg-red-50/30">
           <CardContent className="py-4">
             <div className="flex items-start gap-3">
-              <AlertTriangle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+              <AlertTriangle className="mt-0.5 h-5 w-5 flex-shrink-0 text-red-600" />
               <div>
                 <h3 className="font-semibold text-red-700">Revizyon İstendi</h3>
-                <p className="text-sm text-red-600/80 mt-1">{task.revisionNote}</p>
+                <p className="mt-1 text-sm text-red-600/80">{task.revisionNote}</p>
               </div>
             </div>
           </CardContent>
@@ -135,10 +157,11 @@ export default function TeslimClient({ task }: TeslimClientProps) {
       {isDone && (
         <Card className="border-l-4 border-l-emerald-500 bg-emerald-50/30">
           <CardContent className="py-6 text-center">
-            <CheckCircle2 className="h-10 w-10 text-emerald-600 mx-auto mb-2" />
-            <h3 className="font-bold text-emerald-700 text-lg">Teslimat Onaylandı! 🎉</h3>
-            <p className="text-sm text-emerald-600/80 mt-1">
-              Onay tarihi: {task.approvedAt ? new Date(task.approvedAt).toLocaleDateString("tr-TR") : "—"}
+            <CheckCircle2 className="mx-auto mb-2 h-10 w-10 text-emerald-600" />
+            <h3 className="text-lg font-bold text-emerald-700">Teslimat Onaylandı! 🎉</h3>
+            <p className="mt-1 text-sm text-emerald-600/80">
+              Onay tarihi:{" "}
+              {task.approvedAt ? new Date(task.approvedAt).toLocaleDateString("tr-TR") : "—"}
             </p>
           </CardContent>
         </Card>
@@ -152,11 +175,17 @@ export default function TeslimClient({ task }: TeslimClientProps) {
               <Clock className="h-5 w-5 text-blue-600" />
               <div>
                 <h3 className="font-semibold text-blue-700">Teslimatınız İnceleniyor</h3>
-                <p className="text-sm text-blue-600/80 mt-0.5">
-                  Teslim: {task.deliveredAt ? new Date(task.deliveredAt).toLocaleDateString("tr-TR") : "—"}
+                <p className="mt-0.5 text-sm text-blue-600/80">
+                  Teslim:{" "}
+                  {task.deliveredAt ? new Date(task.deliveredAt).toLocaleDateString("tr-TR") : "—"}
                 </p>
                 {task.deliveryUrl && (
-                  <a href={task.deliveryUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 underline flex items-center gap-1 mt-1">
+                  <a
+                    href={task.deliveryUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1 flex items-center gap-1 text-sm text-blue-600 underline"
+                  >
                     <ExternalLink className="h-3.5 w-3.5" /> Teslim edilen dosya
                   </a>
                 )}
@@ -170,26 +199,28 @@ export default function TeslimClient({ task }: TeslimClientProps) {
       {canDeliver && (
         <Card>
           <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Upload className="h-5 w-5 text-primary" /> 
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Upload className="h-5 w-5 text-primary" />
               {isRevision ? "Yeniden Teslim Et" : "Teslimat Yap"}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="delivery-url">Dosya / Link URL</Label>
-              <Input 
+              <Input
                 id="delivery-url"
                 type="url"
                 placeholder="https://drive.google.com/file/... veya WeTransfer linki"
                 value={deliveryUrl}
                 onChange={(e) => setDeliveryUrl(e.target.value)}
               />
-              <p className="text-xs text-muted-foreground">Google Drive, Dropbox, WeTransfer veya herhangi bir dosya paylaşım linki.</p>
+              <p className="text-xs text-muted-foreground">
+                Google Drive, Dropbox, WeTransfer veya herhangi bir dosya paylaşım linki.
+              </p>
             </div>
             <div className="space-y-2">
               <Label htmlFor="delivery-note">Teslimat Notu (Opsiyonel)</Label>
-              <Textarea 
+              <Textarea
                 id="delivery-note"
                 placeholder="Teslimatla ilgili açıklama..."
                 className="min-h-[80px]"
@@ -197,9 +228,13 @@ export default function TeslimClient({ task }: TeslimClientProps) {
                 onChange={(e) => setDeliveryNote(e.target.value)}
               />
             </div>
-            <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full gap-2 h-11">
+            <Button onClick={handleSubmit} disabled={isSubmitting} className="h-11 w-full gap-2">
               <Upload className="h-4 w-4" />
-              {isSubmitting ? "Gönderiliyor..." : isRevision ? "Revizyonu Teslim Et" : "Teslimat Yap"}
+              {isSubmitting
+                ? "Gönderiliyor..."
+                : isRevision
+                  ? "Revizyonu Teslim Et"
+                  : "Teslimat Yap"}
             </Button>
           </CardContent>
         </Card>

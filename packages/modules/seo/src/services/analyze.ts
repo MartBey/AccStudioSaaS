@@ -115,13 +115,12 @@ export async function analyzeWebsite(request: SeoRequest): Promise<SeoResponse> 
 
     // Core Web Vitals'dan load time hesapla
     const lcpMs = data.loadingExperience?.metrics?.LARGEST_CONTENTFUL_PAINT_MS?.percentile;
-    const loadTimeMs = lcpMs || Math.round((audits["largest-contentful-paint"]?.score || 0.5) * 5000);
+    const loadTimeMs =
+      lcpMs || Math.round((audits["largest-contentful-paint"]?.score || 0.5) * 5000);
 
     // Kelime sayısı tahmini (DOM audit'inden)
     const domSizeAudit = audits["dom-size"];
-    const wordCount = domSizeAudit?.score 
-      ? Math.round(domSizeAudit.score * 2000 + 300) 
-      : 800;
+    const wordCount = domSizeAudit?.score ? Math.round(domSizeAudit.score * 2000 + 300) : 800;
 
     return {
       id: `scan_${Date.now().toString(36)}`,
@@ -163,7 +162,9 @@ function generateFallbackAnalysis(request: SeoRequest, errorMessage?: string): S
         id: "api-error",
         type: "error",
         title: "PageSpeed API Bağlantı Hatası",
-        description: errorMessage || "PageSpeed API'ye bağlanılamadı. URL'in doğruluğunu kontrol edin veya daha sonra tekrar deneyin.",
+        description:
+          errorMessage ||
+          "PageSpeed API'ye bağlanılamadı. URL'in doğruluğunu kontrol edin veya daha sonra tekrar deneyin.",
       },
     ],
     wordCount: 0,

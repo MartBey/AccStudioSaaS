@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import type { UserRole } from 'types';
+import type { UserRole } from "types";
+import { create } from "zustand";
 
 interface UserState {
   profile: any | null; // Şimdilik mock data

@@ -2,28 +2,28 @@ export const ROLES = {
   BRAND: "BRAND",
   AGENCY: "AGENCY",
   FREELANCER: "FREELANCER",
-  ADMIN: "ADMIN"
+  ADMIN: "ADMIN",
 } as const;
 
 export const PLANS = {
   FREE: "FREE",
   PRO: "PRO",
-  ENTERPRISE: "ENTERPRISE"
+  ENTERPRISE: "ENTERPRISE",
 } as const;
 
 export const ROUTES = {
   MARKETING: {
     HOME: "/",
     PRICING: "/pricing",
-    ABOUT: "/about"
+    ABOUT: "/about",
   },
   AUTH: {
     LOGIN: "/login",
-    REGISTER: "/register"
+    REGISTER: "/register",
   },
   DASHBOARD: {
     ROOT: "/dashboard",
     PROJECTS: "/dashboard/projects",
-    SETTINGS: "/dashboard/settings"
-  }
+    SETTINGS: "/dashboard/settings",
+  },
 } as const;

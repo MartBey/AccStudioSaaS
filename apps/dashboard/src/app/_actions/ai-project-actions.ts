@@ -1,8 +1,10 @@
 "use server";
 
 import { GoogleGenerativeAI } from "@google/generative-ai";
+
 import { auth } from "@/auth";
-import { withCostTracking, extractGeminiTokens } from "./lib/with-cost-tracking";
+
+import { extractGeminiTokens, withCostTracking } from "./lib/with-cost-tracking";
 
 export interface JobDescriptionRequest {
   projectName: string;
@@ -123,7 +125,7 @@ Aşağıdaki JSON formatında yanıt ver. Sadece JSON döndür:
     return JSON.parse(cleanJson);
   } catch (error: unknown) {
     console.error("AI Job Description error:", error);
-    
+
     if (error instanceof Error && error.message.includes("GEMINI_API_KEY")) {
       return {
         title: `${request.projectName} — ${request.industry} Projesi`,

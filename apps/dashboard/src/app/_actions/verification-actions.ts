@@ -1,21 +1,19 @@
 "use server";
 
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 
+import { auth } from "@/auth";
+
 // Doğrulama başvurusu oluştur
-export async function submitVerification(data: {
-  documentUrl: string;
-  notes?: string;
-}) {
+export async function submitVerification(data: { documentUrl: string; notes?: string }) {
   try {
     const session = await auth();
     if (!session?.user?.id) throw new Error("Oturum bulunamadı.");
 
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      include: { profile: { include: { verification: true } } }
+      include: { profile: { include: { verification: true } } },
     });
 
     if (!user?.profile) throw new Error("Profil bulunamadı.");
@@ -31,7 +29,7 @@ export async function submitVerification(data: {
         documentUrl: data.documentUrl,
         notes: data.notes || null,
         status: "PENDING",
-      }
+      },
     });
 
     await prisma.auditLog.create({
@@ -40,7 +38,7 @@ export async function submitVerification(data: {
         action: "SUBMIT_VERIFICATION",
         entityType: "Verification",
         entityId: user.profile.id,
-      }
+      },
     });
 
     revalidatePath("/");
@@ -60,7 +58,7 @@ export async function getVerificationStatus() {
 
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      include: { profile: { include: { verification: true } } }
+      include: { profile: { include: { verification: true } } },
     });
 
     if (!user?.profile?.verification) return null;

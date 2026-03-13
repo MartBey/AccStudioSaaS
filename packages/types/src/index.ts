@@ -13,11 +13,11 @@ export interface PaginatedResponse<T> {
   totalPages: number;
 }
 
-export type ApiResponse<T> = 
+export type ApiResponse<T> =
   | { success: true; data: T; message?: string }
   | { success: false; error: string; details?: unknown };
 
-export * from './content';
-export * from './seo';
-export * from './social';
-export * from './web-builder';
+export * from "./content";
+export * from "./seo";
+export * from "./social";
+export * from "./web-builder";

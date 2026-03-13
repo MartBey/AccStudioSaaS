@@ -1,33 +1,29 @@
 "use client";
 
+import { CheckCircle2, Clock, Copy, DollarSign, FileText, Tags, Wand2 } from "lucide-react";
 import { useState } from "react";
 import {
+  Badge,
   Button,
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
   CardDescription,
-  Badge,
+  CardHeader,
+  CardTitle,
   Input,
-  Textarea,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Textarea,
   toast,
 } from "ui";
+
 import {
-  Wand2,
-  Copy,
-  CheckCircle2,
-  Clock,
-  DollarSign,
-  Tags,
-  FileText,
-} from "lucide-react";
-import { generateJobDescription, type JobDescriptionResponse } from "@/app/_actions/ai-project-actions";
+  generateJobDescription,
+  type JobDescriptionResponse,
+} from "@/app/_actions/ai-project-actions";
 
 export default function AIIsTanimiPage() {
   const [projectName, setProjectName] = useState("");
@@ -52,7 +48,10 @@ export default function AIIsTanimiPage() {
       const response = await generateJobDescription({
         projectName,
         industry,
-        skills: skills.split(",").map((s) => s.trim()).filter(Boolean),
+        skills: skills
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
         budget: budget || undefined,
         duration: duration || undefined,
         additionalNotes: notes || undefined,
@@ -69,7 +68,7 @@ export default function AIIsTanimiPage() {
 
   const handleCopy = () => {
     if (!result) return;
-    const text = `${result.title}\n\n${result.description.replace(/<[^>]+>/g, "")}\n\nGereksinimler:\n${result.requirements.map(r => `• ${r}`).join("\n")}\n\nTercih Edilen:\n${result.niceToHave.map(r => `• ${r}`).join("\n")}`;
+    const text = `${result.title}\n\n${result.description.replace(/<[^>]+>/g, "")}\n\nGereksinimler:\n${result.requirements.map((r) => `• ${r}`).join("\n")}\n\nTercih Edilen:\n${result.niceToHave.map((r) => `• ${r}`).join("\n")}`;
     navigator.clipboard.writeText(text);
     toast.success("İş tanımı panoya kopyalandı!");
   };
@@ -77,10 +76,10 @@ export default function AIIsTanimiPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+        <h1 className="bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent">
           🪄 AI İş Tanımı Oluşturucu
         </h1>
-        <p className="text-muted-foreground mt-2">
+        <p className="mt-2 text-muted-foreground">
           Birkaç bilgi verin, AI profesyonel bir iş ilanı oluştursun.
         </p>
       </div>
@@ -93,7 +92,9 @@ export default function AIIsTanimiPage() {
               <FileText className="h-5 w-5 text-blue-500" />
               Proje Bilgileri
             </CardTitle>
-            <CardDescription>Temel bilgileri girin, AI detaylı bir iş tanımı oluştursun.</CardDescription>
+            <CardDescription>
+              Temel bilgileri girin, AI detaylı bir iş tanımı oluştursun.
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
@@ -127,7 +128,9 @@ export default function AIIsTanimiPage() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-medium">İstenen Beceriler * <span className="text-muted-foreground">(virgülle ayırın)</span></label>
+              <label className="text-sm font-medium">
+                İstenen Beceriler * <span className="text-muted-foreground">(virgülle ayırın)</span>
+              </label>
               <Input
                 placeholder="Örn: React, Node.js, Figma, SEO"
                 value={skills}
@@ -138,11 +141,19 @@ export default function AIIsTanimiPage() {
             <div className="grid grid-cols-2 gap-3">
               <div className="space-y-2">
                 <label className="text-sm font-medium">Bütçe (opsiyonel)</label>
-                <Input placeholder="Örn: 15.000 - 25.000₺" value={budget} onChange={(e) => setBudget(e.target.value)} />
+                <Input
+                  placeholder="Örn: 15.000 - 25.000₺"
+                  value={budget}
+                  onChange={(e) => setBudget(e.target.value)}
+                />
               </div>
               <div className="space-y-2">
                 <label className="text-sm font-medium">Süre (opsiyonel)</label>
-                <Input placeholder="Örn: 2-3 hafta" value={duration} onChange={(e) => setDuration(e.target.value)} />
+                <Input
+                  placeholder="Örn: 2-3 hafta"
+                  value={duration}
+                  onChange={(e) => setDuration(e.target.value)}
+                />
               </div>
             </div>
 
@@ -157,13 +168,13 @@ export default function AIIsTanimiPage() {
             </div>
 
             <Button
-              className="w-full h-11 font-semibold bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700"
+              className="h-11 w-full bg-gradient-to-r from-blue-600 to-cyan-600 font-semibold hover:from-blue-700 hover:to-cyan-700"
               onClick={handleGenerate}
               disabled={loading || !projectName.trim() || !skills.trim()}
             >
               {loading ? (
                 <div className="flex items-center gap-2">
-                  <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   Oluşturuluyor...
                 </div>
               ) : (
@@ -179,26 +190,28 @@ export default function AIIsTanimiPage() {
         {/* Sonuç */}
         <div className="space-y-4">
           {!result && !loading && (
-            <Card className="min-h-[400px] flex items-center justify-center bg-muted/30">
-              <div className="text-center text-muted-foreground space-y-3 opacity-60">
-                <Wand2 className="h-16 w-16 mx-auto" />
+            <Card className="flex min-h-[400px] items-center justify-center bg-muted/30">
+              <div className="space-y-3 text-center text-muted-foreground opacity-60">
+                <Wand2 className="mx-auto h-16 w-16" />
                 <p className="text-lg font-medium">Sonuç Bekleniyor</p>
-                <p className="text-sm">Proje bilgilerini girin ve &ldquo;Oluştur&rdquo; butonuna basın.</p>
+                <p className="text-sm">
+                  Proje bilgilerini girin ve &ldquo;Oluştur&rdquo; butonuna basın.
+                </p>
               </div>
             </Card>
           )}
 
           {loading && (
-            <Card className="min-h-[400px] flex items-center justify-center">
-              <div className="text-center space-y-4">
-                <div className="w-12 h-12 rounded-full border-4 border-blue-400 border-t-transparent animate-spin mx-auto" />
+            <Card className="flex min-h-[400px] items-center justify-center">
+              <div className="space-y-4 text-center">
+                <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-blue-400 border-t-transparent" />
                 <p className="text-lg font-medium">AI iş tanımı hazırlıyor...</p>
               </div>
             </Card>
           )}
 
           {result && (
-            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="space-y-4 duration-500 animate-in fade-in slide-in-from-bottom-4">
               <Card>
                 <CardHeader className="pb-3">
                   <div className="flex items-center justify-between">
@@ -232,7 +245,7 @@ export default function AIIsTanimiPage() {
 
               <Card>
                 <CardHeader className="pb-3">
-                  <CardTitle className="text-base flex items-center gap-2">
+                  <CardTitle className="flex items-center gap-2 text-base">
                     <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                     Zorunlu Gereksinimler
                   </CardTitle>
@@ -240,8 +253,8 @@ export default function AIIsTanimiPage() {
                 <CardContent>
                   <ul className="space-y-1.5">
                     {result.requirements.map((r, i) => (
-                      <li key={i} className="text-sm flex items-start gap-2">
-                        <span className="text-emerald-500 mt-0.5">•</span>
+                      <li key={i} className="flex items-start gap-2 text-sm">
+                        <span className="mt-0.5 text-emerald-500">•</span>
                         {r}
                       </li>
                     ))}
@@ -257,7 +270,10 @@ export default function AIIsTanimiPage() {
                   <CardContent>
                     <ul className="space-y-1.5">
                       {result.niceToHave.map((r, i) => (
-                        <li key={i} className="text-sm flex items-start gap-2 text-muted-foreground">
+                        <li
+                          key={i}
+                          className="flex items-start gap-2 text-sm text-muted-foreground"
+                        >
                           <span className="mt-0.5">○</span>
                           {r}
                         </li>
@@ -267,10 +283,12 @@ export default function AIIsTanimiPage() {
                 </Card>
               )}
 
-              <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex flex-wrap items-center gap-2">
                 <Tags className="h-4 w-4 text-muted-foreground" />
                 {result.suggestedSkillTags.map((tag, i) => (
-                  <Badge key={i} variant="secondary" className="text-xs">{tag}</Badge>
+                  <Badge key={i} variant="secondary" className="text-xs">
+                    {tag}
+                  </Badge>
                 ))}
               </div>
             </div>

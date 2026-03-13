@@ -1,4 +1,5 @@
 import { prisma } from "database";
+
 import KesfetClient from "./_components/kesfet-client";
 
 export const dynamic = "force-dynamic";
@@ -12,18 +13,18 @@ export default async function AjansKesfetPage() {
           user: { select: { name: true } },
           verification: true,
           userSkills: {
-            include: { skill: true }
-          }
-        }
+            include: { skill: true },
+          },
+        },
       },
-      proposals: { where: { status: "ACCEPTED" }, select: { id: true } }
-    }
+      proposals: { where: { status: "ACCEPTED" }, select: { id: true } },
+    },
   });
 
   // Client'a uygun formata dönüştür
   const formattedFreelancers = freelancers.map((f) => {
     const name = f.profile?.user?.name || "İsimsiz";
-    const skills = f.profile?.userSkills?.map(us => us.skill.name) || [];
+    const skills = f.profile?.userSkills?.map((us) => us.skill.name) || [];
     const isVerified = f.profile?.verification?.status === "APPROVED";
 
     return {
@@ -42,12 +43,14 @@ export default async function AjansKesfetPage() {
 
   // Mevcut skill tag'leri
   const allSkills = await prisma.skill.findMany({ take: 10 });
-  const skillTags = allSkills.map(s => s.name);
+  const skillTags = allSkills.map((s) => s.name);
 
   return (
-    <KesfetClient 
-      freelancers={formattedFreelancers} 
-      skillTags={skillTags.length > 0 ? skillTags : ["React", "SEO", "Tasarım", "İçerik", "UI/UX", "Node.js"]} 
+    <KesfetClient
+      freelancers={formattedFreelancers}
+      skillTags={
+        skillTags.length > 0 ? skillTags : ["React", "SEO", "Tasarım", "İçerik", "UI/UX", "Node.js"]
+      }
     />
   );
 }

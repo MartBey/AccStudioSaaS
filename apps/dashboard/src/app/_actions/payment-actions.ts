@@ -1,8 +1,9 @@
 "use server";
 
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+
+import { auth } from "@/auth";
 
 // Marka: Proje bazlı ödemeler listesi
 export async function getPaymentsForBrand() {
@@ -18,7 +19,7 @@ export async function getPaymentsForBrand() {
     orderBy: { createdAt: "desc" },
   });
 
-  return payments.map(p => ({
+  return payments.map((p) => ({
     id: p.id,
     projectName: p.project?.name || "Bilinmiyor",
     freelancerName: p.payee?.name || "Freelancer",
@@ -45,7 +46,7 @@ export async function getPaymentsForFreelancer() {
     orderBy: { createdAt: "desc" },
   });
 
-  return payments.map(p => ({
+  return payments.map((p) => ({
     id: p.id,
     projectName: p.project?.name || "Bilinmiyor",
     brandName: p.payer?.name || "Marka",
@@ -77,7 +78,7 @@ export async function createPayment(data: {
         amount: data.amount,
         description: data.description || null,
         status: "PENDING",
-      }
+      },
     });
 
     revalidatePath("/");
@@ -96,9 +97,9 @@ export async function updatePaymentStatus(paymentId: string, status: "PAID" | "C
   try {
     await prisma.payment.update({
       where: { id: paymentId },
-      data: { 
-        status, 
-        paidAt: status === "PAID" ? new Date() : null 
+      data: {
+        status,
+        paidAt: status === "PAID" ? new Date() : null,
       },
     });
 
@@ -115,14 +116,16 @@ export async function getFinancialSummary(role: "BRAND" | "FREELANCER") {
   const session = await auth();
   if (!session?.user?.id) return { totalPaid: 0, totalPending: 0, total: 0 };
 
-  const where = role === "BRAND" 
-    ? { payerId: session.user.id } 
-    : { payeeId: session.user.id };
+  const where = role === "BRAND" ? { payerId: session.user.id } : { payeeId: session.user.id };
 
   const payments = await prisma.payment.findMany({ where });
 
-  const totalPaid = payments.filter((p: { status: string; amount: number }) => p.status === "PAID").reduce((s: number, p: { amount: number }) => s + p.amount, 0);
-  const totalPending = payments.filter((p: { status: string; amount: number }) => p.status === "PENDING").reduce((s: number, p: { amount: number }) => s + p.amount, 0);
+  const totalPaid = payments
+    .filter((p: { status: string; amount: number }) => p.status === "PAID")
+    .reduce((s: number, p: { amount: number }) => s + p.amount, 0);
+  const totalPending = payments
+    .filter((p: { status: string; amount: number }) => p.status === "PENDING")
+    .reduce((s: number, p: { amount: number }) => s + p.amount, 0);
 
   return { totalPaid, totalPending, total: totalPaid + totalPending };
 }

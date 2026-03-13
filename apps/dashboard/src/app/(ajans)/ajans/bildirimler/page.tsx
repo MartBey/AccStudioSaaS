@@ -1,7 +1,8 @@
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
 import { getNotifications } from "@/app/_actions/notification-actions";
 import BildirimlerClient from "@/app/_components/bildirimler-client";
+import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
 

@@ -1,13 +1,20 @@
 "use server";
 
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+
+import { auth } from "@/auth";
 
 // Bildirim oluştur (internal helper — diğer action'lardan çağrılır)
 export async function createNotification(data: {
   userId: string;
-  type: "PROPOSAL_RECEIVED" | "PROPOSAL_ACCEPTED" | "PROPOSAL_REJECTED" | "TASK_ASSIGNED" | "PROJECT_UPDATED" | "SYSTEM";
+  type:
+    | "PROPOSAL_RECEIVED"
+    | "PROPOSAL_ACCEPTED"
+    | "PROPOSAL_REJECTED"
+    | "TASK_ASSIGNED"
+    | "PROJECT_UPDATED"
+    | "SYSTEM";
   title: string;
   message: string;
   link?: string;
@@ -22,7 +29,7 @@ export async function createNotification(data: {
         message: data.message,
         link: data.link || null,
         actorId: data.actorId || null,
-      }
+      },
     });
   } catch (error) {
     console.error("createNotification error:", error);
@@ -41,10 +48,10 @@ export async function getNotifications() {
       take: 50,
     });
 
-    const unreadCount = notifications.filter(n => !n.read).length;
+    const unreadCount = notifications.filter((n) => !n.read).length;
 
     return {
-      notifications: notifications.map(n => ({
+      notifications: notifications.map((n) => ({
         id: n.id,
         type: n.type,
         title: n.title,

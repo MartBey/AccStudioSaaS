@@ -1,6 +1,8 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
 import GorevAtamaClient from "./_components/gorev-atama-client";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +14,7 @@ export default async function AjansGorevAtamaPage({ params }: { params: { id: st
   // Ajans profili
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { profile: { include: { agency: true } } }
+    include: { profile: { include: { agency: true } } },
   });
 
   const agencyId = user?.profile?.agency?.id;
@@ -27,13 +29,17 @@ export default async function AjansGorevAtamaPage({ params }: { params: { id: st
           freelancer: { include: { profile: { include: { user: { select: { name: true } } } } } },
           employee: { select: { name: true } },
         },
-        orderBy: { createdAt: "desc" }
-      }
-    }
+        orderBy: { createdAt: "desc" },
+      },
+    },
   });
 
   if (!project) {
-    return <div className="text-center py-20"><h2 className="text-xl font-bold text-muted-foreground">Proje bulunamadı</h2></div>;
+    return (
+      <div className="py-20 text-center">
+        <h2 className="text-xl font-bold text-muted-foreground">Proje bulunamadı</h2>
+      </div>
+    );
   }
 
   // Ajansın çalışanları
@@ -49,17 +55,11 @@ export default async function AjansGorevAtamaPage({ params }: { params: { id: st
     freelancerName: t.freelancer?.profile?.user?.name || null,
   }));
 
-  const employeeList = employees.map(e => ({
+  const employeeList = employees.map((e) => ({
     id: e.id,
     name: e.name,
     role: e.role,
   }));
 
-  return (
-    <GorevAtamaClient 
-      projectTitle={project.name} 
-      tasks={tasks} 
-      employees={employeeList} 
-    />
-  );
+  return <GorevAtamaClient projectTitle={project.name} tasks={tasks} employees={employeeList} />;
 }

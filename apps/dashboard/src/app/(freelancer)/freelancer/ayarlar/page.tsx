@@ -1,7 +1,8 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
 import AyarlarClient from "@/app/_components/ayarlar-client";
+import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -11,13 +12,13 @@ export default async function FreelancerAyarlarPage() {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { profile: true }
+    include: { profile: true },
   });
 
   if (!user) redirect("/login");
 
   return (
-    <AyarlarClient 
+    <AyarlarClient
       profile={{
         name: user.name || "",
         email: user.email || "",
@@ -25,7 +26,11 @@ export default async function FreelancerAyarlarPage() {
         bio: user.profile?.bio || "",
         location: user.profile?.location || "",
         website: user.profile?.website || "",
-        joinDate: user.createdAt.toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" }),
+        joinDate: user.createdAt.toLocaleDateString("tr-TR", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        }),
       }}
     />
   );

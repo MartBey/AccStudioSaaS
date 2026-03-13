@@ -1,13 +1,15 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
 import ProjelerClient from "./_components/projeler-client";
 
 export const dynamic = "force-dynamic";
 
 export default async function MarkaProjelerPage() {
   const session = await auth();
-  
+
   if (!session?.user?.id) {
     redirect("/login");
   }
@@ -15,21 +17,21 @@ export default async function MarkaProjelerPage() {
   // Kullanıcının Brand profilini bul
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { profile: { include: { brand: true } } }
+    include: { profile: { include: { brand: true } } },
   });
 
   const brandId = user?.profile?.brand?.id;
 
   // Eğer brand profili yoksa boş göster
-  const projects = brandId 
+  const projects = brandId
     ? await prisma.project.findMany({
         where: { brandId },
         include: {
           agency: true,
           jobListings: {
             include: {
-              proposals: { select: { id: true } }
-            }
+              proposals: { select: { id: true } },
+            },
           },
         },
         orderBy: { createdAt: "desc" },

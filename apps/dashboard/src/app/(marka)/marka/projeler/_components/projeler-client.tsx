@@ -1,20 +1,11 @@
 "use client";
 
+import { Briefcase, MoreVertical, Plus, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow,
+import {
   Badge,
   Button,
-  Input,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -22,13 +13,23 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  Input,
   Label,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   Textarea,
-  toast
+  toast,
 } from "ui";
-import { Search, MoreVertical, Plus, Briefcase } from "lucide-react";
+
 import { createProject, updateProjectStatus } from "../_actions/project-actions";
-import { useRouter } from "next/navigation";
 
 interface ProjectItem {
   id: string;
@@ -68,9 +69,10 @@ export default function ProjelerClient({ projects }: ProjelerClientProps) {
     budget: "",
   });
 
-  const filteredProjects = projects.filter(p => 
-    p.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    (p.agencyName && p.agencyName.toLowerCase().includes(searchTerm.toLowerCase()))
+  const filteredProjects = projects.filter(
+    (p) =>
+      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (p.agencyName && p.agencyName.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleCreate = async () => {
@@ -111,13 +113,13 @@ export default function ProjelerClient({ projects }: ProjelerClientProps) {
     return new Date(dateStr).toLocaleDateString("tr-TR", {
       day: "numeric",
       month: "long",
-      year: "numeric"
+      year: "numeric",
     });
   };
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Projelerim</h1>
           <p className="text-muted-foreground">
@@ -141,35 +143,37 @@ export default function ProjelerClient({ projects }: ProjelerClientProps) {
             <div className="space-y-4 py-4">
               <div className="space-y-2">
                 <Label htmlFor="proj-name">Proje Adı</Label>
-                <Input 
-                  id="proj-name" 
+                <Input
+                  id="proj-name"
                   placeholder="Örn: Q4 Sosyal Medya Kampanyası"
                   value={newProject.name}
-                  onChange={(e) => setNewProject({...newProject, name: e.target.value})}
+                  onChange={(e) => setNewProject({ ...newProject, name: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="proj-desc">Açıklama</Label>
-                <Textarea 
-                  id="proj-desc" 
+                <Textarea
+                  id="proj-desc"
                   placeholder="Projenin kapsamını ve beklentilerinizi açıklayın..."
                   value={newProject.description}
-                  onChange={(e) => setNewProject({...newProject, description: e.target.value})}
+                  onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="proj-budget">Bütçe (₺)</Label>
-                <Input 
-                  id="proj-budget" 
-                  type="number" 
+                <Input
+                  id="proj-budget"
+                  type="number"
                   placeholder="50000"
                   value={newProject.budget}
-                  onChange={(e) => setNewProject({...newProject, budget: e.target.value})}
+                  onChange={(e) => setNewProject({ ...newProject, budget: e.target.value })}
                 />
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>İptal</Button>
+              <Button variant="outline" onClick={() => setIsDialogOpen(false)}>
+                İptal
+              </Button>
               <Button onClick={handleCreate} disabled={isCreating}>
                 {isCreating ? "Oluşturuluyor..." : "Oluştur & Yayınla"}
               </Button>
@@ -179,11 +183,11 @@ export default function ProjelerClient({ projects }: ProjelerClientProps) {
       </div>
 
       {/* Arama */}
-      <div className="flex justify-between items-center gap-4 bg-card p-4 rounded-xl border shadow-sm">
+      <div className="flex items-center justify-between gap-4 rounded-xl border bg-card p-4 shadow-sm">
         <div className="relative w-full max-w-sm">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input 
-            placeholder="Proje veya Ajans ara..." 
+          <Input
+            placeholder="Proje veya Ajans ara..."
             className="pl-9"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -196,7 +200,7 @@ export default function ProjelerClient({ projects }: ProjelerClientProps) {
       </div>
 
       {/* Tablo */}
-      <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden">
+      <div className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm">
         <Table>
           <TableHeader>
             <TableRow className="bg-muted/50">
@@ -212,23 +216,24 @@ export default function ProjelerClient({ projects }: ProjelerClientProps) {
           <TableBody>
             {filteredProjects.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={7} className="text-center py-10 text-muted-foreground">
-                  {projects.length === 0 
-                    ? "Henüz projeniz yok. Yeni bir proje oluşturun!" 
+                <TableCell colSpan={7} className="py-10 text-center text-muted-foreground">
+                  {projects.length === 0
+                    ? "Henüz projeniz yok. Yeni bir proje oluşturun!"
                     : "Arama kriterlerine uygun proje bulunamadı."}
                 </TableCell>
               </TableRow>
             ) : (
               filteredProjects.map((project) => {
-                const status = statusMap[project.status] || { label: project.status, variant: "outline" };
+                const status = statusMap[project.status] || {
+                  label: project.status,
+                  variant: "outline",
+                };
                 return (
                   <TableRow key={project.id}>
                     <TableCell className="font-medium">{project.name}</TableCell>
                     <TableCell>{project.agencyName || "—"}</TableCell>
                     <TableCell>
-                      {project.budget 
-                        ? `₺${project.budget.toLocaleString("tr-TR")}` 
-                        : "—"}
+                      {project.budget ? `₺${project.budget.toLocaleString("tr-TR")}` : "—"}
                     </TableCell>
                     <TableCell>
                       <span className="text-xs">
@@ -248,19 +253,27 @@ export default function ProjelerClient({ projects }: ProjelerClientProps) {
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem onClick={() => router.push(`/marka/projeler/${project.id}/teklifler`)}>
+                          <DropdownMenuItem
+                            onClick={() => router.push(`/marka/projeler/${project.id}/teklifler`)}
+                          >
                             📩 Teklifleri Gör ({project.proposalCount})
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => router.push(`/marka/projeler/${project.id}/teslimat`)}>
+                          <DropdownMenuItem
+                            onClick={() => router.push(`/marka/projeler/${project.id}/teslimat`)}
+                          >
                             📦 Teslimatları Gör
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleStatusUpdate(project.id, "IN_REVIEW")}>
+                          <DropdownMenuItem
+                            onClick={() => handleStatusUpdate(project.id, "IN_REVIEW")}
+                          >
                             İncelemeye Al
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleStatusUpdate(project.id, "COMPLETED")}>
+                          <DropdownMenuItem
+                            onClick={() => handleStatusUpdate(project.id, "COMPLETED")}
+                          >
                             Tamamlandı Olarak İşaretle
                           </DropdownMenuItem>
-                          <DropdownMenuItem 
+                          <DropdownMenuItem
                             onClick={() => handleStatusUpdate(project.id, "CANCELLED")}
                             className="text-destructive"
                           >

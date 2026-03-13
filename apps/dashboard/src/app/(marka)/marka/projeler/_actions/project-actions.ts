@@ -1,15 +1,12 @@
 "use server";
 
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
 
+import { auth } from "@/auth";
+
 // Yeni proje + iş ilanı oluştur
-export async function createProject(data: {
-  name: string;
-  description: string;
-  budget: number;
-}) {
+export async function createProject(data: { name: string; description: string; budget: number }) {
   try {
     const session = await auth();
     if (!session?.user?.id) throw new Error("Oturum bulunamadı.");
@@ -17,7 +14,7 @@ export async function createProject(data: {
     // Kullanıcının Brand profilini bul
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      include: { profile: { include: { brand: true } } }
+      include: { profile: { include: { brand: true } } },
     });
 
     const brandId = user?.profile?.brand?.id;
@@ -30,7 +27,7 @@ export async function createProject(data: {
         description: data.description,
         brandId: brandId,
         status: "ACTIVE",
-      }
+      },
     });
 
     // İş ilanı oluştur (proje ile birlikte)
@@ -41,7 +38,7 @@ export async function createProject(data: {
         budget: data.budget,
         status: "OPEN",
         projectId: project.id,
-      }
+      },
     });
 
     // AuditLog
@@ -51,8 +48,8 @@ export async function createProject(data: {
         action: "CREATE_PROJECT",
         entityType: "Project",
         entityId: project.id,
-        details: JSON.stringify({ name: data.name, budget: data.budget })
-      }
+        details: JSON.stringify({ name: data.name, budget: data.budget }),
+      },
     });
 
     revalidatePath("/marka/projeler");
@@ -72,7 +69,7 @@ export async function updateProjectStatus(projectId: string, status: string) {
 
     await prisma.project.update({
       where: { id: projectId },
-      data: { status: status as "ACTIVE" | "IN_REVIEW" | "COMPLETED" | "CANCELLED" }
+      data: { status: status as "ACTIVE" | "IN_REVIEW" | "COMPLETED" | "CANCELLED" },
     });
 
     // AuditLog
@@ -82,8 +79,8 @@ export async function updateProjectStatus(projectId: string, status: string) {
         action: "UPDATE_PROJECT_STATUS",
         entityType: "Project",
         entityId: projectId,
-        details: JSON.stringify({ newStatus: status })
-      }
+        details: JSON.stringify({ newStatus: status }),
+      },
     });
 
     revalidatePath("/marka/projeler");

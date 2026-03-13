@@ -7,7 +7,10 @@ export interface GenerateSiteRequest {
   brandPersona?: string; // Phase 2: AI Content Agent entegrasyonu için
 }
 
-export async function generateSiteFromPrompt({ prompt, brandPersona }: GenerateSiteRequest): Promise<BuilderSite> {
+export async function generateSiteFromPrompt({
+  prompt,
+  brandPersona,
+}: GenerateSiteRequest): Promise<BuilderSite> {
   // Sistem talimatları (Gelişmiş Aşama 3)
   let systemPrompt = `Sen profesyonel bir web tasarımcısısın ve AccStudio Web Builder için sayfalar inşa ediyorsun. 
 Kullanıcının isteğine uygun modern, kullanıcı dostu bir web sitesinin yapısal şemasını (JSON) oluşturacaksın.

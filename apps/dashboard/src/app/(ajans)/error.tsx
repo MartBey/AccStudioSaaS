@@ -1,9 +1,9 @@
 "use client";
 
+import { AlertTriangle, Home, RotateCcw } from "lucide-react";
+import Link from "next/link";
 import { useEffect } from "react";
 import { Button } from "ui";
-import { AlertTriangle, RotateCcw, Home } from "lucide-react";
-import Link from "next/link";
 
 export default function ErrorBoundary({
   error,
@@ -17,20 +17,20 @@ export default function ErrorBoundary({
   }, [error]);
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center p-6">
-      <div className="max-w-md w-full text-center space-y-6">
-        <div className="mx-auto w-16 h-16 rounded-2xl bg-destructive/10 flex items-center justify-center">
+    <div className="flex min-h-[60vh] items-center justify-center p-6">
+      <div className="w-full max-w-md space-y-6 text-center">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-destructive/10">
           <AlertTriangle className="h-8 w-8 text-destructive" />
         </div>
         <div className="space-y-2">
           <h2 className="text-2xl font-bold tracking-tight">Bir Hata Oluştu</h2>
-          <p className="text-muted-foreground text-sm leading-relaxed">
-            Bu sayfa yüklenirken beklenmeyen bir hata oluştu. 
-            Lütfen tekrar deneyin veya ana sayfaya dönün.
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            Bu sayfa yüklenirken beklenmeyen bir hata oluştu. Lütfen tekrar deneyin veya ana sayfaya
+            dönün.
           </p>
         </div>
         {error.digest && (
-          <p className="text-xs text-muted-foreground font-mono bg-muted px-3 py-1.5 rounded-md inline-block">
+          <p className="inline-block rounded-md bg-muted px-3 py-1.5 font-mono text-xs text-muted-foreground">
             Hata Kodu: {error.digest}
           </p>
         )}

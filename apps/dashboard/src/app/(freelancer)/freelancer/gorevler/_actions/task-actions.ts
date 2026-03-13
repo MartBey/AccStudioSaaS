@@ -1,8 +1,9 @@
 "use server";
 
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+
+import { auth } from "@/auth";
 
 // Görev statüsünü güncelle (Kanban sürükleme)
 export async function updateTaskStatus(taskId: string, newStatus: string) {
@@ -12,7 +13,7 @@ export async function updateTaskStatus(taskId: string, newStatus: string) {
 
     await prisma.task.update({
       where: { id: taskId },
-      data: { status: newStatus as "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE" }
+      data: { status: newStatus as "TODO" | "IN_PROGRESS" | "REVIEW" | "DONE" },
     });
 
     // AuditLog
@@ -22,8 +23,8 @@ export async function updateTaskStatus(taskId: string, newStatus: string) {
         action: "UPDATE_TASK_STATUS",
         entityType: "Task",
         entityId: taskId,
-        details: JSON.stringify({ newStatus })
-      }
+        details: JSON.stringify({ newStatus }),
+      },
     });
 
     revalidatePath("/freelancer/gorevler");

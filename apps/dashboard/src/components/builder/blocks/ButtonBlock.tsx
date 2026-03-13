@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import { useNode } from "@craftjs/core";
+import React from "react";
 import { Button } from "ui";
 
 export interface ButtonBlockProps {
@@ -11,11 +11,23 @@ export interface ButtonBlockProps {
   href?: string;
 }
 
-export const ButtonBlock = ({ text = "Button", variant = "default", size = "default", href }: ButtonBlockProps) => {
-  const { connectors: { connect, drag } } = useNode();
+export const ButtonBlock = ({
+  text = "Button",
+  variant = "default",
+  size = "default",
+  href,
+}: ButtonBlockProps) => {
+  const {
+    connectors: { connect, drag },
+  } = useNode();
 
   return (
-    <div ref={(ref) => { if (ref) connect(drag(ref)); }} style={{ display: "inline-block", margin: "5px 0" }}>
+    <div
+      ref={(ref) => {
+        if (ref) connect(drag(ref));
+      }}
+      style={{ display: "inline-block", margin: "5px 0" }}
+    >
       <Button variant={variant as any} size={size as any}>
         {text}
       </Button>
@@ -24,7 +36,13 @@ export const ButtonBlock = ({ text = "Button", variant = "default", size = "defa
 };
 
 const ButtonSettings = () => {
-  const { actions: { setProp }, text, variant, size, href } = useNode((node) => ({
+  const {
+    actions: { setProp },
+    text,
+    variant,
+    size,
+    href,
+  } = useNode((node) => ({
     text: node.data.props.text,
     variant: node.data.props.variant,
     size: node.data.props.size,
@@ -32,14 +50,14 @@ const ButtonSettings = () => {
   }));
 
   return (
-    <div className="flex flex-col gap-4 p-4 border rounded-md bg-card text-card-foreground">
-      <h3 className="font-semibold text-sm">Button Settings</h3>
-      
+    <div className="flex flex-col gap-4 rounded-md border bg-card p-4 text-card-foreground">
+      <h3 className="text-sm font-semibold">Button Settings</h3>
+
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Text</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={text}
           onChange={(e) => setProp((props: ButtonBlockProps) => (props.text = e.target.value))}
         />
@@ -48,9 +66,11 @@ const ButtonSettings = () => {
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Variant</label>
         <select
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={variant}
-          onChange={(e) => setProp((props: ButtonBlockProps) => (props.variant = e.target.value))}
+          onChange={(e) =>
+            setProp((props: ButtonBlockProps) => (props.variant = e.target.value as any))
+          }
         >
           <option value="default">Default</option>
           <option value="secondary">Secondary</option>
@@ -64,21 +84,23 @@ const ButtonSettings = () => {
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Size</label>
         <select
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={size}
-          onChange={(e) => setProp((props: ButtonBlockProps) => (props.size = e.target.value))}
+          onChange={(e) =>
+            setProp((props: ButtonBlockProps) => (props.size = e.target.value as any))
+          }
         >
           <option value="default">Default</option>
           <option value="sm">Small</option>
           <option value="lg">Large</option>
         </select>
       </div>
-      
-       <div className="flex flex-col gap-2">
+
+      <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Link (Href)</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={href || ""}
           onChange={(e) => setProp((props: ButtonBlockProps) => (props.href = e.target.value))}
           placeholder="https://..."
@@ -93,7 +115,7 @@ ButtonBlock.craft = {
     text: "Click Me",
     variant: "default",
     size: "default",
-    href: ""
+    href: "",
   },
   related: {
     settings: ButtonSettings,

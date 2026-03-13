@@ -1,6 +1,8 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
 import MarkaDashboardClient from "./_components/dashboard-client";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +13,7 @@ export default async function MarkaDashboard() {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { profile: { include: { brand: true } } }
+    include: { profile: { include: { brand: true } } },
   });
 
   const brandId = user?.profile?.brand?.id;
@@ -26,19 +28,23 @@ export default async function MarkaDashboard() {
       include: {
         agency: true,
         jobListings: {
-          include: { proposals: { select: { id: true } } }
-        }
+          include: { proposals: { select: { id: true } } },
+        },
       },
-      orderBy: { createdAt: "desc" }
+      orderBy: { createdAt: "desc" },
     });
 
-    const activeCount = projects.filter(p => p.status === "ACTIVE" || p.status === "IN_REVIEW").length;
-    const totalBudget = projects.reduce((sum, p) => 
-      sum + p.jobListings.reduce((s, jl) => s + (jl.budget || 0), 0), 0
+    const activeCount = projects.filter(
+      (p) => p.status === "ACTIVE" || p.status === "IN_REVIEW"
+    ).length;
+    const totalBudget = projects.reduce(
+      (sum, p) => sum + p.jobListings.reduce((s, jl) => s + (jl.budget || 0), 0),
+      0
     );
-    const uniqueAgencies = new Set(projects.map(p => p.agencyId).filter(Boolean));
-    const totalProposals = projects.reduce((sum, p) =>
-      sum + p.jobListings.reduce((s, jl) => s + jl.proposals.length, 0), 0
+    const uniqueAgencies = new Set(projects.map((p) => p.agencyId).filter(Boolean));
+    const totalProposals = projects.reduce(
+      (sum, p) => sum + p.jobListings.reduce((s, jl) => s + jl.proposals.length, 0),
+      0
     );
 
     stats = {
@@ -48,7 +54,7 @@ export default async function MarkaDashboard() {
       proposalCount: totalProposals,
     };
 
-    recentProjects = projects.slice(0, 5).map(p => ({
+    recentProjects = projects.slice(0, 5).map((p) => ({
       name: p.name,
       agency: p.agency?.agencyName || "Atanmadı",
       status: p.status,
@@ -56,10 +62,6 @@ export default async function MarkaDashboard() {
   }
 
   return (
-    <MarkaDashboardClient
-      brandName={brandName}
-      stats={stats}
-      recentProjects={recentProjects}
-    />
+    <MarkaDashboardClient brandName={brandName} stats={stats} recentProjects={recentProjects} />
   );
 }

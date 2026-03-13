@@ -5,7 +5,7 @@ import { analyzeWebsite } from "./services/analyze";
 
 export async function analyzeWebsiteAction(request: SeoRequest): Promise<SeoResponse> {
   // Role checks, rate limiting, and plan validation would go here
-  
+
   try {
     const result = await analyzeWebsite(request);
     return result;

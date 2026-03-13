@@ -5,12 +5,10 @@ export async function analyzeUrl(url: string): Promise<SeoReport> {
   return {
     url,
     score: 85,
-    issues: [
-      { type: "info", message: "Mock SEO analizi tamamlandı" }
-    ],
+    issues: [{ type: "info", message: "Mock SEO analizi tamamlandı" }],
     meta: {
       title: "Mock Title",
-      description: "Mock Description"
-    }
+      description: "Mock Description",
+    },
   };
 }

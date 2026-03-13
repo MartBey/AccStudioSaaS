@@ -7,10 +7,12 @@ export interface PostSchedule {
   mediaUrls?: string[];
 }
 
-export async function schedulePost(post: PostSchedule): Promise<{ id: string; status: "scheduled" | "failed" }> {
+export async function schedulePost(
+  post: PostSchedule
+): Promise<{ id: string; status: "scheduled" | "failed" }> {
   // TODO: Implement actual social media API integrations
   return {
     id: "mock_post_123",
-    status: "scheduled"
+    status: "scheduled",
   };
 }

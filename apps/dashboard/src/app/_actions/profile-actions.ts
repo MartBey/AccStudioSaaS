@@ -1,9 +1,10 @@
 "use server";
 
-import { prisma } from "database";
-import { auth } from "@/auth";
-import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
+import { prisma } from "database";
+import { revalidatePath } from "next/cache";
+
+import { auth } from "@/auth";
 
 // Profil bilgilerini güncelle
 export async function updateProfile(data: {
@@ -20,14 +21,14 @@ export async function updateProfile(data: {
     if (data.name) {
       await prisma.user.update({
         where: { id: session.user.id },
-        data: { name: data.name }
+        data: { name: data.name },
       });
     }
 
     // Profile bilgilerini güncelle
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      include: { profile: true }
+      include: { profile: true },
     });
 
     if (user?.profile) {
@@ -37,7 +38,7 @@ export async function updateProfile(data: {
           bio: data.bio ?? user.profile.bio,
           location: data.location ?? user.profile.location,
           website: data.website ?? user.profile.website,
-        }
+        },
       });
     }
 
@@ -51,16 +52,13 @@ export async function updateProfile(data: {
 }
 
 // Şifre değiştir
-export async function changePassword(data: {
-  currentPassword: string;
-  newPassword: string;
-}) {
+export async function changePassword(data: { currentPassword: string; newPassword: string }) {
   try {
     const session = await auth();
     if (!session?.user?.id) throw new Error("Oturum bulunamadı.");
 
     const user = await prisma.user.findUnique({
-      where: { id: session.user.id }
+      where: { id: session.user.id },
     });
 
     if (!user?.password) throw new Error("Bu hesap için şifre değiştirme desteklenmiyor.");
@@ -73,7 +71,7 @@ export async function changePassword(data: {
     const hashedPassword = await bcrypt.hash(data.newPassword, 10);
     await prisma.user.update({
       where: { id: session.user.id },
-      data: { password: hashedPassword }
+      data: { password: hashedPassword },
     });
 
     // AuditLog
@@ -83,7 +81,7 @@ export async function changePassword(data: {
         action: "CHANGE_PASSWORD",
         entityType: "User",
         entityId: session.user.id,
-      }
+      },
     });
 
     return { success: true };

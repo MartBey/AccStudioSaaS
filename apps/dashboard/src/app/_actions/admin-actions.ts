@@ -1,8 +1,9 @@
 "use server";
 
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+
+import { auth } from "@/auth";
 
 export type AuditLogFilters = {
   action?: string;
@@ -11,7 +12,6 @@ export type AuditLogFilters = {
   take?: number;
   page?: number;
 };
-
 
 // Admin: Tüm kullanıcıları getir
 export async function getAdminUsers() {
@@ -29,13 +29,13 @@ export async function getAdminUsers() {
           brand: { select: { companyName: true } },
           agency: { select: { agencyName: true } },
           freelancer: { select: { id: true } },
-        }
-      }
+        },
+      },
     },
     orderBy: { createdAt: "desc" },
   });
 
-  return users.map(u => ({
+  return users.map((u) => ({
     id: u.id,
     name: u.name || "İsimsiz",
     email: u.email || "",
@@ -60,12 +60,12 @@ export async function getAdminVerifications() {
 
   // Prisma join yapmak yerine manuel username/email çekiyoruz, çünkü schema.prisma'da Verification modelinde User relation'ı yok. (ProfileId üzerinden bağlı)
   const profiles = await prisma.profile.findMany({
-    where: { id: { in: verifications.map(v => v.profileId) } },
-    include: { user: true }
+    where: { id: { in: verifications.map((v) => v.profileId) } },
+    include: { user: true },
   });
 
-  return verifications.map(v => {
-    const profile = profiles.find(p => p.id === v.profileId);
+  return verifications.map((v) => {
+    const profile = profiles.find((p) => p.id === v.profileId);
     return {
       id: v.id,
       userName: profile?.user?.name || "İsimsiz",
@@ -80,7 +80,10 @@ export async function getAdminVerifications() {
 }
 
 // Admin: Verification durumunu güncelle
-export async function updateVerificationStatus(verificationId: string, status: "APPROVED" | "REJECTED") {
+export async function updateVerificationStatus(
+  verificationId: string,
+  status: "APPROVED" | "REJECTED"
+) {
   const session = await auth();
   if (!session?.user?.id) return { error: "Oturum bulunamadı." };
 
@@ -99,7 +102,7 @@ export async function updateVerificationStatus(verificationId: string, status: "
         action: `VERIFICATION_${status}`,
         entityType: "Verification",
         entityId: verificationId,
-      }
+      },
     });
 
     revalidatePath("/admin");
@@ -205,8 +208,16 @@ export async function getAdminUserDetail(userId: string) {
               id: true,
               title: true,
               hourlyRate: true,
-              proposals: { select: { id: true, status: true, amount: true }, take: 5, orderBy: { createdAt: "desc" } },
-              tasks: { select: { id: true, title: true, status: true, earning: true }, take: 5, orderBy: { createdAt: "desc" } },
+              proposals: {
+                select: { id: true, status: true, amount: true },
+                take: 5,
+                orderBy: { createdAt: "desc" },
+              },
+              tasks: {
+                select: { id: true, title: true, status: true, earning: true },
+                take: 5,
+                orderBy: { createdAt: "desc" },
+              },
             },
           },
           verification: { select: { status: true, documentUrl: true, createdAt: true } },
@@ -273,7 +284,10 @@ export async function getAdminUserDetail(userId: string) {
 }
 
 // Admin: Kullanıcı rolünü değiştir (ban için ADMIN-olmayan rol koruması)
-export async function changeUserRole(targetUserId: string, newRole: "BRAND" | "AGENCY" | "FREELANCER") {
+export async function changeUserRole(
+  targetUserId: string,
+  newRole: "BRAND" | "AGENCY" | "FREELANCER"
+) {
   const session = await auth();
   if (!session?.user?.id) return { error: "Yetkisiz" };
 
@@ -352,12 +366,13 @@ export async function getAICostSummary() {
 
   // Top user bilgilerini çek
   const userIds = topUsers.map((u) => u.userId);
-  const users = userIds.length > 0
-    ? await prisma.user.findMany({
-        where: { id: { in: userIds } },
-        select: { id: true, name: true, email: true },
-      })
-    : [];
+  const users =
+    userIds.length > 0
+      ? await prisma.user.findMany({
+          where: { id: { in: userIds } },
+          select: { id: true, name: true, email: true },
+        })
+      : [];
 
   return {
     totalCost: totalAgg._sum.cost || 0,

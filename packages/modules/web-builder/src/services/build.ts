@@ -7,9 +7,10 @@ import { v4 as uuidv4 } from "uuid";
  * Template ID'ye göre uygun template'i bulur.
  * Önce TemplatesList'te (metadata registry) arar, bulamazsa legacy registry'ye bakar.
  */
-function resolveTemplate(templateId: string): BuilderSite | null {
+function resolveTemplate(templateId?: string): BuilderSite | null {
+  if (!templateId) return null;
   // 1. Metadata registry'den ara (id ile)
-  const entry = TemplatesList.find(t => t.id === templateId);
+  const entry = TemplatesList.find((t) => t.id === templateId);
   if (entry) return entry.template;
 
   // 2. Legacy registry'den ara (key name ile)
@@ -18,12 +19,28 @@ function resolveTemplate(templateId: string): BuilderSite | null {
 
   // 3. Fuzzy match: template ID'nin içinde anahtar kelime ara
   const idLower = templateId.toLowerCase();
-  if (idLower.includes("agency") || idLower.includes("ajans")) return TemplatesRegistry.AgencyTemplate;
-  if (idLower.includes("saas") || idLower.includes("software")) return TemplatesRegistry.SaaSTemplate;
-  if (idLower.includes("ecommerce") || idLower.includes("shop") || idLower.includes("ticaret")) return TemplatesRegistry.ECommerceTemplate;
-  if (idLower.includes("portfolio") || idLower.includes("freelancer")) return TemplatesRegistry.PortfolioTemplate;
-  if (idLower.includes("restaurant") || idLower.includes("restoran") || idLower.includes("cafe") || idLower.includes("kafe")) return TemplatesRegistry.RestaurantTemplate;
-  if (idLower.includes("event") || idLower.includes("etkinlik") || idLower.includes("lansman") || idLower.includes("summit")) return TemplatesRegistry.EventTemplate;
+  if (idLower.includes("agency") || idLower.includes("ajans"))
+    return TemplatesRegistry.AgencyTemplate;
+  if (idLower.includes("saas") || idLower.includes("software"))
+    return TemplatesRegistry.SaaSTemplate;
+  if (idLower.includes("ecommerce") || idLower.includes("shop") || idLower.includes("ticaret"))
+    return TemplatesRegistry.ECommerceTemplate;
+  if (idLower.includes("portfolio") || idLower.includes("freelancer"))
+    return TemplatesRegistry.PortfolioTemplate;
+  if (
+    idLower.includes("restaurant") ||
+    idLower.includes("restoran") ||
+    idLower.includes("cafe") ||
+    idLower.includes("kafe")
+  )
+    return TemplatesRegistry.RestaurantTemplate;
+  if (
+    idLower.includes("event") ||
+    idLower.includes("etkinlik") ||
+    idLower.includes("lansman") ||
+    idLower.includes("summit")
+  )
+    return TemplatesRegistry.EventTemplate;
 
   return null;
 }
@@ -32,7 +49,10 @@ function resolveTemplate(templateId: string): BuilderSite | null {
  * Tema renklerini template node'larına enjekte eder.
  * Hero, Contact, Footer gibi renk destekleyen bloklara kullanıcı renklerini uygular.
  */
-function applyThemeToSite(site: BuilderSite, colors: { primary: string; secondary: string }): BuilderSite {
+function applyThemeToSite(
+  site: BuilderSite,
+  colors: { primary: string; secondary: string }
+): BuilderSite {
   return {
     ...site,
     themeConfig: site.themeConfig
@@ -119,12 +139,16 @@ function generatePreviewHtml(site: BuilderSite, brandName: string): string {
               <h2 style="text-align: center; font-size: 28px; margin-bottom: 8px; color: ${primaryColor};">${node.props.title || "Features"}</h2>
               ${node.props.subtitle ? `<p style="text-align: center; color: #64748b; margin-bottom: 32px;">${node.props.subtitle}</p>` : ""}
               <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; max-width: 1000px; margin: 0 auto;">
-                ${features.map((f: { title: string; description: string }) => `
+                ${features
+                  .map(
+                    (f: { title: string; description: string }) => `
                   <div style="flex: 1 1 250px; max-width: 300px; padding: 24px; background: #f8fafc; border-radius: 12px;">
                     <h3 style="font-size: 18px; font-weight: 600; color: ${primaryColor}; margin-bottom: 8px;">${f.title}</h3>
                     <p style="font-size: 14px; color: #64748b;">${f.description}</p>
                   </div>
-                `).join("")}
+                `
+                  )
+                  .join("")}
               </div>
             </section>`;
         case "Footer":

@@ -1,13 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { 
-  Card, CardContent, CardHeader, CardTitle,
-  Button, Input, Textarea, Label, Badge, toast,
-} from "ui";
-import { ShieldCheck, FileText, Clock, CheckCircle2, XCircle, Upload } from "lucide-react";
-import { submitVerification } from "@/app/_actions/verification-actions";
+import { CheckCircle2, Clock, FileText, ShieldCheck, Upload, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  Textarea,
+  toast,
+} from "ui";
+
+import { submitVerification } from "@/app/_actions/verification-actions";
 
 interface VerificationData {
   status: string;
@@ -23,28 +32,35 @@ interface DogrulamaClientProps {
   userRole: string;
 }
 
-const statusInfo: Record<string, { label: string; color: string; icon: React.ReactNode; description: string }> = {
-  PENDING: { 
-    label: "İnceleniyor", 
-    color: "text-yellow-600", 
+const statusInfo: Record<
+  string,
+  { label: string; color: string; icon: React.ReactNode; description: string }
+> = {
+  PENDING: {
+    label: "İnceleniyor",
+    color: "text-yellow-600",
     icon: <Clock className="h-6 w-6 text-yellow-600" />,
-    description: "Başvurunuz inceleme sırasında. Genellikle 1-3 iş günü içinde sonuçlanır."
+    description: "Başvurunuz inceleme sırasında. Genellikle 1-3 iş günü içinde sonuçlanır.",
   },
-  APPROVED: { 
-    label: "Doğrulanmış ✓", 
-    color: "text-emerald-600", 
+  APPROVED: {
+    label: "Doğrulanmış ✓",
+    color: "text-emerald-600",
     icon: <CheckCircle2 className="h-6 w-6 text-emerald-600" />,
-    description: "Hesabınız doğrulandı! Profilinizde doğrulanmış rozeti görünecektir."
+    description: "Hesabınız doğrulandı! Profilinizde doğrulanmış rozeti görünecektir.",
   },
-  REJECTED: { 
-    label: "Reddedildi", 
-    color: "text-red-600", 
+  REJECTED: {
+    label: "Reddedildi",
+    color: "text-red-600",
     icon: <XCircle className="h-6 w-6 text-red-600" />,
-    description: "Başvurunuz reddedildi. Yeni belgelerle tekrar başvurabilirsiniz."
+    description: "Başvurunuz reddedildi. Yeni belgelerle tekrar başvurabilirsiniz.",
   },
 };
 
-export default function DogrulamaClient({ verification, userName, userRole }: DogrulamaClientProps) {
+export default function DogrulamaClient({
+  verification,
+  userName,
+  userRole,
+}: DogrulamaClientProps) {
   const router = useRouter();
   const [documentUrl, setDocumentUrl] = useState("");
   const [notes, setNotes] = useState("");
@@ -71,13 +87,14 @@ export default function DogrulamaClient({ verification, userName, userRole }: Do
     }
   };
 
-  const roleLabel = userRole === "FREELANCER" ? "Freelancer" : userRole === "AGENCY" ? "Ajans" : "Marka";
+  const roleLabel =
+    userRole === "FREELANCER" ? "Freelancer" : userRole === "AGENCY" ? "Ajans" : "Marka";
 
   return (
-    <div className="flex flex-col gap-6 max-w-3xl">
+    <div className="flex max-w-3xl flex-col gap-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Hesap Doğrulama</h1>
-        <p className="text-muted-foreground mt-1">
+        <p className="mt-1 text-muted-foreground">
           Doğrulanmış {roleLabel} rozeti alarak güvenilirliğinizi artırın.
         </p>
       </div>
@@ -86,15 +103,15 @@ export default function DogrulamaClient({ verification, userName, userRole }: Do
       {verification ? (
         <Card className="border-t-4 border-t-primary">
           <CardContent className="py-8">
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto">
+            <div className="space-y-4 text-center">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-muted">
                 {statusInfo[verification.status]?.icon}
               </div>
               <div>
                 <h2 className={`text-2xl font-bold ${statusInfo[verification.status]?.color}`}>
                   {statusInfo[verification.status]?.label}
                 </h2>
-                <p className="text-muted-foreground mt-2">
+                <p className="mt-2 text-muted-foreground">
                   {statusInfo[verification.status]?.description}
                 </p>
               </div>
@@ -105,7 +122,7 @@ export default function DogrulamaClient({ verification, userName, userRole }: Do
                 )}
               </div>
               {verification.status === "APPROVED" && (
-                <Badge className="bg-emerald-100 text-emerald-700 px-4 py-1.5 text-sm gap-1">
+                <Badge className="gap-1 bg-emerald-100 px-4 py-1.5 text-sm text-emerald-700">
                   <ShieldCheck className="h-4 w-4" />
                   Doğrulanmış {roleLabel}
                 </Badge>
@@ -124,21 +141,27 @@ export default function DogrulamaClient({ verification, userName, userRole }: Do
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="text-center p-4 bg-muted/30 rounded-lg">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                <div className="rounded-lg bg-muted/30 p-4 text-center">
                   <span className="text-2xl">🛡️</span>
-                  <h3 className="font-semibold mt-2">Güven Rozeti</h3>
-                  <p className="text-xs text-muted-foreground mt-1">Profilinizde doğrulanmış simgesi görünür</p>
+                  <h3 className="mt-2 font-semibold">Güven Rozeti</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Profilinizde doğrulanmış simgesi görünür
+                  </p>
                 </div>
-                <div className="text-center p-4 bg-muted/30 rounded-lg">
+                <div className="rounded-lg bg-muted/30 p-4 text-center">
                   <span className="text-2xl">📈</span>
-                  <h3 className="font-semibold mt-2">Daha Fazla Görünürlük</h3>
-                  <p className="text-xs text-muted-foreground mt-1">İlanlarda ve aramalarda öncelik kazanır</p>
+                  <h3 className="mt-2 font-semibold">Daha Fazla Görünürlük</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    İlanlarda ve aramalarda öncelik kazanır
+                  </p>
                 </div>
-                <div className="text-center p-4 bg-muted/30 rounded-lg">
+                <div className="rounded-lg bg-muted/30 p-4 text-center">
                   <span className="text-2xl">🤝</span>
-                  <h3 className="font-semibold mt-2">Profesyonel İmaj</h3>
-                  <p className="text-xs text-muted-foreground mt-1">Merdiven altı hizmetten ayrışırsınız</p>
+                  <h3 className="mt-2 font-semibold">Profesyonel İmaj</h3>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Merdiven altı hizmetten ayrışırsınız
+                  </p>
                 </div>
               </div>
             </CardContent>
@@ -157,7 +180,7 @@ export default function DogrulamaClient({ verification, userName, userRole }: Do
                 <Label htmlFor="doc-url" className="flex items-center gap-1">
                   <Upload className="h-3.5 w-3.5" /> Belge URL (Google Drive, Dropbox vb.)
                 </Label>
-                <Input 
+                <Input
                   id="doc-url"
                   type="url"
                   placeholder="https://drive.google.com/file/d/... veya benzeri link"
@@ -165,12 +188,13 @@ export default function DogrulamaClient({ verification, userName, userRole }: Do
                   onChange={(e) => setDocumentUrl(e.target.value)}
                 />
                 <p className="text-xs text-muted-foreground">
-                  Vergi levhası, ticaret sicil gazetesi, diploma veya serbest çalışan belgesi yükleyin.
+                  Vergi levhası, ticaret sicil gazetesi, diploma veya serbest çalışan belgesi
+                  yükleyin.
                 </p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="notes">Ek Notlar (Opsiyonel)</Label>
-                <Textarea 
+                <Textarea
                   id="notes"
                   placeholder="Başvurunuzla ilgili eklemek istediğiniz bilgiler..."
                   className="min-h-[80px]"
@@ -178,7 +202,7 @@ export default function DogrulamaClient({ verification, userName, userRole }: Do
                   onChange={(e) => setNotes(e.target.value)}
                 />
               </div>
-              <Button onClick={handleSubmit} disabled={isSubmitting} className="w-full gap-2 h-11">
+              <Button onClick={handleSubmit} disabled={isSubmitting} className="h-11 w-full gap-2">
                 <ShieldCheck className="h-4 w-4" />
                 {isSubmitting ? "Gönderiliyor..." : "Doğrulama Başvurusu Yap"}
               </Button>

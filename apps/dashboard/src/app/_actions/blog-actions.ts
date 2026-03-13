@@ -1,14 +1,19 @@
 "use server";
 
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+
+import { auth } from "@/auth";
 
 function slugify(text: string): string {
   return text
     .toLowerCase()
-    .replace(/ğ/g, "g").replace(/ü/g, "u").replace(/ş/g, "s")
-    .replace(/ı/g, "i").replace(/ö/g, "o").replace(/ç/g, "c")
+    .replace(/ğ/g, "g")
+    .replace(/ü/g, "u")
+    .replace(/ş/g, "s")
+    .replace(/ı/g, "i")
+    .replace(/ö/g, "o")
+    .replace(/ç/g, "c")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 }
@@ -62,15 +67,18 @@ export async function createBlogPost(data: {
 }
 
 // Makale güncelle
-export async function updateBlogPost(postId: string, data: {
-  title?: string;
-  content?: string;
-  excerpt?: string;
-  category?: string;
-  tags?: string;
-  coverImage?: string;
-  published?: boolean;
-}) {
+export async function updateBlogPost(
+  postId: string,
+  data: {
+    title?: string;
+    content?: string;
+    excerpt?: string;
+    category?: string;
+    tags?: string;
+    coverImage?: string;
+    published?: boolean;
+  }
+) {
   const session = await auth();
   if (!session?.user?.id) return { error: "Oturum bulunamadı." };
 
@@ -140,16 +148,19 @@ export async function getBlogPostBySlug(slug: string) {
       where: { slug },
       data: { viewCount: { increment: 1 } },
     });
-  } catch { /* post bulunamadıysa devam et */ }
+  } catch {
+    /* post bulunamadıysa devam et */
+  }
 
   const post = await prisma.blogPost.findUnique({
     where: { slug },
     include: {
-      author: { 
-        select: { 
-          name: true, image: true,
+      author: {
+        select: {
+          name: true,
+          image: true,
           profile: { include: { freelancer: { include: { vitrin: { select: { slug: true } } } } } },
-        }
+        },
       },
     },
   });

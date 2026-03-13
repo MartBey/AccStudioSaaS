@@ -1,19 +1,20 @@
 "use client";
 
-import { useState, useTransition, useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { cn } from "ui";
 import {
-  Search,
-  Filter,
-  RefreshCw,
+  ArrowUpDown,
+  Calendar,
   ChevronLeft,
   ChevronRight,
-  User,
-  Calendar,
+  Filter,
+  RefreshCw,
+  Search,
   Tag,
-  ArrowUpDown,
+  User,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useCallback, useState, useTransition } from "react";
+import { cn } from "ui";
+
 import { getAuditLogs } from "@/app/_actions/admin-actions";
 
 // ---- types ----
@@ -128,24 +129,24 @@ export function AdvancedAdminTable({ initialLogs, totalCount, pageSize }: Props)
   return (
     <div className="space-y-4">
       {/* Filters */}
-      <form onSubmit={handleSearch} className="flex flex-wrap gap-3 items-center">
-        <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <form onSubmit={handleSearch} className="flex flex-wrap items-center gap-3">
+        <div className="relative min-w-[200px] flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder="Aksiyon ara… (örn. CREATE_PROPOSAL)"
             value={searchAction}
             onChange={(e) => setSearchAction(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 text-sm rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/40"
+            className="w-full rounded-md border border-border bg-background py-2 pl-9 pr-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           />
         </div>
 
         <div className="relative">
-          <Filter className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Filter className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <select
             value={entityTypeFilter}
             onChange={(e) => setEntityTypeFilter(e.target.value)}
-            className="pl-9 pr-6 py-2 text-sm rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary/40 appearance-none"
+            className="appearance-none rounded-md border border-border bg-background py-2 pl-9 pr-6 text-sm focus:outline-none focus:ring-2 focus:ring-primary/40"
           >
             {ENTITY_TYPES.map((t) => (
               <option key={t} value={t === "Tüm Entityler" ? "" : t}>
@@ -157,57 +158,61 @@ export function AdvancedAdminTable({ initialLogs, totalCount, pageSize }: Props)
 
         <button
           type="submit"
-          className="px-4 py-2 text-sm rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors font-medium"
+          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
         >
           Filtrele
         </button>
         <button
           type="button"
           onClick={handleReset}
-          className="p-2 rounded-md border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+          className="rounded-md border border-border p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           title="Sıfırla"
         >
           <RefreshCw className={cn("h-4 w-4", isPending && "animate-spin")} />
         </button>
 
-        <span className="ml-auto text-xs text-muted-foreground">
-          {total} kayıt bulundu
-        </span>
+        <span className="ml-auto text-xs text-muted-foreground">{total} kayıt bulundu</span>
       </form>
 
       {/* Table */}
-      <div className="rounded-lg border border-border overflow-hidden">
+      <div className="overflow-hidden rounded-lg border border-border">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-border bg-muted/40">
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">
-                  <span className="flex items-center gap-1.5"><Tag className="h-3.5 w-3.5" /> Aksiyon</span>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <Tag className="h-3.5 w-3.5" /> Aksiyon
+                  </span>
                 </th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Entity</th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">
-                  <span className="flex items-center gap-1.5"><User className="h-3.5 w-3.5" /> Kullanıcı</span>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground">Entity</th>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <User className="h-3.5 w-3.5" /> Kullanıcı
+                  </span>
                 </th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">
-                  <span className="flex items-center gap-1.5"><Calendar className="h-3.5 w-3.5" /> Tarih</span>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground">
+                  <span className="flex items-center gap-1.5">
+                    <Calendar className="h-3.5 w-3.5" /> Tarih
+                  </span>
                 </th>
-                <th className="text-left px-4 py-3 font-medium text-muted-foreground">Detay</th>
+                <th className="px-4 py-3 text-left font-medium text-muted-foreground">Detay</th>
               </tr>
             </thead>
             <tbody>
               {isPending ? (
                 Array.from({ length: 8 }).map((_, i) => (
-                  <tr key={i} className="border-b border-border/50 animate-pulse">
+                  <tr key={i} className="animate-pulse border-b border-border/50">
                     {Array.from({ length: 5 }).map((_, j) => (
                       <td key={j} className="px-4 py-3">
-                        <div className="h-4 bg-muted rounded w-3/4" />
+                        <div className="h-4 w-3/4 rounded bg-muted" />
                       </td>
                     ))}
                   </tr>
                 ))
               ) : logs.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-4 py-16 text-center text-muted-foreground text-sm">
+                  <td colSpan={5} className="px-4 py-16 text-center text-sm text-muted-foreground">
                     Kayıt bulunamadı.
                   </td>
                 </tr>
@@ -216,55 +221,78 @@ export function AdvancedAdminTable({ initialLogs, totalCount, pageSize }: Props)
                   <>
                     <tr
                       key={log.id}
-                      className="border-b border-border/50 hover:bg-muted/30 transition-colors cursor-pointer"
+                      className="cursor-pointer border-b border-border/50 transition-colors hover:bg-muted/30"
                       onClick={() => setExpandedRow(expandedRow === log.id ? null : log.id)}
                     >
                       <td className="px-4 py-3">
-                        <span className={cn("inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium", getActionBadgeStyle(log.action))}>
+                        <span
+                          className={cn(
+                            "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
+                            getActionBadgeStyle(log.action)
+                          )}
+                        >
                           {log.action}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-muted-foreground">
                         <span className="font-medium text-foreground/80">{log.entityType}</span>
-                        <span className="text-xs text-muted-foreground ml-1.5 font-mono">
+                        <span className="ml-1.5 font-mono text-xs text-muted-foreground">
                           #{log.entityId.slice(0, 8)}
                         </span>
                       </td>
                       <td className="px-4 py-3">
                         {log.user ? (
                           <div className="flex items-center gap-2">
-                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-semibold text-primary shrink-0">
+                            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
                               {(log.user.name || "?").charAt(0).toUpperCase()}
                             </div>
                             <div className="min-w-0">
-                              <p className="text-xs font-medium truncate">{log.user.name || "İsimsiz"}</p>
-                              <span className={cn("inline-flex items-center rounded-full px-1.5 py-0 text-[10px] font-medium", getRoleBadge(log.user.role))}>
+                              <p className="truncate text-xs font-medium">
+                                {log.user.name || "İsimsiz"}
+                              </p>
+                              <span
+                                className={cn(
+                                  "inline-flex items-center rounded-full px-1.5 py-0 text-[10px] font-medium",
+                                  getRoleBadge(log.user.role)
+                                )}
+                              >
                                 {log.user.role}
                               </span>
                             </div>
                           </div>
                         ) : (
-                          <span className="text-xs text-muted-foreground italic">Sistem</span>
+                          <span className="text-xs italic text-muted-foreground">Sistem</span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">
+                      <td className="whitespace-nowrap px-4 py-3 text-xs text-muted-foreground">
                         {formatTime(log.createdAt)}
                       </td>
                       <td className="px-4 py-3">
                         {log.details ? (
-                          <ArrowUpDown className={cn("h-3.5 w-3.5 text-muted-foreground transition-transform", expandedRow === log.id && "rotate-180")} />
+                          <ArrowUpDown
+                            className={cn(
+                              "h-3.5 w-3.5 text-muted-foreground transition-transform",
+                              expandedRow === log.id && "rotate-180"
+                            )}
+                          />
                         ) : (
-                          <span className="text-muted-foreground/40 text-xs">—</span>
+                          <span className="text-xs text-muted-foreground/40">—</span>
                         )}
                       </td>
                     </tr>
                     {expandedRow === log.id && log.details && (
-                      <tr key={`${log.id}-detail`} className="border-b border-border/50 bg-muted/20">
+                      <tr
+                        key={`${log.id}-detail`}
+                        className="border-b border-border/50 bg-muted/20"
+                      >
                         <td colSpan={5} className="px-4 py-3">
-                          <pre className="text-xs text-muted-foreground whitespace-pre-wrap font-mono bg-background/50 rounded-md p-3 border border-border/50 max-h-40 overflow-auto">
+                          <pre className="max-h-40 overflow-auto whitespace-pre-wrap rounded-md border border-border/50 bg-background/50 p-3 font-mono text-xs text-muted-foreground">
                             {(() => {
-                              try { return JSON.stringify(JSON.parse(log.details), null, 2); }
-                              catch { return log.details; }
+                              try {
+                                return JSON.stringify(JSON.parse(log.details), null, 2);
+                              } catch {
+                                return log.details;
+                              }
                             })()}
                           </pre>
                         </td>
@@ -287,7 +315,7 @@ export function AdvancedAdminTable({ initialLogs, totalCount, pageSize }: Props)
           <button
             onClick={() => fetchLogs(page - 1, searchAction, entityTypeFilter)}
             disabled={page <= 1 || isPending}
-            className="p-1.5 rounded-md border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="rounded-md border border-border p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronLeft className="h-4 w-4" />
           </button>
@@ -299,9 +327,9 @@ export function AdvancedAdminTable({ initialLogs, totalCount, pageSize }: Props)
                 onClick={() => fetchLogs(pageNum, searchAction, entityTypeFilter)}
                 disabled={isPending}
                 className={cn(
-                  "h-7 w-7 text-xs rounded-md border transition-colors",
+                  "h-7 w-7 rounded-md border text-xs transition-colors",
                   page === pageNum
-                    ? "bg-primary text-primary-foreground border-primary"
+                    ? "border-primary bg-primary text-primary-foreground"
                     : "border-border text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
@@ -312,7 +340,7 @@ export function AdvancedAdminTable({ initialLogs, totalCount, pageSize }: Props)
           <button
             onClick={() => fetchLogs(page + 1, searchAction, entityTypeFilter)}
             disabled={page >= totalPages || isPending}
-            className="p-1.5 rounded-md border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="rounded-md border border-border p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
           >
             <ChevronRight className="h-4 w-4" />
           </button>

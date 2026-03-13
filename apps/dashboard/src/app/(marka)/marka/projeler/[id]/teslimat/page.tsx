@@ -1,6 +1,8 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
 import TeslimatYonetimClient from "./_components/teslimat-client";
 
 export const dynamic = "force-dynamic";
@@ -17,25 +19,25 @@ export default async function MarkaTeslimatPage({ params }: { params: { id: stri
           freelancer: {
             include: {
               profile: {
-                include: { user: { select: { name: true } } }
-              }
-            }
-          }
+                include: { user: { select: { name: true } } },
+              },
+            },
+          },
         },
-        orderBy: { createdAt: "desc" }
-      }
-    }
+        orderBy: { createdAt: "desc" },
+      },
+    },
   });
 
   if (!project) {
     return (
-      <div className="text-center py-20">
+      <div className="py-20 text-center">
         <h2 className="text-xl font-bold text-muted-foreground">Proje bulunamadı</h2>
       </div>
     );
   }
 
-  const deliveries = project.tasks.map(t => ({
+  const deliveries = project.tasks.map((t) => ({
     taskId: t.id,
     taskTitle: t.title,
     status: t.status,
@@ -47,10 +49,5 @@ export default async function MarkaTeslimatPage({ params }: { params: { id: stri
     freelancerName: t.freelancer?.profile?.user?.name || "İsimsiz Freelancer",
   }));
 
-  return (
-    <TeslimatYonetimClient 
-      projectTitle={project.name} 
-      deliveries={deliveries}
-    />
-  );
+  return <TeslimatYonetimClient projectTitle={project.name} deliveries={deliveries} />;
 }

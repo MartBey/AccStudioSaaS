@@ -1,2 +1,2 @@
-export * from './services/analyze';
-export * from './actions';
+export * from "./services/analyze";
+export * from "./actions";

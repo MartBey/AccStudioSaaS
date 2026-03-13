@@ -1,0 +1,7 @@
+
+> dashboard@0.1.0 lint C:\AccStudioAGENT\apps\dashboard
+> next lint "--fix"
+
+C:\AccStudioAGENT\apps\dashboard:
+ÔÇëERR_PNPM_RECURSIVE_RUN_FIRST_FAILÔÇë dashboard@0.1.0 lint: `next lint "--fix"`
+Exit status 1

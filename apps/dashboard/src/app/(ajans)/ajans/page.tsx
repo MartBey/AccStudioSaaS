@@ -1,6 +1,8 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
 import AjansDashboardClient from "./_components/dashboard-client";
 
 export const dynamic = "force-dynamic";
@@ -11,7 +13,7 @@ export default async function AjansDashboard() {
 
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { profile: { include: { agency: true } } }
+    include: { profile: { include: { agency: true } } },
   });
 
   const agencyId = user?.profile?.agency?.id;
@@ -24,22 +26,23 @@ export default async function AjansDashboard() {
     // Projeler ve müşteriler
     const projects = await prisma.project.findMany({
       where: { agencyId },
-      include: { brand: true }
+      include: { brand: true },
     });
 
-    const uniqueBrands = new Set(projects.map(p => p.brandId).filter(Boolean));
-    const completedProjects = projects.filter(p => p.status === "COMPLETED").length;
+    const uniqueBrands = new Set(projects.map((p) => p.brandId).filter(Boolean));
+    const completedProjects = projects.filter((p) => p.status === "COMPLETED").length;
 
     // Ekip üye sayısı
     const employeeCount = await prisma.employee.count({ where: { agencyId } });
 
     // Açık görevler (ajansın projelerine bağlı)
-    const projectIds = projects.map(p => p.id);
-    const openTaskCount = projectIds.length > 0
-      ? await prisma.task.count({
-          where: { projectId: { in: projectIds }, status: { in: ["TODO", "IN_PROGRESS"] } }
-        })
-      : 0;
+    const projectIds = projects.map((p) => p.id);
+    const openTaskCount =
+      projectIds.length > 0
+        ? await prisma.task.count({
+            where: { projectId: { in: projectIds }, status: { in: ["TODO", "IN_PROGRESS"] } },
+          })
+        : 0;
 
     stats = {
       activeClients: uniqueBrands.size,
@@ -50,9 +53,9 @@ export default async function AjansDashboard() {
 
     // Aktif projeler listesi
     activeProjectsList = projects
-      .filter(p => p.status === "ACTIVE" || p.status === "IN_REVIEW")
+      .filter((p) => p.status === "ACTIVE" || p.status === "IN_REVIEW")
       .slice(0, 5)
-      .map(p => ({
+      .map((p) => ({
         client: p.brand?.companyName || "Marka",
         project: p.name,
         status: p.status === "ACTIVE" ? "Devam Ediyor" : "İncelemede",

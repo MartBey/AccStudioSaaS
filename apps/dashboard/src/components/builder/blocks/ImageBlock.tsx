@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import { useNode } from "@craftjs/core";
+import React from "react";
 
 export interface ImageBlockProps {
   src?: string;
@@ -20,11 +20,15 @@ export const ImageBlock = ({
   objectFit = "cover",
   borderRadius = "8px",
 }: ImageBlockProps) => {
-  const { connectors: { connect, drag } } = useNode();
+  const {
+    connectors: { connect, drag },
+  } = useNode();
 
   return (
     <div
-      ref={(ref) => { if (ref) connect(drag(ref)); }}
+      ref={(ref) => {
+        if (ref) connect(drag(ref));
+      }}
       style={{ width, margin: "10px 0" }}
     >
       {src ? (
@@ -65,7 +69,15 @@ export const ImageBlock = ({
 };
 
 const ImageSettings = () => {
-  const { actions: { setProp }, src, alt, width, height, objectFit, borderRadius } = useNode((node) => ({
+  const {
+    actions: { setProp },
+    src,
+    alt,
+    width,
+    height,
+    objectFit,
+    borderRadius,
+  } = useNode((node) => ({
     src: node.data.props.src,
     alt: node.data.props.alt,
     width: node.data.props.width,
@@ -75,14 +87,14 @@ const ImageSettings = () => {
   }));
 
   return (
-    <div className="flex flex-col gap-4 p-4 border rounded-md bg-card text-card-foreground">
-      <h3 className="font-semibold text-sm">Image Settings</h3>
+    <div className="flex flex-col gap-4 rounded-md border bg-card p-4 text-card-foreground">
+      <h3 className="text-sm font-semibold">Image Settings</h3>
 
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Image URL</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={src || ""}
           onChange={(e) => setProp((props: ImageBlockProps) => (props.src = e.target.value))}
           placeholder="https://example.com/image.jpg"
@@ -93,7 +105,7 @@ const ImageSettings = () => {
         <label className="text-xs font-medium">Alt Text</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={alt}
           onChange={(e) => setProp((props: ImageBlockProps) => (props.alt = e.target.value))}
           placeholder="Describe the image"
@@ -104,7 +116,7 @@ const ImageSettings = () => {
         <label className="text-xs font-medium">Height</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={height}
           onChange={(e) => setProp((props: ImageBlockProps) => (props.height = e.target.value))}
           placeholder="e.g. 300px, 50vh"
@@ -114,9 +126,14 @@ const ImageSettings = () => {
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Object Fit</label>
         <select
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={objectFit}
-          onChange={(e) => setProp((props: ImageBlockProps) => (props.objectFit = e.target.value as ImageBlockProps["objectFit"]))}
+          onChange={(e) =>
+            setProp(
+              (props: ImageBlockProps) =>
+                (props.objectFit = e.target.value as ImageBlockProps["objectFit"])
+            )
+          }
         >
           <option value="cover">Cover</option>
           <option value="contain">Contain</option>
@@ -129,9 +146,11 @@ const ImageSettings = () => {
         <label className="text-xs font-medium">Border Radius</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={borderRadius}
-          onChange={(e) => setProp((props: ImageBlockProps) => (props.borderRadius = e.target.value))}
+          onChange={(e) =>
+            setProp((props: ImageBlockProps) => (props.borderRadius = e.target.value))
+          }
           placeholder="e.g. 8px, 50%"
         />
       </div>

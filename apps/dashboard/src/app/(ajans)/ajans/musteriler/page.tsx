@@ -1,6 +1,8 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
 import MusterilerClient from "./_components/musteriler-client";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +14,7 @@ export default async function AjansMusterilerPage() {
   // Kullanıcının Agency profilini bul
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { profile: { include: { agency: true } } }
+    include: { profile: { include: { agency: true } } },
   });
 
   const agencyId = user?.profile?.agency?.id;
@@ -30,14 +32,17 @@ export default async function AjansMusterilerPage() {
     : [];
 
   // Markaları grupla
-  const brandMap = new Map<string, {
-    brandId: string;
-    brandName: string;
-    avatar: string;
-    projects: { name: string; status: string }[];
-    totalBudget: number;
-    activeProjects: number;
-  }>();
+  const brandMap = new Map<
+    string,
+    {
+      brandId: string;
+      brandName: string;
+      avatar: string;
+      projects: { name: string; status: string }[];
+      totalBudget: number;
+      activeProjects: number;
+    }
+  >();
 
   for (const p of projects) {
     if (!p.brand) continue;
@@ -61,7 +66,7 @@ export default async function AjansMusterilerPage() {
     }
   }
 
-  const customers = Array.from(brandMap.values()).map(b => ({
+  const customers = Array.from(brandMap.values()).map((b) => ({
     id: b.brandId,
     brandName: b.brandName,
     avatar: b.avatar,

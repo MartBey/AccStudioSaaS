@@ -11,7 +11,6 @@ export type RoleConfig = {
   [key: string]: NavItem[];
 };
 
-
 export const navigationConfig: RoleConfig = {
   BRAND: [
     { title: "Genel Bakış", href: "/marka", icon: "LayoutDashboard" },
@@ -26,7 +25,7 @@ export const navigationConfig: RoleConfig = {
     { title: "Makale Yaz", href: "/marka/blog", icon: "PenLine" },
     { title: "Bildirimler", href: "/marka/bildirimler", icon: "Bell" },
     { title: "Doğrulama", href: "/marka/dogrulama", icon: "ShieldCheck" },
-    { title: "Marka Ayarları", href: "/marka/ayarlar", icon: "Settings" }
+    { title: "Marka Ayarları", href: "/marka/ayarlar", icon: "Settings" },
   ],
   AGENCY: [
     { title: "Genel Bakış", href: "/ajans", icon: "LayoutDashboard" },

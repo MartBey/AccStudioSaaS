@@ -1,31 +1,32 @@
 "use client";
 
+import {
+  AlertTriangle,
+  ArrowRight,
+  CheckCircle2,
+  Copy,
+  RotateCcw,
+  Scale,
+  TrendingUp,
+} from "lucide-react";
 import { useState } from "react";
 import {
+  Badge,
   Button,
   Card,
-  CardHeader,
-  CardTitle,
   CardContent,
   CardDescription,
-  Badge,
-  Textarea,
+  CardHeader,
+  CardTitle,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Textarea,
   toast,
 } from "ui";
-import {
-  Scale,
-  ArrowRight,
-  CheckCircle2,
-  AlertTriangle,
-  TrendingUp,
-  Copy,
-  RotateCcw,
-} from "lucide-react";
+
 import { evaluateWithAIJuri, type JuriResponse } from "@/app/_actions/ai-juri-actions";
 
 export default function AIJuriPage() {
@@ -53,7 +54,8 @@ export default function AIJuriPage() {
       setResult(response);
       toast.success("AI Jüri değerlendirmesi tamamlandı!");
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Değerlendirme sırasında bir hata oluştu.";
+      const message =
+        error instanceof Error ? error.message : "Değerlendirme sırasında bir hata oluştu.";
       console.error(error);
       toast.error(message);
     } finally {
@@ -85,19 +87,20 @@ export default function AIJuriPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-transparent">
+        <h1 className="bg-gradient-to-r from-violet-600 to-indigo-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent">
           ⚖️ AI Jüri
         </h1>
-        <p className="text-muted-foreground mt-2">
-          İçeriklerinizi yapay zeka jürimize gönderin, profesyonel değerlendirme ve iyileştirilmiş versiyon alın.
+        <p className="mt-2 text-muted-foreground">
+          İçeriklerinizi yapay zeka jürimize gönderin, profesyonel değerlendirme ve iyileştirilmiş
+          versiyon alın.
         </p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-12">
         {/* Sol Panel — Girdi */}
-        <Card className="lg:col-span-5 flex flex-col">
+        <Card className="flex flex-col lg:col-span-5">
           <CardHeader>
-            <CardTitle className="text-xl flex items-center gap-2">
+            <CardTitle className="flex items-center gap-2 text-xl">
               <Scale className="h-5 w-5 text-violet-500" />
               Değerlendirme Formu
             </CardTitle>
@@ -105,10 +108,15 @@ export default function AIJuriPage() {
               İçeriğinizi yapıştırın, türünü seçin ve jüriye gönderin.
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 flex-1 flex flex-col">
+          <CardContent className="flex flex-1 flex-col space-y-4">
             <div className="space-y-2">
               <label className="text-sm font-medium">İçerik Türü</label>
-              <Select value={contentType} onValueChange={(val: string) => setContentType(val as "blog" | "social" | "email" | "general")}>
+              <Select
+                value={contentType}
+                onValueChange={(val: string) =>
+                  setContentType(val as "blog" | "social" | "email" | "general")
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -121,11 +129,11 @@ export default function AIJuriPage() {
               </Select>
             </div>
 
-            <div className="space-y-2 flex-1">
+            <div className="flex-1 space-y-2">
               <label className="text-sm font-medium">İçerik</label>
               <Textarea
                 placeholder="Değerlendirmek istediğiniz içeriği buraya yapıştırın..."
-                className="min-h-[200px] resize-none flex-1"
+                className="min-h-[200px] flex-1 resize-none"
                 value={content}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setContent(e.target.value)}
               />
@@ -139,18 +147,20 @@ export default function AIJuriPage() {
                 placeholder="Örn: SEO performansına özel dikkat et, anahtar kelime yoğunluğunu kontrol et..."
                 className="min-h-[60px] resize-none"
                 value={criteria}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCriteria(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setCriteria(e.target.value)
+                }
               />
             </div>
 
             <Button
-              className="w-full h-12 font-semibold shadow-md hover:shadow-lg transition-all bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700"
+              className="h-12 w-full bg-gradient-to-r from-violet-600 to-indigo-600 font-semibold shadow-md transition-all hover:from-violet-700 hover:to-indigo-700 hover:shadow-lg"
               onClick={handleEvaluate}
               disabled={loading || !content.trim()}
             >
               {loading ? (
                 <div className="flex items-center gap-2">
-                  <span className="w-4 h-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   Jüri Değerlendiriyor...
                 </div>
               ) : (
@@ -164,11 +174,11 @@ export default function AIJuriPage() {
         </Card>
 
         {/* Sağ Panel — Sonuçlar */}
-        <div className="lg:col-span-7 space-y-4">
+        <div className="space-y-4 lg:col-span-7">
           {!result && !loading && (
-            <Card className="min-h-[400px] flex items-center justify-center bg-muted/30">
-              <div className="text-center text-muted-foreground space-y-3 opacity-60">
-                <Scale className="h-16 w-16 mx-auto" />
+            <Card className="flex min-h-[400px] items-center justify-center bg-muted/30">
+              <div className="space-y-3 text-center text-muted-foreground opacity-60">
+                <Scale className="mx-auto h-16 w-16" />
                 <p className="text-lg font-medium">Jüri Bekleniyor</p>
                 <p className="text-sm">İçeriğinizi gönderin, AI Jüri detaylı analiz yapacak.</p>
               </div>
@@ -176,37 +186,45 @@ export default function AIJuriPage() {
           )}
 
           {loading && (
-            <Card className="min-h-[400px] flex items-center justify-center">
-              <div className="text-center space-y-4">
-                <div className="relative mx-auto w-20 h-20">
-                  <div className="absolute inset-0 rounded-full border-4 border-violet-200 animate-pulse" />
-                  <div className="absolute inset-2 rounded-full border-4 border-violet-400 border-t-transparent animate-spin" />
+            <Card className="flex min-h-[400px] items-center justify-center">
+              <div className="space-y-4 text-center">
+                <div className="relative mx-auto h-20 w-20">
+                  <div className="absolute inset-0 animate-pulse rounded-full border-4 border-violet-200" />
+                  <div className="absolute inset-2 animate-spin rounded-full border-4 border-violet-400 border-t-transparent" />
                   <Scale className="absolute inset-0 m-auto h-8 w-8 text-violet-600" />
                 </div>
                 <p className="text-lg font-medium">AI Jüri değerlendiriyor...</p>
-                <p className="text-sm text-muted-foreground">Gemini 2.0 Flash ile analiz ediliyor</p>
+                <p className="text-sm text-muted-foreground">
+                  Gemini 2.0 Flash ile analiz ediliyor
+                </p>
               </div>
             </Card>
           )}
 
           {result && (
-            <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+            <div className="space-y-4 duration-500 animate-in fade-in slide-in-from-bottom-4">
               {/* Genel Skor */}
               <Card className="overflow-hidden">
-                <div className={`p-6 ${result.overallScore >= 80 ? "bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-950/30 dark:to-green-950/30" : result.overallScore >= 60 ? "bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30" : "bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-950/30 dark:to-rose-950/30"}`}>
+                <div
+                  className={`p-6 ${result.overallScore >= 80 ? "bg-gradient-to-r from-emerald-50 to-green-50 dark:from-emerald-950/30 dark:to-green-950/30" : result.overallScore >= 60 ? "bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-950/30 dark:to-yellow-950/30" : "bg-gradient-to-r from-red-50 to-rose-50 dark:from-red-950/30 dark:to-rose-950/30"}`}
+                >
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-sm font-medium text-muted-foreground">Genel Değerlendirme</p>
-                      <p className="text-lg font-semibold mt-1">{result.verdict}</p>
+                      <p className="text-sm font-medium text-muted-foreground">
+                        Genel Değerlendirme
+                      </p>
+                      <p className="mt-1 text-lg font-semibold">{result.verdict}</p>
                     </div>
                     <div className="text-center">
-                      <div className={`text-4xl font-extrabold ${result.overallScore >= 80 ? "text-emerald-600" : result.overallScore >= 60 ? "text-amber-600" : "text-red-600"}`}>
+                      <div
+                        className={`text-4xl font-extrabold ${result.overallScore >= 80 ? "text-emerald-600" : result.overallScore >= 60 ? "text-amber-600" : "text-red-600"}`}
+                      >
                         {result.overallScore}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">/ 100 puan</p>
+                      <p className="mt-1 text-xs text-muted-foreground">/ 100 puan</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 mt-3">
+                  <div className="mt-3 flex items-center gap-2">
                     <Badge variant="secondary" className="text-xs">
                       {result.modelUsed}
                     </Badge>
@@ -221,7 +239,7 @@ export default function AIJuriPage() {
               {result.scores.length > 0 && (
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-lg">
                       <TrendingUp className="h-5 w-5 text-violet-500" />
                       Kategori Puanları
                     </CardTitle>
@@ -229,21 +247,25 @@ export default function AIJuriPage() {
                   <CardContent className="space-y-3">
                     {result.scores.map((score, i) => (
                       <div key={i} className="flex items-start gap-3">
-                        <span className="text-lg mt-0.5">{getScoreEmoji(score.score)}</span>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between mb-1">
+                        <span className="mt-0.5 text-lg">{getScoreEmoji(score.score)}</span>
+                        <div className="min-w-0 flex-1">
+                          <div className="mb-1 flex items-center justify-between">
                             <span className="text-sm font-medium">{score.category}</span>
                             <Badge
                               variant="outline"
-                              className={`text-xs font-mono ${getScoreColor(score.score)}`}
+                              className={`font-mono text-xs ${getScoreColor(score.score)}`}
                             >
                               {score.score}/100
                             </Badge>
                           </div>
-                          <div className="w-full bg-muted rounded-full h-2 mb-1.5">
+                          <div className="mb-1.5 h-2 w-full rounded-full bg-muted">
                             <div
                               className={`h-2 rounded-full transition-all duration-1000 ${
-                                score.score >= 80 ? "bg-emerald-500" : score.score >= 60 ? "bg-amber-500" : "bg-red-500"
+                                score.score >= 80
+                                  ? "bg-emerald-500"
+                                  : score.score >= 60
+                                    ? "bg-amber-500"
+                                    : "bg-red-500"
                               }`}
                               style={{ width: `${score.score}%` }}
                             />
@@ -260,7 +282,7 @@ export default function AIJuriPage() {
               {result.improvements.length > 0 && (
                 <Card>
                   <CardHeader className="pb-3">
-                    <CardTitle className="text-lg flex items-center gap-2">
+                    <CardTitle className="flex items-center gap-2 text-lg">
                       <AlertTriangle className="h-5 w-5 text-amber-500" />
                       İyileştirme Önerileri
                     </CardTitle>
@@ -269,7 +291,7 @@ export default function AIJuriPage() {
                     <ul className="space-y-2">
                       {result.improvements.map((item, i) => (
                         <li key={i} className="flex items-start gap-2 text-sm">
-                          <ArrowRight className="h-4 w-4 text-violet-500 mt-0.5 shrink-0" />
+                          <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-violet-500" />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -283,11 +305,16 @@ export default function AIJuriPage() {
                 <Card>
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-lg flex items-center gap-2">
+                      <CardTitle className="flex items-center gap-2 text-lg">
                         <CheckCircle2 className="h-5 w-5 text-emerald-500" />
                         İyileştirilmiş Versiyon
                       </CardTitle>
-                      <Button variant="outline" size="sm" className="gap-2" onClick={handleCopyImproved}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="gap-2"
+                        onClick={handleCopyImproved}
+                      >
                         <Copy className="h-3.5 w-3.5" />
                         Kopyala
                       </Button>
@@ -295,7 +322,7 @@ export default function AIJuriPage() {
                   </CardHeader>
                   <CardContent>
                     <div
-                      className="prose prose-sm dark:prose-invert max-w-none prose-p:leading-relaxed border rounded-lg p-4 bg-muted/30"
+                      className="prose prose-sm dark:prose-invert prose-p:leading-relaxed max-w-none rounded-lg border bg-muted/30 p-4"
                       dangerouslySetInnerHTML={{ __html: result.improvedVersion }}
                     />
                   </CardContent>

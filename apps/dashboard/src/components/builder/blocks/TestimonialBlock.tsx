@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import { useNode } from "@craftjs/core";
+import React from "react";
 
 export interface TestimonialBlockProps {
   quote?: string;
@@ -22,11 +22,15 @@ export const TestimonialBlock = ({
   backgroundColor = "#ffffff",
   accentColor = "#f59e0b",
 }: TestimonialBlockProps) => {
-  const { connectors: { connect, drag } } = useNode();
+  const {
+    connectors: { connect, drag },
+  } = useNode();
 
   return (
     <div
-      ref={(ref) => { if (ref) connect(drag(ref)); }}
+      ref={(ref) => {
+        if (ref) connect(drag(ref));
+      }}
       style={{ width: "100%" }}
     >
       <section
@@ -77,9 +81,29 @@ export const TestimonialBlock = ({
               padding: "0 20px",
             }}
           >
-            <span style={{ fontSize: "40px", color: "#cbd5e1", lineHeight: 0, verticalAlign: "-16px", marginRight: "4px" }}>&ldquo;</span>
+            <span
+              style={{
+                fontSize: "40px",
+                color: "#cbd5e1",
+                lineHeight: 0,
+                verticalAlign: "-16px",
+                marginRight: "4px",
+              }}
+            >
+              &ldquo;
+            </span>
             {quote}
-            <span style={{ fontSize: "40px", color: "#cbd5e1", lineHeight: 0, verticalAlign: "-16px", marginLeft: "4px" }}>&rdquo;</span>
+            <span
+              style={{
+                fontSize: "40px",
+                color: "#cbd5e1",
+                lineHeight: 0,
+                verticalAlign: "-16px",
+                marginLeft: "4px",
+              }}
+            >
+              &rdquo;
+            </span>
           </blockquote>
 
           {/* Author */}
@@ -115,7 +139,9 @@ export const TestimonialBlock = ({
               </div>
             )}
             <div style={{ textAlign: "left" }}>
-              <p style={{ margin: 0, fontWeight: "600", fontSize: "15px", color: "#0f172a" }}>{author}</p>
+              <p style={{ margin: 0, fontWeight: "600", fontSize: "15px", color: "#0f172a" }}>
+                {author}
+              </p>
               <p style={{ margin: 0, fontSize: "13px", color: "#64748b" }}>{role}</p>
             </div>
           </div>
@@ -126,7 +152,16 @@ export const TestimonialBlock = ({
 };
 
 const TestimonialSettings = () => {
-  const { actions: { setProp }, quote, author, role, avatarUrl, rating, backgroundColor, accentColor } = useNode((node) => ({
+  const {
+    actions: { setProp },
+    quote,
+    author,
+    role,
+    avatarUrl,
+    rating,
+    backgroundColor,
+    accentColor,
+  } = useNode((node) => ({
     quote: node.data.props.quote,
     author: node.data.props.author,
     role: node.data.props.role,
@@ -137,16 +172,18 @@ const TestimonialSettings = () => {
   }));
 
   return (
-    <div className="flex flex-col gap-4 p-4 border rounded-md bg-card text-card-foreground">
-      <h3 className="font-semibold text-sm">Testimonial Settings</h3>
+    <div className="flex flex-col gap-4 rounded-md border bg-card p-4 text-card-foreground">
+      <h3 className="text-sm font-semibold">Testimonial Settings</h3>
 
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Quote</label>
         <textarea
-          className="p-2 border rounded-md text-sm bg-background resize-none"
+          className="resize-none rounded-md border bg-background p-2 text-sm"
           rows={3}
           value={quote}
-          onChange={(e) => setProp((props: TestimonialBlockProps) => (props.quote = e.target.value))}
+          onChange={(e) =>
+            setProp((props: TestimonialBlockProps) => (props.quote = e.target.value))
+          }
         />
       </div>
 
@@ -154,9 +191,11 @@ const TestimonialSettings = () => {
         <label className="text-xs font-medium">Author Name</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={author}
-          onChange={(e) => setProp((props: TestimonialBlockProps) => (props.author = e.target.value))}
+          onChange={(e) =>
+            setProp((props: TestimonialBlockProps) => (props.author = e.target.value))
+          }
         />
       </div>
 
@@ -164,7 +203,7 @@ const TestimonialSettings = () => {
         <label className="text-xs font-medium">Author Role / Company</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={role}
           onChange={(e) => setProp((props: TestimonialBlockProps) => (props.role = e.target.value))}
         />
@@ -174,9 +213,11 @@ const TestimonialSettings = () => {
         <label className="text-xs font-medium">Avatar URL</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={avatarUrl || ""}
-          onChange={(e) => setProp((props: TestimonialBlockProps) => (props.avatarUrl = e.target.value))}
+          onChange={(e) =>
+            setProp((props: TestimonialBlockProps) => (props.avatarUrl = e.target.value))
+          }
           placeholder="https://example.com/avatar.jpg"
         />
       </div>
@@ -184,9 +225,11 @@ const TestimonialSettings = () => {
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Rating (0-5 stars)</label>
         <select
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={rating}
-          onChange={(e) => setProp((props: TestimonialBlockProps) => (props.rating = Number(e.target.value)))}
+          onChange={(e) =>
+            setProp((props: TestimonialBlockProps) => (props.rating = Number(e.target.value)))
+          }
         >
           <option value="0">No stars</option>
           <option value="1">1 star</option>
@@ -199,12 +242,14 @@ const TestimonialSettings = () => {
 
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Background Color</label>
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           <input
             type="color"
             value={backgroundColor}
-            onChange={(e) => setProp((props: TestimonialBlockProps) => (props.backgroundColor = e.target.value))}
-            className="w-8 h-8 rounded border"
+            onChange={(e) =>
+              setProp((props: TestimonialBlockProps) => (props.backgroundColor = e.target.value))
+            }
+            className="h-8 w-8 rounded border"
           />
           <span className="text-xs">{backgroundColor}</span>
         </div>
@@ -212,12 +257,14 @@ const TestimonialSettings = () => {
 
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Star Color</label>
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           <input
             type="color"
             value={accentColor}
-            onChange={(e) => setProp((props: TestimonialBlockProps) => (props.accentColor = e.target.value))}
-            className="w-8 h-8 rounded border"
+            onChange={(e) =>
+              setProp((props: TestimonialBlockProps) => (props.accentColor = e.target.value))
+            }
+            className="h-8 w-8 rounded border"
           />
           <span className="text-xs">{accentColor}</span>
         </div>
@@ -228,7 +275,8 @@ const TestimonialSettings = () => {
 
 TestimonialBlock.craft = {
   defaultProps: {
-    quote: "This product completely transformed how we work. The results have been outstanding and the team support is incredible.",
+    quote:
+      "This product completely transformed how we work. The results have been outstanding and the team support is incredible.",
     author: "John Doe",
     role: "CEO, TechCorp",
     avatarUrl: "",

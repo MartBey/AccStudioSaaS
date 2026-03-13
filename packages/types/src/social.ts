@@ -1,5 +1,5 @@
-export type SocialPlatform = 'instagram' | 'linkedin' | 'twitter' | 'facebook';
-export type PostStatus = 'draft' | 'scheduled' | 'published' | 'failed';
+export type SocialPlatform = "instagram" | "linkedin" | "twitter" | "facebook";
+export type PostStatus = "draft" | "scheduled" | "published" | "failed";
 
 export interface SocialPostRequest {
   content: string;

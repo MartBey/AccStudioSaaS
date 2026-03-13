@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
-import { auth } from "@/auth";
 import { analyzeSiteSeo } from "web-builder/src/services/seo-analyzer";
+import { z } from "zod";
+
+import { auth } from "@/auth";
 
 // Zod validasyon
 const SeoRequestSchema = z.object({
@@ -68,9 +69,6 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, analysis });
   } catch (error) {
     console.error("[Builder SEO API Error]", error);
-    return NextResponse.json(
-      { error: "Failed to analyze SEO." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to analyze SEO." }, { status: 500 });
   }
 }

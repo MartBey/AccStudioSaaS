@@ -1,14 +1,12 @@
 "use client";
 
-import { useState, useRef, useEffect, useTransition, useCallback } from "react";
-import { 
-  Card, CardContent,
-  Button, Input, Badge, toast,
-} from "ui";
 import { MessageCircle, Send, User, Wifi, WifiOff } from "lucide-react";
-import { sendMessage, getProjectMessages } from "@/app/_actions/message-actions";
-import { getPusherClient, getProjectChannel, PUSHER_EVENTS } from "@/lib/pusher-client";
 import type { Channel } from "pusher-js";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { Badge, Button, Card, CardContent, Input, toast } from "ui";
+
+import { getProjectMessages, sendMessage } from "@/app/_actions/message-actions";
+import { getProjectChannel, getPusherClient, PUSHER_EVENTS } from "@/lib/pusher-client";
 
 interface MessageItem {
   id: string;
@@ -44,7 +42,7 @@ export default function MesajlarClient({ threads }: MesajlarClientProps) {
   const channelRef = useRef<Channel | null>(null);
   const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const selectedThread = threads.find(t => t.projectId === selectedProject);
+  const selectedThread = threads.find((t) => t.projectId === selectedProject);
 
   // Otomatik scroll
   useEffect(() => {
@@ -70,9 +68,9 @@ export default function MesajlarClient({ threads }: MesajlarClientProps) {
 
     // Yeni mesaj geldiğinde
     channel.bind(PUSHER_EVENTS.NEW_MESSAGE, (data: Omit<MessageItem, "isOwn">) => {
-      setMessages(prev => {
+      setMessages((prev) => {
         // Duplikasyon kontrolü
-        if (prev.some(m => m.id === data.id)) return prev;
+        if (prev.some((m) => m.id === data.id)) return prev;
         return [...prev, { ...data, isOwn: false }];
       });
       setTypingUser(null);
@@ -100,7 +98,9 @@ export default function MesajlarClient({ threads }: MesajlarClientProps) {
     try {
       const msgs = await getProjectMessages(projectId);
       setMessages(msgs);
-    } catch { setMessages([]); }
+    } catch {
+      setMessages([]);
+    }
     setLoadingMessages(false);
   }, []);
 
@@ -109,7 +109,7 @@ export default function MesajlarClient({ threads }: MesajlarClientProps) {
     if (!newMessage.trim() || !selectedProject) return;
     const content = newMessage;
     setNewMessage("");
-    
+
     startTransition(async () => {
       const res = await sendMessage({ projectId: selectedProject, content });
       if (res.success) {
@@ -127,16 +127,20 @@ export default function MesajlarClient({ threads }: MesajlarClientProps) {
   // Yazıyor bildirimi
   const handleTyping = () => {
     if (!channelRef.current) return;
-    
+
     try {
       channelRef.current.trigger(PUSHER_EVENTS.TYPING, { userName: "Kullanıcı" });
-    } catch { /* client events Pusher planına bağlı */ }
-    
+    } catch {
+      /* client events Pusher planına bağlı */
+    }
+
     if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
     typingTimeoutRef.current = setTimeout(() => {
       try {
         channelRef.current?.trigger(PUSHER_EVENTS.STOP_TYPING, {});
-      } catch { /* silent */ }
+      } catch {
+        /* silent */
+      }
     }, 2000);
   };
 
@@ -160,12 +164,15 @@ export default function MesajlarClient({ threads }: MesajlarClientProps) {
         <h1 className="text-3xl font-bold tracking-tight">Mesajlar</h1>
         <div className="flex items-center gap-2">
           {isConnected ? (
-            <Badge variant="outline" className="text-xs gap-1.5 text-emerald-600 border-emerald-200 bg-emerald-50">
+            <Badge
+              variant="outline"
+              className="gap-1.5 border-emerald-200 bg-emerald-50 text-xs text-emerald-600"
+            >
               <Wifi className="h-3 w-3" />
               Canlı
             </Badge>
           ) : (
-            <Badge variant="outline" className="text-xs gap-1.5 text-muted-foreground">
+            <Badge variant="outline" className="gap-1.5 text-xs text-muted-foreground">
               <WifiOff className="h-3 w-3" />
               Çevrimdışı
             </Badge>
@@ -173,40 +180,47 @@ export default function MesajlarClient({ threads }: MesajlarClientProps) {
         </div>
       </div>
 
-      <div className="flex gap-4 flex-1 min-h-0">
+      <div className="flex min-h-0 flex-1 gap-4">
         {/* Thread List */}
-        <Card className="w-80 flex-shrink-0 flex flex-col">
-          <CardContent className="p-3 flex-1 overflow-y-auto">
+        <Card className="flex w-80 flex-shrink-0 flex-col">
+          <CardContent className="flex-1 overflow-y-auto p-3">
             {threads.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground text-sm">
-                <MessageCircle className="h-8 w-8 mx-auto mb-2 opacity-40" />
+              <div className="py-8 text-center text-sm text-muted-foreground">
+                <MessageCircle className="mx-auto mb-2 h-8 w-8 opacity-40" />
                 Henüz mesaj yok
               </div>
             ) : (
               <div className="space-y-1">
-                {threads.map(t => (
+                {threads.map((t) => (
                   <button
                     key={t.projectId}
                     onClick={() => loadMessages(t.projectId)}
-                    className={`w-full text-left p-3 rounded-lg transition-colors ${
-                      selectedProject === t.projectId ? "bg-primary/10 border border-primary/20" : "hover:bg-muted"
+                    className={`w-full rounded-lg p-3 text-left transition-colors ${
+                      selectedProject === t.projectId
+                        ? "border border-primary/20 bg-primary/10"
+                        : "hover:bg-muted"
                     }`}
                   >
                     <div className="flex items-center justify-between">
-                      <h3 className="font-semibold text-sm truncate">{t.projectName}</h3>
+                      <h3 className="truncate text-sm font-semibold">{t.projectName}</h3>
                       {t.totalMessages > 0 && (
-                        <Badge variant="secondary" className="text-xs h-5 px-1.5">{t.totalMessages}</Badge>
+                        <Badge variant="secondary" className="h-5 px-1.5 text-xs">
+                          {t.totalMessages}
+                        </Badge>
                       )}
                     </div>
                     {t.lastMessage ? (
                       <div className="mt-1">
-                        <p className="text-xs text-muted-foreground truncate">
-                          <span className="font-medium">{t.lastMessage.senderName}:</span> {t.lastMessage.content}
+                        <p className="truncate text-xs text-muted-foreground">
+                          <span className="font-medium">{t.lastMessage.senderName}:</span>{" "}
+                          {t.lastMessage.content}
                         </p>
-                        <p className="text-[10px] text-muted-foreground/50 mt-0.5">{formatDate(t.lastMessage.createdAt)}</p>
+                        <p className="mt-0.5 text-[10px] text-muted-foreground/50">
+                          {formatDate(t.lastMessage.createdAt)}
+                        </p>
                       </div>
                     ) : (
-                      <p className="text-xs text-muted-foreground/50 mt-1">Henüz mesaj yok</p>
+                      <p className="mt-1 text-xs text-muted-foreground/50">Henüz mesaj yok</p>
                     )}
                   </button>
                 ))}
@@ -216,66 +230,79 @@ export default function MesajlarClient({ threads }: MesajlarClientProps) {
         </Card>
 
         {/* Chat Area */}
-        <Card className="flex-1 flex flex-col min-w-0">
+        <Card className="flex min-w-0 flex-1 flex-col">
           {!selectedProject ? (
-            <CardContent className="flex-1 flex items-center justify-center text-muted-foreground">
+            <CardContent className="flex flex-1 items-center justify-center text-muted-foreground">
               <div className="text-center">
-                <MessageCircle className="h-12 w-12 mx-auto mb-3 opacity-30" />
+                <MessageCircle className="mx-auto mb-3 h-12 w-12 opacity-30" />
                 <p>Mesajlaşmak için sol panelden bir proje seçin</p>
               </div>
             </CardContent>
           ) : (
             <>
               {/* Header */}
-              <div className="px-4 py-3 border-b flex items-center justify-between">
+              <div className="flex items-center justify-between border-b px-4 py-3">
                 <h2 className="font-semibold">{selectedThread?.projectName}</h2>
                 {isConnected && (
                   <span className="flex items-center gap-1 text-xs text-emerald-600">
-                    <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+                    <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
                     Canlı bağlantı
                   </span>
                 )}
               </div>
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              <div className="flex-1 space-y-3 overflow-y-auto p-4">
                 {loadingMessages ? (
-                  <div className="text-center text-muted-foreground py-8">Yükleniyor...</div>
+                  <div className="py-8 text-center text-muted-foreground">Yükleniyor...</div>
                 ) : messages.length === 0 ? (
-                  <div className="text-center text-muted-foreground py-8 text-sm">
+                  <div className="py-8 text-center text-sm text-muted-foreground">
                     İlk mesajı gönderin!
                   </div>
                 ) : (
-                  messages.map(m => (
+                  messages.map((m) => (
                     <div key={m.id} className={`flex ${m.isOwn ? "justify-end" : "justify-start"}`}>
                       <div className={`max-w-[70%] ${m.isOwn ? "order-1" : ""}`}>
                         {!m.isOwn && (
-                          <p className="text-xs text-muted-foreground mb-1 flex items-center gap-1">
+                          <p className="mb-1 flex items-center gap-1 text-xs text-muted-foreground">
                             <User className="h-3 w-3" /> {m.senderName}
                           </p>
                         )}
-                        <div className={`rounded-2xl px-4 py-2.5 ${
-                          m.isOwn 
-                            ? "bg-primary text-primary-foreground rounded-br-md" 
-                            : "bg-muted rounded-bl-md"
-                        }`}>
-                          <p className="text-sm whitespace-pre-wrap">{m.content}</p>
+                        <div
+                          className={`rounded-2xl px-4 py-2.5 ${
+                            m.isOwn
+                              ? "rounded-br-md bg-primary text-primary-foreground"
+                              : "rounded-bl-md bg-muted"
+                          }`}
+                        >
+                          <p className="whitespace-pre-wrap text-sm">{m.content}</p>
                         </div>
-                        <p className={`text-[10px] text-muted-foreground/50 mt-1 ${m.isOwn ? "text-right" : ""}`}>
+                        <p
+                          className={`mt-1 text-[10px] text-muted-foreground/50 ${m.isOwn ? "text-right" : ""}`}
+                        >
                           {formatTime(m.createdAt)}
                         </p>
                       </div>
                     </div>
                   ))
                 )}
-                
+
                 {/* Yazıyor göstergesi */}
                 {typingUser && (
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground animate-in fade-in duration-300">
+                  <div className="flex items-center gap-2 text-xs text-muted-foreground duration-300 animate-in fade-in">
                     <div className="flex gap-1">
-                      <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "0ms" }} />
-                      <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "150ms" }} />
-                      <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground animate-bounce" style={{ animationDelay: "300ms" }} />
+                      <span
+                        className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground"
+                        style={{ animationDelay: "0ms" }}
+                      />
+                      <span
+                        className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground"
+                        style={{ animationDelay: "150ms" }}
+                      />
+                      <span
+                        className="h-1.5 w-1.5 animate-bounce rounded-full bg-muted-foreground"
+                        style={{ animationDelay: "300ms" }}
+                      />
                     </div>
                     <span>{typingUser} yazıyor...</span>
                   </div>
@@ -285,8 +312,8 @@ export default function MesajlarClient({ threads }: MesajlarClientProps) {
               </div>
 
               {/* Input */}
-              <div className="p-3 border-t flex gap-2">
-                <Input 
+              <div className="flex gap-2 border-t p-3">
+                <Input
                   placeholder="Mesajınızı yazın..."
                   value={newMessage}
                   onChange={(e) => {
@@ -296,7 +323,12 @@ export default function MesajlarClient({ threads }: MesajlarClientProps) {
                   onKeyDown={(e) => e.key === "Enter" && !e.shiftKey && handleSend()}
                   className="flex-1"
                 />
-                <Button onClick={handleSend} disabled={isPending || !newMessage.trim()} size="icon" className="flex-shrink-0">
+                <Button
+                  onClick={handleSend}
+                  disabled={isPending || !newMessage.trim()}
+                  size="icon"
+                  className="flex-shrink-0"
+                >
                   <Send className="h-4 w-4" />
                 </Button>
               </div>

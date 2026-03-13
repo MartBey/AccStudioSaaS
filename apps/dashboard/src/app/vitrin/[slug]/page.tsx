@@ -1,9 +1,15 @@
-import { notFound } from "next/navigation";
-import { getVitrinBySlug } from "@/app/_actions/vitrin-actions";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
+
+import { getVitrinBySlug } from "@/app/_actions/vitrin-actions";
+
 import VitrinView from "./_components/vitrin-view";
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
   const vitrin = await getVitrinBySlug(params.slug);
   if (!vitrin) return { title: "Vitrin Bulunamadı" };
   return {
@@ -18,10 +24,12 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 export default async function PublicVitrinPage({ params }: { params: { slug: string } }) {
   const vitrin = await getVitrinBySlug(params.slug);
-  const formattedVitrin = vitrin ? {
-    ...vitrin,
-    socialLinks: (vitrin.socialLinks || null) as Record<string, string> | null,
-  } : null;
+  const formattedVitrin = vitrin
+    ? {
+        ...vitrin,
+        socialLinks: (vitrin.socialLinks || null) as Record<string, string> | null,
+      }
+    : null;
 
   if (!formattedVitrin) return notFound();
 

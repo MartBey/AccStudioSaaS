@@ -20,7 +20,7 @@ export interface CraftParserOptions {
 
 /**
  * CraftParser factory - belirli bir component haritası ile konfigüre edilmiş parser döndürür.
- * 
+ *
  * Kullanım (dashboard tarafında):
  * ```
  * const parser = createCraftParser({
@@ -36,17 +36,18 @@ export interface CraftParserOptions {
 export function createCraftParser(options: CraftParserOptions) {
   const { componentMap, fallbackComponent = FALLBACK_COMPONENT } = options;
 
-  const parseNode = (node: BuilderNode, keyPrefix = ""): React.ReactNode => {
+  const parseNode = (node: BuilderNode, keyPrefix = "root", index = 0): React.ReactNode => {
     const Component = componentMap[node.type] || fallbackComponent;
     const props = node.props || {};
 
-    // Benzersiz anahtarlar
-    const currentKey = `${keyPrefix}-${node.id || uuidv4()}`;
+    // Deterministic keys for hydration safety
+    const currentKey = `${keyPrefix}-${node.id || `node-${index}`}`;
 
     // Recursive alt bileşen işleme
-    const childrenNodes = node.children && node.children.length > 0
-      ? node.children.map((child, idx) => parseNode(child, `${currentKey}-${idx}`))
-      : undefined;
+    const childrenNodes =
+      node.children && node.children.length > 0
+        ? node.children.map((child, idx) => parseNode(child, currentKey, idx))
+        : undefined;
 
     // Container tipi bloklar canvas olarak işaretlenir
     const isCanvas = node.type === BlockType.Container;
@@ -55,7 +56,11 @@ export function createCraftParser(options: CraftParserOptions) {
       return React.createElement("div", { key: currentKey, id: node.id, ...props }, childrenNodes);
     }
 
-    return React.createElement(Component as React.ElementType, { key: currentKey, id: node.id, ...props }, childrenNodes);
+    return React.createElement(
+      Component as React.ElementType,
+      { key: currentKey, id: node.id, ...props },
+      childrenNodes
+    );
   };
 
   return { parseNode };
@@ -63,28 +68,38 @@ export function createCraftParser(options: CraftParserOptions) {
 
 /**
  * Legacy uyumluluk: Doğrudan çağrılabilir fonksiyon.
- * Ama artık Craft.js Element oluşturma işini dashboard tarafına bırakıyoruz.
- * Bu fonksiyon componentMap olmadan sadece temel div yapısı üretir.
  */
 export const parseAITreeToReactNode = (
   node: BuilderNode,
   componentMap?: ComponentMap,
-  keyPrefix = ""
+  keyPrefix = "root",
+  index = 0
 ): React.ReactNode => {
   const Component = (componentMap && componentMap[node.type]) || FALLBACK_COMPONENT;
   const props = node.props || {};
 
-  const currentKey = `${keyPrefix}-${node.id || uuidv4()}`;
+  const currentKey = `${keyPrefix}-${node.id || `node-${index}`}`;
 
-  const childrenNodes = node.children && node.children.length > 0
-    ? node.children.map((child, idx) => parseAITreeToReactNode(child, componentMap, `${currentKey}-${idx}`))
-    : undefined;
+  const childrenNodes =
+    node.children && node.children.length > 0
+      ? node.children.map((child, idx) =>
+          parseAITreeToReactNode(child, componentMap, currentKey, idx)
+        )
+      : undefined;
 
   const isCanvas = node.type === BlockType.Container;
 
   if (isCanvas) {
-    return React.createElement(Component as React.ElementType, { key: currentKey, id: node.id, canvas: true, ...props }, childrenNodes);
+    return React.createElement(
+      Component as React.ElementType,
+      { key: currentKey, id: node.id, canvas: true, ...props },
+      childrenNodes
+    );
   }
 
-  return React.createElement(Component as React.ElementType, { key: currentKey, id: node.id, ...props }, childrenNodes);
+  return React.createElement(
+    Component as React.ElementType,
+    { key: currentKey, id: node.id, ...props },
+    childrenNodes
+  );
 };

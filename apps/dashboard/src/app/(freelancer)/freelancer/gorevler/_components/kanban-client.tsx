@@ -1,20 +1,12 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { 
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-  Badge,
-  Button,
-  toast,
-} from "ui";
-import { Clock, DollarSign, ArrowRight, ArrowLeft, CheckCircle2 } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
-import { updateTaskStatus } from "../_actions/task-actions";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowLeft, ArrowRight, CheckCircle2, Clock, DollarSign } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
+import { Badge, Button, Card, CardContent, CardFooter, CardHeader, CardTitle, toast } from "ui";
+
+import { updateTaskStatus } from "../_actions/task-actions";
 
 interface TaskItem {
   id: string;
@@ -32,10 +24,26 @@ interface KanbanClientProps {
 
 // DB status → Türkçe label eşlemesi
 const statusColumns = [
-  { dbStatus: "TODO", title: "Yapılacak", color: "bg-slate-100 dark:bg-slate-900 border-slate-200" },
-  { dbStatus: "IN_PROGRESS", title: "Devam Ediyor", color: "bg-blue-50 dark:bg-blue-950/20 border-blue-100" },
-  { dbStatus: "REVIEW", title: "İnceleniyor", color: "bg-amber-50 dark:bg-amber-950/20 border-amber-100" },
-  { dbStatus: "DONE", title: "Tamamlandı", color: "bg-emerald-50 dark:bg-emerald-950/20 border-emerald-100" },
+  {
+    dbStatus: "TODO",
+    title: "Yapılacak",
+    color: "bg-slate-100 dark:bg-slate-900 border-slate-200",
+  },
+  {
+    dbStatus: "IN_PROGRESS",
+    title: "Devam Ediyor",
+    color: "bg-blue-50 dark:bg-blue-950/20 border-blue-100",
+  },
+  {
+    dbStatus: "REVIEW",
+    title: "İnceleniyor",
+    color: "bg-amber-50 dark:bg-amber-950/20 border-amber-100",
+  },
+  {
+    dbStatus: "DONE",
+    title: "Tamamlandı",
+    color: "bg-emerald-50 dark:bg-emerald-950/20 border-emerald-100",
+  },
 ];
 
 export default function KanbanClient({ tasks: initialTasks }: KanbanClientProps) {
@@ -45,56 +53,65 @@ export default function KanbanClient({ tasks: initialTasks }: KanbanClientProps)
 
   const moveTask = (taskId: string, newDbStatus: string) => {
     // Optimistic update
-    setTasks(prev => prev.map(t => t.id === taskId ? { ...t, status: newDbStatus } : t));
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, status: newDbStatus } : t)));
 
     // Server action
     startTransition(async () => {
       const res = await updateTaskStatus(taskId, newDbStatus);
       if (!res.success) {
         // Rollback on error
-        setTasks(prev => prev.map(t => t.id === taskId ? { ...t, status: initialTasks.find(it => it.id === taskId)?.status || t.status } : t));
+        setTasks((prev) =>
+          prev.map((t) =>
+            t.id === taskId
+              ? { ...t, status: initialTasks.find((it) => it.id === taskId)?.status || t.status }
+              : t
+          )
+        );
         toast.error(res.error || "Görev durumu güncellenemedi.");
       }
     });
   };
 
   return (
-    <div className="flex flex-col gap-6 h-full min-h-[calc(100vh-6rem)]">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+    <div className="flex h-full min-h-[calc(100vh-6rem)] flex-col gap-6">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Görevlerim (Kanban)</h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="mt-1 text-muted-foreground">
             Üstlendiğiniz freelance işlerin durumunu butonlarla kaydırarak güncelleyin.
           </p>
         </div>
-        <Badge variant="outline" className="text-sm px-3 py-1.5">
+        <Badge variant="outline" className="px-3 py-1.5 text-sm">
           {tasks.length} görev
         </Badge>
       </div>
 
       {/* KANBAN BOARD */}
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto pb-4">
+      <div className="grid flex-1 grid-cols-1 gap-4 overflow-x-auto pb-4 md:grid-cols-2 lg:grid-cols-4">
         {statusColumns.map((col, colIndex) => {
-          const colTasks = tasks.filter(t => t.status === col.dbStatus);
+          const colTasks = tasks.filter((t) => t.status === col.dbStatus);
 
           return (
             <div key={col.dbStatus} className={`flex flex-col rounded-xl border p-4 ${col.color}`}>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-sm uppercase tracking-wider">{col.title}</h3>
-                <Badge variant="secondary" className="bg-background/50">{colTasks.length}</Badge>
+              <div className="mb-4 flex items-center justify-between">
+                <h3 className="text-sm font-semibold uppercase tracking-wider">{col.title}</h3>
+                <Badge variant="secondary" className="bg-background/50">
+                  {colTasks.length}
+                </Badge>
               </div>
 
-              <div className="flex flex-col gap-3 flex-1">
+              <div className="flex flex-1 flex-col gap-3">
                 <AnimatePresence>
                   {colTasks.length === 0 ? (
-                    <motion.div 
-                      initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                      className="text-xs text-center p-4 border border-dashed rounded-lg text-muted-foreground bg-background/50"
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="rounded-lg border border-dashed bg-background/50 p-4 text-center text-xs text-muted-foreground"
                     >
                       Görev yok
                     </motion.div>
                   ) : (
-                    colTasks.map(task => (
+                    colTasks.map((task) => (
                       <motion.div
                         layout
                         initial={{ opacity: 0, scale: 0.95 }}
@@ -103,62 +120,78 @@ export default function KanbanClient({ tasks: initialTasks }: KanbanClientProps)
                         transition={{ duration: 0.2 }}
                         key={task.id}
                       >
-                        <Card className="shadow-sm hover:shadow-md transition-shadow cursor-default flex flex-col group">
+                        <Card className="group flex cursor-default flex-col shadow-sm transition-shadow hover:shadow-md">
                           <CardHeader className="p-4 pb-2">
-                            <div className="flex justify-between items-start mb-1">
-                              <span className="text-[10px] font-mono text-muted-foreground bg-muted px-1.5 rounded">
+                            <div className="mb-1 flex items-start justify-between">
+                              <span className="rounded bg-muted px-1.5 font-mono text-[10px] text-muted-foreground">
                                 {task.id.slice(0, 8)}
                               </span>
-                              <Badge 
-                                variant={task.deadline.includes("Bugün") || task.deadline.includes("Yarın") ? "destructive" : "secondary"} 
-                                className="text-[10px] font-normal px-1.5 h-4"
+                              <Badge
+                                variant={
+                                  task.deadline.includes("Bugün") || task.deadline.includes("Yarın")
+                                    ? "destructive"
+                                    : "secondary"
+                                }
+                                className="h-4 px-1.5 text-[10px] font-normal"
                               >
-                                <Clock className="h-3 w-3 mr-1" />
+                                <Clock className="mr-1 h-3 w-3" />
                                 {task.deadline}
                               </Badge>
                             </div>
-                            <CardTitle className="text-sm leading-tight line-clamp-2" title={task.title}>
+                            <CardTitle
+                              className="line-clamp-2 text-sm leading-tight"
+                              title={task.title}
+                            >
                               {task.title}
                             </CardTitle>
                           </CardHeader>
-                          
-                          <CardContent className="p-4 pt-0 space-y-3 pb-3 border-b flex-1">
-                            <span className="text-xs text-muted-foreground line-clamp-1 truncate">
+
+                          <CardContent className="flex-1 space-y-3 border-b p-4 pb-3 pt-0">
+                            <span className="line-clamp-1 truncate text-xs text-muted-foreground">
                               {task.projectName}
                             </span>
                             {task.earning > 0 && (
-                              <div className="flex items-center gap-1.5 text-emerald-600 font-semibold text-sm bg-emerald-50 w-fit px-2 py-0.5 rounded-md">
+                              <div className="flex w-fit items-center gap-1.5 rounded-md bg-emerald-50 px-2 py-0.5 text-sm font-semibold text-emerald-600">
                                 <DollarSign className="h-3.5 w-3.5" />
                                 {task.earning.toLocaleString("tr-TR")} ₺
                               </div>
                             )}
                           </CardContent>
 
-                          <CardFooter className="p-2 justify-between bg-muted/20">
+                          <CardFooter className="justify-between bg-muted/20 p-2">
                             {/* Geri butonu */}
                             {colIndex > 0 ? (
-                              <Button 
-                                variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground hover:text-foreground"
-                                onClick={() => moveTask(task.id, statusColumns[colIndex - 1].dbStatus)}
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-6 w-6 text-muted-foreground hover:text-foreground"
+                                onClick={() =>
+                                  moveTask(task.id, statusColumns[colIndex - 1].dbStatus)
+                                }
                                 disabled={isPending}
                               >
                                 <ArrowLeft className="h-3.5 w-3.5" />
                               </Button>
-                            ) : <div className="w-6" />}
+                            ) : (
+                              <div className="w-6" />
+                            )}
 
                             {/* İleri butonu */}
                             {colIndex < statusColumns.length - 1 ? (
-                              <Button 
-                                variant="outline" size="sm" 
-                                className="h-6 px-2 text-[10px] gap-1 bg-background shadow-xs hover:bg-primary hover:text-primary-foreground transition-colors"
-                                onClick={() => moveTask(task.id, statusColumns[colIndex + 1].dbStatus)}
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="shadow-xs h-6 gap-1 bg-background px-2 text-[10px] transition-colors hover:bg-primary hover:text-primary-foreground"
+                                onClick={() =>
+                                  moveTask(task.id, statusColumns[colIndex + 1].dbStatus)
+                                }
                                 disabled={isPending}
                               >
                                 İleri Al
                                 <ArrowRight className="h-3 w-3" />
                               </Button>
                             ) : (
-                              <div className="flex items-center gap-1 text-[10px] text-emerald-600 font-medium px-2">
+                              <div className="flex items-center gap-1 px-2 text-[10px] font-medium text-emerald-600">
                                 <CheckCircle2 className="h-3 w-3" /> Bitti
                               </div>
                             )}

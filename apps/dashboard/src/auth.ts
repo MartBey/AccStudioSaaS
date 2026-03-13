@@ -1,7 +1,8 @@
-import NextAuth, { type DefaultSession } from "next-auth";
 import { PrismaClient } from "@prisma/client";
-import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import NextAuth, { type DefaultSession } from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+
 import { authConfig } from "./auth.config";
 
 const prisma = new PrismaClient();
@@ -12,7 +13,7 @@ declare module "next-auth" {
     user: {
       id: string;
       role: string;
-    } & DefaultSession["user"]
+    } & DefaultSession["user"];
   }
 }
 
@@ -24,7 +25,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
@@ -34,7 +35,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         // Veritabanından kullanıcıyı bul
         const user = await prisma.user.findUnique({
-          where: { email }
+          where: { email },
         });
 
         if (!user || !user.password) return null;
@@ -51,7 +52,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           email: user.email,
           role: user.role,
         } as any;
-      }
+      },
     }),
   ],
 });

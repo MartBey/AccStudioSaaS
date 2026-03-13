@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import { z } from "zod";
-import { auth } from "@/auth";
-import { exportSiteToHtml } from "web-builder/src/services/html-exporter";
 import { BuilderSiteSchema } from "web-builder/src/schema/builder-types";
+import { exportSiteToHtml } from "web-builder/src/services/html-exporter";
+import { z } from "zod";
+
+import { auth } from "@/auth";
 
 // Zod validasyon
 const ExportRequestSchema = z.object({
@@ -52,9 +53,6 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     console.error("[Builder Export API Error]", error);
-    return NextResponse.json(
-      { error: "Failed to export site." },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Failed to export site." }, { status: 500 });
   }
 }

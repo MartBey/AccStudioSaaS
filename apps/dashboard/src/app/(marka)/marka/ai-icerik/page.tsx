@@ -1,26 +1,43 @@
 "use client";
 
+import { Copy, Sparkles, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState } from "react";
-import { Button, Textarea, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Card, CardHeader, CardTitle, CardContent, Badge, toast } from "ui";
-import { Sparkles, Copy, ThumbsUp, ThumbsDown } from "lucide-react";
-import { generateContentWithTracking } from "@/app/_actions/content-ai-actions";
 import { ContentType } from "types";
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+  Textarea,
+  toast,
+} from "ui";
+
+import { generateContentWithTracking } from "@/app/_actions/content-ai-actions";
 
 export default function ContentAIPage() {
   const [prompt, setPrompt] = useState("");
   const [type, setType] = useState<ContentType>("blog");
+  const [tone, setTone] = useState<string>("professional");
+  const [language, setLanguage] = useState<"tr" | "en">("tr");
   const [result, setResult] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [tokensUsed, setTokensUsed] = useState<number | null>(null);
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
-    
+
     setLoading(true);
     setResult(null);
 
     try {
-      const response = await generateContentWithTracking({ prompt, type });
+      const response = await generateContentWithTracking({ prompt, type, tone, language });
       setResult(response.content);
       setTokensUsed(response.tokens);
     } catch (error) {
@@ -44,13 +61,13 @@ export default function ContentAIPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">✨ AI İçerik Üretici</h1>
-        <p className="text-muted-foreground mt-2">
+        <p className="mt-2 text-muted-foreground">
           Gelişmiş AccStudio Zeka Asistanı ile saniyeler içinde büyüleyici metinler oluşturun.
         </p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-12">
-        <Card className="md:col-span-5 flex flex-col h-fit">
+        <Card className="flex h-fit flex-col md:col-span-5">
           <CardHeader>
             <CardTitle className="text-xl">Parametreler</CardTitle>
           </CardHeader>
@@ -65,6 +82,36 @@ export default function ContentAIPage() {
                   <SelectItem value="blog">Blog Yazısı</SelectItem>
                   <SelectItem value="social">Sosyal Medya (Instagram/LinkedIn)</SelectItem>
                   <SelectItem value="email">E-Bülten / Pazarlama E-postası</SelectItem>
+                  <SelectItem value="product">Ürün Açıklaması</SelectItem>
+                  <SelectItem value="ad">Reklam Metni (Ad Copy)</SelectItem>
+                  <SelectItem value="seo">SEO Meta Title/Description</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Ton / Üslup</label>
+              <Select value={tone} onValueChange={(val) => setTone(val)}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Ton seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="professional">👔 Profesyonel</SelectItem>
+                  <SelectItem value="casual">☕ Samimi</SelectItem>
+                  <SelectItem value="persuasive">🎯 İkna Edici</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Dil</label>
+              <Select value={language} onValueChange={(val) => setLanguage(val as "tr" | "en")}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Dil seçin" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="tr">🇹🇷 Türkçe</SelectItem>
+                  <SelectItem value="en">🇺🇸 English</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -79,14 +126,14 @@ export default function ContentAIPage() {
               />
             </div>
 
-            <Button 
-              className="w-full h-12 text-md transition-all font-semibold shadow-md hover:shadow-lg" 
-              onClick={handleGenerate} 
+            <Button
+              className="text-md h-12 w-full font-semibold shadow-md transition-all hover:shadow-lg"
+              onClick={handleGenerate}
               disabled={loading || !prompt.trim()}
             >
               {loading ? (
                 <div className="flex items-center gap-2">
-                  <span className="w-4 h-4 rounded-full border-2 border-primary-foreground border-t-transparent animate-spin" />
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
                   Zeka İşleniyor...
                 </div>
               ) : (
@@ -99,8 +146,8 @@ export default function ContentAIPage() {
           </CardContent>
         </Card>
 
-        <Card className="md:col-span-7 bg-muted/40 min-h-[400px] flex flex-col">
-          <CardHeader className="flex flex-row items-center justify-between border-b bg-card rounded-t-lg pb-4">
+        <Card className="flex min-h-[400px] flex-col bg-muted/40 md:col-span-7">
+          <CardHeader className="flex flex-row items-center justify-between rounded-t-lg border-b bg-card pb-4">
             <CardTitle className="text-xl">Sonuç Tablosu</CardTitle>
             {tokensUsed && (
               <Badge variant="secondary" className="font-mono">
@@ -108,29 +155,37 @@ export default function ContentAIPage() {
               </Badge>
             )}
           </CardHeader>
-          <CardContent className="flex-1 p-6 relative">
+          <CardContent className="relative flex-1 p-6">
             {!result && !loading && (
               <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground opacity-50">
-                <Sparkles className="h-16 w-16 mb-4" />
+                <Sparkles className="mb-4 h-16 w-16" />
                 <p>Oluşturulan metin burada görünecek.</p>
               </div>
             )}
-            
+
             {result && (
-              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <div 
-                  className="prose prose-blue dark:prose-invert max-w-none prose-p:leading-relaxed prose-headings:font-bold prose-h1:text-2xl prose-h3:text-lg" 
-                  dangerouslySetInnerHTML={{ __html: result }} 
+              <div className="space-y-6 duration-500 animate-in fade-in slide-in-from-bottom-4">
+                <div
+                  className="prose prose-blue dark:prose-invert prose-p:leading-relaxed prose-headings:font-bold prose-h1:text-2xl prose-h3:text-lg max-w-none"
+                  dangerouslySetInnerHTML={{ __html: result }}
                 />
-                
-                <div className="flex items-center gap-3 pt-6 border-t mt-auto">
+
+                <div className="mt-auto flex items-center gap-3 border-t pt-6">
                   <Button variant="outline" size="sm" className="gap-2" onClick={handleCopy}>
                     <Copy className="h-4 w-4" /> Kopyala
                   </Button>
-                  <Button variant="ghost" size="icon" className="text-green-500 hover:text-green-600 hover:bg-green-50">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-green-500 hover:bg-green-50 hover:text-green-600"
+                  >
                     <ThumbsUp className="h-4 w-4" />
                   </Button>
-                  <Button variant="ghost" size="icon" className="text-destructive hover:text-red-600 hover:bg-red-50">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="text-destructive hover:bg-red-50 hover:text-red-600"
+                  >
                     <ThumbsDown className="h-4 w-4" />
                   </Button>
                 </div>

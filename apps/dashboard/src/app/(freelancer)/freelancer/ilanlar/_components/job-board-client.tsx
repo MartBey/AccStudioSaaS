@@ -1,24 +1,34 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  ArrowRight,
+  Bookmark,
+  Clock,
+  DollarSign,
+  Filter,
+  MapPin,
+  Search,
+  ShieldCheck,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  Badge,
-  Button,
-  Input,
   Avatar,
   AvatarFallback,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
   Checkbox,
-  toast
+  Input,
+  toast,
 } from "ui";
-import { Search, MapPin, Clock, DollarSign, Bookmark, ArrowRight, ShieldCheck, Filter } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+
 import { applyToJob } from "../_actions/job-actions";
-import { useRouter } from "next/navigation";
 
 // Frontend Job tipi
 interface JobListingProps {
@@ -48,8 +58,8 @@ export default function JobBoardClient({ jobs, filterCategories }: JobBoardClien
 
   // Toggle Category Filter
   const toggleCategory = (cat: string) => {
-    setSelectedCategories(prev => 
-      prev.includes(cat) ? prev.filter(c => c !== cat) : [...prev, cat]
+    setSelectedCategories((prev) =>
+      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
     );
   };
 
@@ -67,10 +77,11 @@ export default function JobBoardClient({ jobs, filterCategories }: JobBoardClien
   };
 
   // Filtreleme
-  const filteredJobs = jobs.filter(job => {
-    const matchesSearch = job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          job.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          job.companyName.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredJobs = jobs.filter((job) => {
+    const matchesSearch =
+      job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      job.companyName.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesBudget = !job.budget || job.budget <= maxBudget;
     return matchesSearch && matchesBudget;
   });
@@ -92,28 +103,31 @@ export default function JobBoardClient({ jobs, filterCategories }: JobBoardClien
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { staggerChildren: 0.08 }
-    }
+      transition: { staggerChildren: 0.08 },
+    },
   };
 
   const itemVariants = {
     hidden: { y: 20, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } }
+    visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } },
   };
 
   return (
     <div className="flex flex-col gap-6">
       {/* Başlık */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-3xl font-bold tracking-tight text-transparent">
             Pazar Yeri İlanları
           </h1>
-          <p className="text-muted-foreground mt-1">
+          <p className="mt-1 text-muted-foreground">
             Yeteneklerinize uygun projeleri keşfedin ve başvurun.
           </p>
         </div>
-        <Badge variant="outline" className="text-sm px-4 py-2 gap-2 border-indigo-200 bg-indigo-50 text-indigo-700">
+        <Badge
+          variant="outline"
+          className="gap-2 border-indigo-200 bg-indigo-50 px-4 py-2 text-sm text-indigo-700"
+        >
           <Bookmark className="h-4 w-4" />
           {filteredJobs.length} Aktif İlan
         </Badge>
@@ -122,12 +136,12 @@ export default function JobBoardClient({ jobs, filterCategories }: JobBoardClien
       {/* Filtre Bölümü */}
       <Card className="border-slate-200 shadow-sm">
         <CardContent className="p-4">
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col gap-4 md:flex-row">
             {/* Arama */}
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input 
-                placeholder="İlan başlığı, şirket adı veya açıklama ara..." 
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="İlan başlığı, şirket adı veya açıklama ara..."
                 className="pl-9"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -136,7 +150,9 @@ export default function JobBoardClient({ jobs, filterCategories }: JobBoardClien
             {/* Bütçe Filtresi */}
             <div className="flex items-center gap-2">
               <DollarSign className="h-4 w-4 text-muted-foreground" />
-              <span className="text-sm text-muted-foreground whitespace-nowrap">Maks: {maxBudget.toLocaleString("tr-TR")} ₺</span>
+              <span className="whitespace-nowrap text-sm text-muted-foreground">
+                Maks: {maxBudget.toLocaleString("tr-TR")} ₺
+              </span>
               <input
                 type="range"
                 min={0}
@@ -150,11 +166,11 @@ export default function JobBoardClient({ jobs, filterCategories }: JobBoardClien
           </div>
 
           {/* Kategori Filtreleri */}
-          <div className="flex flex-wrap gap-2 mt-4">
-            <Filter className="h-4 w-4 text-muted-foreground mt-1" />
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Filter className="mt-1 h-4 w-4 text-muted-foreground" />
             {filterCategories.map((cat) => (
-              <label key={cat} className="flex items-center gap-1.5 cursor-pointer">
-                <Checkbox 
+              <label key={cat} className="flex cursor-pointer items-center gap-1.5">
+                <Checkbox
                   checked={selectedCategories.includes(cat)}
                   onCheckedChange={() => toggleCategory(cat)}
                   className="h-3.5 w-3.5"
@@ -168,11 +184,13 @@ export default function JobBoardClient({ jobs, filterCategories }: JobBoardClien
 
       {/* İlan Kartları */}
       {filteredJobs.length === 0 ? (
-        <Card className="border-dashed border-2 border-slate-200">
+        <Card className="border-2 border-dashed border-slate-200">
           <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-            <Search className="h-12 w-12 text-slate-300 mb-4" />
+            <Search className="mb-4 h-12 w-12 text-slate-300" />
             <h3 className="text-lg font-semibold text-slate-600">İlan Bulunamadı</h3>
-            <p className="text-sm text-slate-400 mt-2">Filtreleri değiştirmeyi deneyin veya daha sonra tekrar kontrol edin.</p>
+            <p className="mt-2 text-sm text-slate-400">
+              Filtreleri değiştirmeyi deneyin veya daha sonra tekrar kontrol edin.
+            </p>
           </CardContent>
         </Card>
       ) : (
@@ -185,30 +203,34 @@ export default function JobBoardClient({ jobs, filterCategories }: JobBoardClien
           <AnimatePresence>
             {filteredJobs.map((job) => (
               <motion.div key={job.id} variants={itemVariants} layout>
-                <Card className="h-full hover:shadow-lg transition-all duration-300 hover:border-indigo-200 group">
+                <Card className="group h-full transition-all duration-300 hover:border-indigo-200 hover:shadow-lg">
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10 border-2 border-indigo-100">
-                          <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-purple-500 text-white text-sm font-bold">
+                          <AvatarFallback className="bg-gradient-to-br from-indigo-500 to-purple-500 text-sm font-bold text-white">
                             {job.companyName.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
                         <div>
                           <div className="flex items-center gap-1.5">
-                            <span className="text-sm font-medium text-slate-600">{job.companyName}</span>
-                            {job.isVerified && (
-                              <ShieldCheck className="h-4 w-4 text-blue-500" />
-                            )}
+                            <span className="text-sm font-medium text-slate-600">
+                              {job.companyName}
+                            </span>
+                            {job.isVerified && <ShieldCheck className="h-4 w-4 text-blue-500" />}
                           </div>
                           <span className="text-xs text-muted-foreground">{job.projectName}</span>
                         </div>
                       </div>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-slate-400 hover:text-indigo-600">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-slate-400 hover:text-indigo-600"
+                      >
                         <Bookmark className="h-4 w-4" />
                       </Button>
                     </div>
-                    <CardTitle className="text-base mt-2 group-hover:text-indigo-600 transition-colors">
+                    <CardTitle className="mt-2 text-base transition-colors group-hover:text-indigo-600">
                       {job.title}
                     </CardTitle>
                     <CardDescription className="line-clamp-2 text-xs">
@@ -217,7 +239,7 @@ export default function JobBoardClient({ jobs, filterCategories }: JobBoardClien
                   </CardHeader>
                   <CardContent className="pt-0">
                     {/* Meta Bilgiler */}
-                    <div className="flex flex-wrap gap-3 text-xs text-muted-foreground mb-4">
+                    <div className="mb-4 flex flex-wrap gap-3 text-xs text-muted-foreground">
                       {job.budget && (
                         <span className="flex items-center gap-1">
                           <DollarSign className="h-3 w-3" />
@@ -239,9 +261,9 @@ export default function JobBoardClient({ jobs, filterCategories }: JobBoardClien
                       <span className="text-xs text-muted-foreground">
                         {job.proposalCount} başvuru
                       </span>
-                      <Button 
-                        size="sm" 
-                        className="gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white"
+                      <Button
+                        size="sm"
+                        className="gap-1.5 bg-indigo-600 text-white hover:bg-indigo-700"
                         onClick={() => handleApply(job.id)}
                         disabled={isApplying === job.id}
                       >

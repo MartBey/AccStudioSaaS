@@ -1,15 +1,20 @@
 "use server";
 
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+
+import { auth } from "@/auth";
 
 // Slug generator
 function slugify(text: string): string {
   return text
     .toLowerCase()
-    .replace(/ğ/g, "g").replace(/ü/g, "u").replace(/ş/g, "s")
-    .replace(/ı/g, "i").replace(/ö/g, "o").replace(/ç/g, "c")
+    .replace(/ğ/g, "g")
+    .replace(/ü/g, "u")
+    .replace(/ş/g, "s")
+    .replace(/ı/g, "i")
+    .replace(/ö/g, "o")
+    .replace(/ç/g, "c")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 }
@@ -48,8 +53,8 @@ export async function createVitrin(data: {
   if (!freelancerId) return { error: "Freelancer profili bulunamadı." };
 
   // Slug oluştur
-  const slug = data.slug 
-    ? await uniqueSlug(data.slug) 
+  const slug = data.slug
+    ? await uniqueSlug(data.slug)
     : await uniqueSlug(user?.name || "freelancer");
 
   try {
@@ -62,7 +67,7 @@ export async function createVitrin(data: {
         theme: data.theme || "default",
         showEarnings: data.showEarnings ?? false,
         showContact: data.showContact ?? true,
-        socialLinks: data.socialLinks ? (data.socialLinks as any) : null,
+        socialLinks: data.socialLinks ? (data.socialLinks as any) : undefined,
         techStack: data.techStack !== undefined ? data.techStack : null,
       },
     });
@@ -91,7 +96,7 @@ export async function updateVitrin(data: {
 
   const profile = await prisma.profile.findUnique({
     where: { userId: session.user.id },
-    include: { freelancer: { include: { vitrin: true } } }
+    include: { freelancer: { include: { vitrin: true } } },
   });
 
   const vitrin = profile?.freelancer?.vitrin;
@@ -145,7 +150,7 @@ export async function getVitrinBySlug(slug: string) {
             include: {
               user: { select: { name: true, image: true } },
               verification: { select: { status: true } },
-            }
+            },
           },
           tasks: {
             where: { status: "DONE" },
@@ -159,9 +164,9 @@ export async function getVitrinBySlug(slug: string) {
           },
           portfolioItems: {
             orderBy: { date: "desc" },
-          }
-        }
-      }
+          },
+        },
+      },
     },
   });
 
@@ -169,7 +174,10 @@ export async function getVitrinBySlug(slug: string) {
 
   const freelancer = vitrin.freelancer;
   const profile = freelancer.profile;
-  const totalEarnings = freelancer.proposals.reduce((s: number, p: { amount: number }) => s + p.amount, 0);
+  const totalEarnings = freelancer.proposals.reduce(
+    (s: number, p: { amount: number }) => s + p.amount,
+    0
+  );
   const isVerified = profile?.verification?.status === "APPROVED";
 
   return {
@@ -182,12 +190,19 @@ export async function getVitrinBySlug(slug: string) {
     website: profile?.website || null,
     isVerified,
     totalEarnings: vitrin.showEarnings ? totalEarnings : null,
-    skills: vitrin.techStack ? vitrin.techStack.split(",").map((s: string) => s.trim()).filter(Boolean) : [],
-    completedProjects: freelancer.tasks.map((t: { title: string; project?: { name: string } | null; earning?: number | null }) => ({
-      title: t.title,
-      projectName: t.project?.name || "",
-      earning: t.earning || 0,
-    })),
+    skills: vitrin.techStack
+      ? vitrin.techStack
+          .split(",")
+          .map((s: string) => s.trim())
+          .filter(Boolean)
+      : [],
+    completedProjects: freelancer.tasks.map(
+      (t: { title: string; project?: { name: string } | null; earning?: number | null }) => ({
+        title: t.title,
+        projectName: t.project?.name || "",
+        earning: t.earning || 0,
+      })
+    ),
     portfolioItems: freelancer.portfolioItems.map((p: any) => ({
       id: p.id,
       title: p.title,

@@ -22,10 +22,7 @@ const DEFAULT_OPTIONS: HtmlExportOptions = {
  * BuilderSite JSON verisini bağımsız bir statik HTML dosyasına dönüştürür.
  * Google Fonts, CSS reset ve responsive meta tag'ler dahil edilir.
  */
-export function exportSiteToHtml(
-  site: BuilderSite,
-  options: HtmlExportOptions = {}
-): string {
+export function exportSiteToHtml(site: BuilderSite, options: HtmlExportOptions = {}): string {
   const opts = { ...DEFAULT_OPTIONS, ...options };
   const theme = site.themeConfig || {
     primaryColor: "#0f172a",
@@ -144,11 +141,15 @@ function renderFeatures(node: BuilderNode, theme: ThemeConfig): string {
         <h2 style="font-size: 32px; font-weight: 700; color: ${theme.primaryColor}; margin-bottom: 8px;">${title || ""}</h2>
         ${subtitle ? `<p style="font-size: 16px; color: #64748b; margin-bottom: 48px;">${subtitle}</p>` : '<div style="margin-bottom: 48px;"></div>'}
         <div class="grid-cols">
-          ${featureItems.map((f) => `
+          ${featureItems
+            .map(
+              (f) => `
             <div style="padding: 32px 24px; background: #f8fafc; border-radius: 12px; text-align: left;">
               <h3 style="font-size: 18px; font-weight: 600; color: ${theme.primaryColor}; margin-bottom: 12px;">${f.title}</h3>
               <p style="font-size: 14px; color: #64748b; line-height: 1.6;">${f.description}</p>
-            </div>`).join("")}
+            </div>`
+            )
+            .join("")}
         </div>
       </div>
     </section>`;
@@ -156,14 +157,22 @@ function renderFeatures(node: BuilderNode, theme: ThemeConfig): string {
 
 function renderPricing(node: BuilderNode, theme: ThemeConfig): string {
   const { title, subtitle, plans } = node.props;
-  const planItems = (plans || []) as { name: string; price: string; features: string[]; highlighted?: boolean; ctaText?: string }[];
+  const planItems = (plans || []) as {
+    name: string;
+    price: string;
+    features: string[];
+    highlighted?: boolean;
+    ctaText?: string;
+  }[];
   return `
     <section style="padding: 80px 20px; background: #f8fafc;">
       <div class="container text-center">
         <h2 style="font-size: 32px; font-weight: 700; color: ${theme.primaryColor}; margin-bottom: 8px;">${title || ""}</h2>
         ${subtitle ? `<p style="font-size: 16px; color: #64748b; margin-bottom: 48px;">${subtitle}</p>` : '<div style="margin-bottom: 48px;"></div>'}
         <div class="grid-cols">
-          ${planItems.map((plan) => `
+          ${planItems
+            .map(
+              (plan) => `
             <div style="padding: 32px 24px; background: #ffffff; border: ${plan.highlighted ? `2px solid ${theme.secondaryColor}` : "1px solid #e2e8f0"}; border-radius: 12px; text-align: center; position: relative; ${plan.highlighted ? "box-shadow: 0 4px 24px rgba(0,0,0,0.08);" : ""}">
               ${plan.highlighted ? `<span style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: ${theme.secondaryColor}; color: #fff; padding: 4px 16px; border-radius: 20px; font-size: 11px; font-weight: 600; text-transform: uppercase;">Popular</span>` : ""}
               <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">${plan.name}</h3>
@@ -172,7 +181,9 @@ function renderPricing(node: BuilderNode, theme: ThemeConfig): string {
                 ${plan.features.map((f) => `<li style="padding: 8px 0; font-size: 14px; color: #475569; border-bottom: 1px solid #f1f5f9;"><span style="color: ${theme.secondaryColor}; margin-right: 8px;">&#10003;</span>${f}</li>`).join("")}
               </ul>
               <a href="#" style="display: block; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 14px; ${plan.highlighted ? `background: ${theme.secondaryColor}; color: #fff;` : `background: transparent; color: ${theme.secondaryColor}; border: 1px solid ${theme.secondaryColor};`}">${plan.ctaText || "Get Started"}</a>
-            </div>`).join("")}
+            </div>`
+            )
+            .join("")}
         </div>
       </div>
     </section>`;
@@ -182,9 +193,17 @@ function renderTestimonial(node: BuilderNode, theme: ThemeConfig): string {
   const { quote, author, role, rating, avatarUrl, accentColor } = node.props;
   const starColor = accentColor || "#f59e0b";
   const ratingNum = rating || 0;
-  const stars = ratingNum > 0
-    ? `<div style="display: flex; gap: 4px; justify-content: center; margin-bottom: 16px;">${Array.from({ length: 5 }).map((_, i) => `<span style="font-size: 22px; color: ${i < ratingNum ? starColor : "#e2e8f0"};">&#9733;</span>`).join("")}</div>`
-    : "";
+  const stars =
+    ratingNum > 0
+      ? `<div style="display: flex; gap: 4px; justify-content: center; margin-bottom: 16px;">${Array.from(
+          { length: 5 }
+        )
+          .map(
+            (_, i) =>
+              `<span style="font-size: 22px; color: ${i < ratingNum ? starColor : "#e2e8f0"};">&#9733;</span>`
+          )
+          .join("")}</div>`
+      : "";
   return `
     <section style="padding: 80px 20px; background: ${node.props.backgroundColor || "#ffffff"};">
       <div class="container text-center" style="max-width: 700px;">

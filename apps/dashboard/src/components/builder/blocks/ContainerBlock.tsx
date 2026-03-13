@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import { useNode } from "@craftjs/core";
+import React from "react";
 
 export interface ContainerBlockProps {
   padding?: string;
@@ -24,13 +24,17 @@ export const ContainerBlock = ({
   justifyContent = "flex-start",
   flexDirection = "column",
   minHeight = "auto",
-  borderRadius = "0px"
+  borderRadius = "0px",
 }: ContainerBlockProps) => {
-  const { connectors: { connect, drag } } = useNode();
+  const {
+    connectors: { connect, drag },
+  } = useNode();
 
   return (
     <div
-      ref={(ref) => { if (ref) connect(drag(ref)); }}
+      ref={(ref) => {
+        if (ref) connect(drag(ref));
+      }}
       style={{
         padding,
         margin,
@@ -42,7 +46,7 @@ export const ContainerBlock = ({
         minHeight,
         borderRadius,
         width: "100%",
-        boxSizing: "border-box"
+        boxSizing: "border-box",
       }}
     >
       {children}
@@ -51,7 +55,14 @@ export const ContainerBlock = ({
 };
 
 export const ContainerSettings = () => {
-  const { actions: { setProp }, padding, backgroundColor, flexDirection, alignItems, minHeight } = useNode((node) => ({
+  const {
+    actions: { setProp },
+    padding,
+    backgroundColor,
+    flexDirection,
+    alignItems,
+    minHeight,
+  } = useNode((node) => ({
     padding: node.data.props.padding,
     backgroundColor: node.data.props.backgroundColor,
     flexDirection: node.data.props.flexDirection,
@@ -60,16 +71,18 @@ export const ContainerSettings = () => {
   }));
 
   return (
-    <div className="flex flex-col gap-4 p-4 border rounded-md bg-card text-card-foreground">
-      <h3 className="font-semibold text-sm">Container Settings</h3>
-      
+    <div className="flex flex-col gap-4 rounded-md border bg-card p-4 text-card-foreground">
+      <h3 className="text-sm font-semibold">Container Settings</h3>
+
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Padding</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={padding}
-          onChange={(e) => setProp((props: ContainerBlockProps) => (props.padding = e.target.value))}
+          onChange={(e) =>
+            setProp((props: ContainerBlockProps) => (props.padding = e.target.value))
+          }
           placeholder="e.g. 20px"
         />
       </div>
@@ -78,9 +91,11 @@ export const ContainerSettings = () => {
         <label className="text-xs font-medium">Background Color</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={backgroundColor}
-          onChange={(e) => setProp((props: ContainerBlockProps) => (props.backgroundColor = e.target.value))}
+          onChange={(e) =>
+            setProp((props: ContainerBlockProps) => (props.backgroundColor = e.target.value))
+          }
           placeholder="e.g. #ffffff or transparent"
         />
       </div>
@@ -89,9 +104,11 @@ export const ContainerSettings = () => {
         <label className="text-xs font-medium">Min Height</label>
         <input
           type="text"
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={minHeight}
-          onChange={(e) => setProp((props: ContainerBlockProps) => (props.minHeight = e.target.value))}
+          onChange={(e) =>
+            setProp((props: ContainerBlockProps) => (props.minHeight = e.target.value))
+          }
           placeholder="e.g. 500px, 100vh"
         />
       </div>
@@ -99,9 +116,11 @@ export const ContainerSettings = () => {
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Direction</label>
         <select
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={flexDirection}
-          onChange={(e) => setProp((props: ContainerBlockProps) => (props.flexDirection = e.target.value))}
+          onChange={(e) =>
+            setProp((props: ContainerBlockProps) => (props.flexDirection = e.target.value as any))
+          }
         >
           <option value="column">Vertical</option>
           <option value="row">Horizontal</option>
@@ -111,9 +130,11 @@ export const ContainerSettings = () => {
       <div className="flex flex-col gap-2">
         <label className="text-xs font-medium">Align Items</label>
         <select
-          className="p-2 border rounded-md text-sm bg-background"
+          className="rounded-md border bg-background p-2 text-sm"
           value={alignItems}
-          onChange={(e) => setProp((props: ContainerBlockProps) => (props.alignItems = e.target.value))}
+          onChange={(e) =>
+            setProp((props: ContainerBlockProps) => (props.alignItems = e.target.value as any))
+          }
         >
           <option value="flex-start">Start</option>
           <option value="center">Center</option>
@@ -134,7 +155,7 @@ ContainerBlock.craft = {
     justifyContent: "flex-start",
     flexDirection: "column",
     minHeight: "auto",
-    borderRadius: "0px"
+    borderRadius: "0px",
   },
   related: {
     settings: ContainerSettings,

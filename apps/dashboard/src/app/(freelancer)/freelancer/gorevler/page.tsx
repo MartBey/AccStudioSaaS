@@ -1,13 +1,15 @@
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+
+import { auth } from "@/auth";
+
 import KanbanClient from "./_components/kanban-client";
 
 export const dynamic = "force-dynamic";
 
 export default async function FreelancerGorevlerPage() {
   const session = await auth();
-  
+
   if (!session?.user?.id) {
     redirect("/login");
   }
@@ -15,7 +17,7 @@ export default async function FreelancerGorevlerPage() {
   // Kullanıcının Freelancer profilini bul
   const user = await prisma.user.findUnique({
     where: { id: session.user.id },
-    include: { profile: { include: { freelancer: true } } }
+    include: { profile: { include: { freelancer: true } } },
   });
 
   const freelancerId = user?.profile?.freelancer?.id;
@@ -25,7 +27,7 @@ export default async function FreelancerGorevlerPage() {
     ? await prisma.task.findMany({
         where: { freelancerId },
         include: {
-          project: { select: { name: true } }
+          project: { select: { name: true } },
         },
         orderBy: { createdAt: "desc" },
       })

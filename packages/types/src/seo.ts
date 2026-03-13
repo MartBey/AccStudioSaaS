@@ -12,7 +12,7 @@ export interface SeoScore {
 
 export interface SeoIssue {
   id: string;
-  type: 'error' | 'warning' | 'info';
+  type: "error" | "warning" | "info";
   title: string;
   description: string;
 }

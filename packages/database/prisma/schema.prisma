@@ -142,6 +142,7 @@ model User {
   disputesResolved Dispute[] @relation("DisputeResolvedBy")
   usageLogs     UsageLog[]
   sites         Site[]
+  seoAnalyses   SeoAnalysis[]
 }
 
 model Profile {
@@ -649,4 +650,28 @@ model Site {
   updatedAt   DateTime @updatedAt
 
   @@index([userId])
+}
+
+model SeoAnalysis {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  url           String
+  keyword       String?
+  
+  performance   Int
+  accessibility Int
+  bestPractices Int
+  seo           Int
+  
+  issues        Json     // List of SeoIssue
+  wordCount     Int
+  loadTimeMs    Int
+  
+  createdAt     DateTime @default(now())
+
+  @@index([userId])
+  @@index([url])
+  @@index([createdAt])
 }

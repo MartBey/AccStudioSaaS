@@ -1,10 +1,11 @@
 "use server";
 
-import { ContentRequest, ContentResponse } from "types";
-import { generateContent, CONTENT_AI_MODEL } from "content-ai";
-import { auth } from "@/auth";
-import { prisma } from "database";
 import { calculateCost } from "config";
+import { CONTENT_AI_MODEL, generateContent } from "content-ai";
+import { prisma } from "database";
+import { ContentRequest, ContentResponse } from "types";
+
+import { auth } from "@/auth";
 
 /**
  * Dashboard-level wrapper for content generation.

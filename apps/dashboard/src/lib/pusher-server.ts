@@ -4,7 +4,7 @@ let pusherInstance: PusherServer | null = null;
 
 export function getPusherServer(): PusherServer {
   if (pusherInstance) return pusherInstance;
-  
+
   const appId = process.env.PUSHER_APP_ID;
   const key = process.env.PUSHER_KEY;
   const secret = process.env.PUSHER_SECRET;

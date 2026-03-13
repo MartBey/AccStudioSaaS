@@ -1,8 +1,9 @@
 "use server";
 
 import { prisma } from "database";
-import { auth } from "@/auth";
 import { revalidatePath } from "next/cache";
+
+import { auth } from "@/auth";
 
 // Freelancer bir ilana başvuru yapar
 export async function createProposal(data: {
@@ -18,7 +19,7 @@ export async function createProposal(data: {
 
     const user = await prisma.user.findUnique({
       where: { id: session.user.id },
-      include: { profile: { include: { freelancer: true } } }
+      include: { profile: { include: { freelancer: true } } },
     });
 
     const freelancerId = user?.profile?.freelancer?.id;
@@ -26,7 +27,7 @@ export async function createProposal(data: {
 
     // Daha önce başvuru yapılmış mı?
     const existing = await prisma.proposal.findFirst({
-      where: { jobListingId: data.jobListingId, freelancerId }
+      where: { jobListingId: data.jobListingId, freelancerId },
     });
     if (existing) throw new Error("Bu ilana zaten başvuru yaptınız.");
 
@@ -39,7 +40,7 @@ export async function createProposal(data: {
         deliveryTime: data.deliveryTime || null,
         sampleUrl: data.sampleUrl || null,
         status: "PENDING",
-      }
+      },
     });
 
     // AuditLog
@@ -49,8 +50,8 @@ export async function createProposal(data: {
         action: "CREATE_PROPOSAL",
         entityType: "Proposal",
         entityId: data.jobListingId,
-        details: JSON.stringify({ amount: data.amount })
-      }
+        details: JSON.stringify({ amount: data.amount }),
+      },
     });
 
     revalidatePath(`/freelancer/ilanlar/${data.jobListingId}`);
@@ -72,7 +73,7 @@ export async function acceptProposal(proposalId: string) {
     const proposal = await prisma.proposal.update({
       where: { id: proposalId },
       data: { status: "ACCEPTED" },
-      include: { jobListing: { select: { projectId: true } } }
+      include: { jobListing: { select: { projectId: true } } },
     });
 
     // İlanın Task olarak freelancer'a ata + JobListing'i kapat
@@ -83,13 +84,13 @@ export async function acceptProposal(proposalId: string) {
           freelancerId: proposal.freelancerId,
           title: `Kabul edilen teklif #${proposalId.slice(0, 8)}`,
           status: "TODO",
-        }
+        },
       });
 
       // JobListing'i kapat
       await prisma.jobListing.update({
         where: { id: proposal.jobListingId },
-        data: { status: "CLOSED" }
+        data: { status: "CLOSED" },
       });
     }
 
@@ -99,7 +100,7 @@ export async function acceptProposal(proposalId: string) {
         action: "ACCEPT_PROPOSAL",
         entityType: "Proposal",
         entityId: proposalId,
-      }
+      },
     });
 
     revalidatePath("/marka/projeler");
@@ -128,7 +129,7 @@ export async function rejectProposal(proposalId: string) {
         action: "REJECT_PROPOSAL",
         entityType: "Proposal",
         entityId: proposalId,
-      }
+      },
     });
 
     revalidatePath("/marka/projeler");

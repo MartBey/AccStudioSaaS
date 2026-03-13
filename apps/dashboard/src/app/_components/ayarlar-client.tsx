@@ -1,13 +1,23 @@
 "use client";
 
+import { Eye, EyeOff, Globe, Lock, Mail, MapPin, Save, Shield, User } from "lucide-react";
 import { useState } from "react";
-import { 
-  Card, CardContent, CardHeader, CardTitle,
-  Button, Input, Textarea, Label, Badge, toast,
-  Avatar, AvatarFallback,
+import {
+  Avatar,
+  AvatarFallback,
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
+  Textarea,
+  toast,
 } from "ui";
-import { User, Mail, MapPin, Globe, Lock, Shield, Save, Eye, EyeOff } from "lucide-react";
-import { updateProfile, changePassword } from "@/app/_actions/profile-actions";
+
+import { changePassword, updateProfile } from "@/app/_actions/profile-actions";
 
 interface ProfileData {
   name: string;
@@ -89,10 +99,12 @@ export default function AyarlarClient({ profile }: AyarlarClientProps) {
   };
 
   return (
-    <div className="flex flex-col gap-6 max-w-3xl">
+    <div className="flex max-w-3xl flex-col gap-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Hesap Ayarları</h1>
-        <p className="text-muted-foreground mt-1">Profil bilgilerinizi ve güvenlik ayarlarınızı yönetin.</p>
+        <p className="mt-1 text-muted-foreground">
+          Profil bilgilerinizi ve güvenlik ayarlarınızı yönetin.
+        </p>
       </div>
 
       {/* Profil Özet */}
@@ -100,13 +112,13 @@ export default function AyarlarClient({ profile }: AyarlarClientProps) {
         <CardContent className="py-6">
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16 border-2 border-primary/20">
-              <AvatarFallback className="bg-primary/10 text-primary text-xl font-bold">
+              <AvatarFallback className="bg-primary/10 text-xl font-bold text-primary">
                 {profile.name.charAt(0)}
               </AvatarFallback>
             </Avatar>
             <div>
               <h2 className="text-xl font-bold">{profile.name}</h2>
-              <div className="flex items-center gap-2 mt-1">
+              <div className="mt-1 flex items-center gap-2">
                 <Badge variant="secondary">{roleLabels[profile.role] || profile.role}</Badge>
                 <span className="text-sm text-muted-foreground">{profile.email}</span>
               </div>
@@ -128,7 +140,7 @@ export default function AyarlarClient({ profile }: AyarlarClientProps) {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="name">Ad Soyad</Label>
-              <Input 
+              <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
@@ -136,7 +148,7 @@ export default function AyarlarClient({ profile }: AyarlarClientProps) {
             </div>
             <div className="space-y-2">
               <Label>E-posta</Label>
-              <div className="flex items-center gap-2 h-10 px-3 border rounded-md bg-muted/50 text-muted-foreground text-sm">
+              <div className="flex h-10 items-center gap-2 rounded-md border bg-muted/50 px-3 text-sm text-muted-foreground">
                 <Mail className="h-4 w-4" />
                 {profile.email}
               </div>
@@ -145,7 +157,7 @@ export default function AyarlarClient({ profile }: AyarlarClientProps) {
 
           <div className="space-y-2">
             <Label htmlFor="bio">Biyografi</Label>
-            <Textarea 
+            <Textarea
               id="bio"
               placeholder="Kendinizi kısaca tanıtın..."
               className="min-h-[80px]"
@@ -159,7 +171,7 @@ export default function AyarlarClient({ profile }: AyarlarClientProps) {
               <Label htmlFor="location" className="flex items-center gap-1">
                 <MapPin className="h-3.5 w-3.5" /> Konum
               </Label>
-              <Input 
+              <Input
                 id="location"
                 placeholder="İstanbul, Türkiye"
                 value={formData.location}
@@ -170,7 +182,7 @@ export default function AyarlarClient({ profile }: AyarlarClientProps) {
               <Label htmlFor="website" className="flex items-center gap-1">
                 <Globe className="h-3.5 w-3.5" /> Website
               </Label>
-              <Input 
+              <Input
                 id="website"
                 type="url"
                 placeholder="https://example.com"
@@ -199,7 +211,7 @@ export default function AyarlarClient({ profile }: AyarlarClientProps) {
           <div className="space-y-2">
             <Label htmlFor="current-pw">Mevcut Şifre</Label>
             <div className="relative">
-              <Input 
+              <Input
                 id="current-pw"
                 type={showPasswords ? "text" : "password"}
                 value={pwData.current}
@@ -210,7 +222,7 @@ export default function AyarlarClient({ profile }: AyarlarClientProps) {
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="new-pw">Yeni Şifre</Label>
-              <Input 
+              <Input
                 id="new-pw"
                 type={showPasswords ? "text" : "password"}
                 value={pwData.newPw}
@@ -219,7 +231,7 @@ export default function AyarlarClient({ profile }: AyarlarClientProps) {
             </div>
             <div className="space-y-2">
               <Label htmlFor="confirm-pw">Yeni Şifre (Tekrar)</Label>
-              <Input 
+              <Input
                 id="confirm-pw"
                 type={showPasswords ? "text" : "password"}
                 value={pwData.confirm}
@@ -228,13 +240,18 @@ export default function AyarlarClient({ profile }: AyarlarClientProps) {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Button onClick={handlePasswordChange} disabled={isPwSaving} variant="outline" className="gap-2">
+            <Button
+              onClick={handlePasswordChange}
+              disabled={isPwSaving}
+              variant="outline"
+              className="gap-2"
+            >
               <Lock className="h-4 w-4" />
               {isPwSaving ? "Değiştiriliyor..." : "Şifreyi Değiştir"}
             </Button>
-            <button 
+            <button
               type="button"
-              className="text-sm text-muted-foreground hover:text-foreground flex items-center gap-1 transition-colors"
+              className="flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground"
               onClick={() => setShowPasswords(!showPasswords)}
             >
               {showPasswords ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
