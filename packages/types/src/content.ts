@@ -14,6 +14,10 @@ export interface ContentResponse {
   tokens: number;
   inputTokens?: number;
   outputTokens?: number;
+  /**
+   * Tahmini maliyet (USD) — AI çağrılarının fiyatlandırılması için kullanılır.
+   */
+  estimatedCostUsd?: number;
   type: ContentType;
   createdAt: Date;
 }

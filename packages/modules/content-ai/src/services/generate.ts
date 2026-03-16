@@ -1,5 +1,6 @@
 import { ContentRequest, ContentResponse } from "types";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { calculateCost, AIModel, AI_PRICING } from "config";
 
 // Gemini API istemcisi — env'den API key alır
 function getGeminiClient() {
@@ -46,7 +47,7 @@ Konu satırı, selamlaşma, ana mesaj, CTA butonu metni ve kapanış içersin.
   return typePrompts[type] || typePrompts.blog;
 }
 
-export const CONTENT_AI_MODEL = "gemini-2.0-flash";
+export const CONTENT_AI_MODEL: AIModel = "gemini-2.0-flash";
 
 export async function generateContent(request: ContentRequest): Promise<ContentResponse> {
   const genAI = getGeminiClient();
@@ -79,6 +80,7 @@ ${request.language === "en" ? "Write in English." : "Türkçe yaz."}`;
     const inputTokens = usage?.promptTokenCount || 0;
     const outputTokens = usage?.candidatesTokenCount || 0;
     const totalTokens = usage?.totalTokenCount || Math.ceil(cleanHtml.length / 4);
+    const estimatedCostUsd = calculateCost(CONTENT_AI_MODEL, inputTokens, outputTokens);
 
     return {
       id: `gen_${Date.now().toString(36)}`,
@@ -86,6 +88,7 @@ ${request.language === "en" ? "Write in English." : "Türkçe yaz."}`;
       tokens: totalTokens,
       inputTokens,
       outputTokens,
+      estimatedCostUsd,
       type: request.type,
       createdAt: new Date(),
     };
