@@ -143,6 +143,8 @@ model User {
   usageLogs     UsageLog[]
   sites         Site[]
   seoAnalyses   SeoAnalysis[]
+  socialPosts   SocialPost[]
+  brandPersonas BrandPersona[]
 }
 
 model Profile {
@@ -637,19 +639,24 @@ model UsageLog {
 // ==========================================
 
 model Site {
-  id          String   @id @default(cuid())
-  userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   
-  name        String
-  domain      String?  @unique
-  content     Json?    
-  themeConfig Json?    
+  name          String
+  domain        String?  @unique
+  subdomain     String?  @unique     // e.g. "mysite" -> mysite.accstudio.site
+  content       Json?    
+  themeConfig   Json?    
+  publishedHtml String?  @db.Text    // Yayınlanmış statik HTML
+  publishedUrl  String?              // Son yayınlanan URL
+  publishedAt   DateTime?            // Son yayınlanma tarihi
   
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@index([userId])
+  @@index([subdomain])
 }
 
 model SeoAnalysis {
@@ -675,3 +682,70 @@ model SeoAnalysis {
   @@index([url])
   @@index([createdAt])
 }
+
+// ==========================================
+// SOCIAL HUB
+// ==========================================
+
+enum SocialPlatform {
+  INSTAGRAM
+  TWITTER
+  LINKEDIN
+  FACEBOOK
+  TIKTOK
+}
+
+enum SocialPostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHED
+  FAILED
+}
+
+model SocialPost {
+  id            String           @id @default(cuid())
+  userId        String
+  user          User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  content       String           @db.Text
+  platform      SocialPlatform
+  status        SocialPostStatus @default(DRAFT)
+  scheduledFor  DateTime?
+  publishedAt   DateTime?
+  mediaUrls     Json?            // String array
+  errorMessage  String?
+
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([scheduledFor])
+  @@index([userId, platform])
+}
+
+// ==========================================
+// BRAND PERSONA
+// ==========================================
+
+model BrandPersona {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  name            String                    // "Kurumsal Ses", "Sosyal Medya Tonu"
+  description     String?  @db.Text
+  toneOfVoice     String                    // "professional", "casual", "friendly", "bold"
+  targetAudience  String?  @db.Text
+  brandValues     String?  @db.Text         // virgülle ayrılmış
+  doList          String?  @db.Text         // "Yapılması gerekenler" — guidelines
+  dontList        String?  @db.Text         // "Kaçınılması gerekenler"
+  exampleContent  String?  @db.Text         // Referans içerik örnekleri
+  isDefault       Boolean  @default(false)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+}
+

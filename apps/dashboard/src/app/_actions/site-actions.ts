@@ -108,3 +108,105 @@ export async function deleteSite(siteId: string) {
   revalidatePath("/marka/siteler");
   return { success: true };
 }
+
+/**
+ * Site'yi yayınla: HTML oluştur, DB'ye kaydet, URL döndür.
+ */
+export async function publishSite(siteId: string, subdomain?: string) {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Unauthorized");
+
+  const site = await prisma.site.findUnique({
+    where: { id: siteId, userId },
+  });
+
+  if (!site) throw new Error("Site not found");
+
+  // Import html exporter
+  const { exportSiteToHtml } = await import("web-builder");
+
+  const siteContent = site.content as any;
+  if (!siteContent || !siteContent.nodes || siteContent.nodes.length === 0) {
+    return { success: false, error: "Site içeriği boş. Lütfen önce içerik ekleyin." };
+  }
+
+  const html = exportSiteToHtml(siteContent, {
+    title: site.name,
+    includeFonts: true,
+    responsive: true,
+    includeReset: true,
+  });
+
+  const finalSubdomain = subdomain || site.subdomain || siteId.slice(0, 12);
+  const publishedUrl = `https://${finalSubdomain}.accstudio.site`;
+
+  await prisma.site.update({
+    where: { id: siteId },
+    data: {
+      publishedHtml: html,
+      publishedUrl,
+      publishedAt: new Date(),
+      subdomain: finalSubdomain,
+    },
+  });
+
+  revalidatePath(`/builder/${siteId}`);
+  revalidatePath("/marka/siteler");
+
+  return {
+    success: true,
+    url: publishedUrl,
+    publishedAt: new Date(),
+  };
+}
+
+/**
+ * Site preview: HTML string'ini döndür, DB'ye kaydetme.
+ */
+export async function previewSite(siteId: string) {
+  const session = await auth();
+  const userId = session?.user?.id;
+  if (!userId) throw new Error("Unauthorized");
+
+  const site = await prisma.site.findUnique({
+    where: { id: siteId, userId },
+  });
+
+  if (!site) throw new Error("Site not found");
+
+  const { exportSiteToHtml } = await import("web-builder");
+
+  const siteContent = site.content as any;
+  if (!siteContent || !siteContent.nodes || siteContent.nodes.length === 0) {
+    return { success: false, html: "", error: "Site içeriği boş." };
+  }
+
+  const html = exportSiteToHtml(siteContent, {
+    title: `${site.name} — Preview`,
+    includeFonts: true,
+    responsive: true,
+    includeReset: true,
+  });
+
+  return { success: true, html };
+}
+
+/**
+ * Yayındaki site'nin statik HTML'ini döndür (public erişim).
+ */
+export async function getPublishedSiteHtml(subdomain: string) {
+  const site = await prisma.site.findFirst({
+    where: { subdomain },
+    select: { publishedHtml: true, name: true, publishedAt: true },
+  });
+
+  if (!site || !site.publishedHtml) return null;
+
+  return {
+    html: site.publishedHtml,
+    name: site.name,
+    publishedAt: site.publishedAt,
+  };
+}
+
