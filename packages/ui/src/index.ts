@@ -11,9 +11,11 @@ export * from "./components/tabs";
 export * from "./components/select";
 export * from "./components/checkbox";
 export * from "./components/label";
-export * from "./components/sheet";
-export * from "./components/table";
 export * from "./components/tooltip";
+
+// Complex Shared Components
+export * from "./components/kanban-board";
+export * from "./components/delivery-management";
 
 export { cn } from "./lib/utils";
 export { Toaster, toast } from "sonner";

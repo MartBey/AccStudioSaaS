@@ -25,9 +25,10 @@ const categoryGradients: Record<string, string> = {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const post = await getBlogPostBySlug(params.slug);
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
   if (!post) return { title: "Makale Bulunamadı" };
   return {
     title: `${post.title} | AccStudio Topluluk`,
@@ -35,8 +36,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = await getBlogPostBySlug(params.slug);
+export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const post = await getBlogPostBySlug(slug);
   if (!post) return notFound();
 
   const gradient = categoryGradients[post.category] || "from-gray-400 to-gray-300";

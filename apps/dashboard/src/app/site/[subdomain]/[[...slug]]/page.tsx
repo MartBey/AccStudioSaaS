@@ -1,8 +1,7 @@
+import { prisma } from "database";
 import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import React from "react";
-
-import { prisma } from "database";
 
 import { PreviewClient } from "../../../preview/[id]/PreviewClient";
 
@@ -14,7 +13,7 @@ export default async function SitePage({
   const resolvedParams = await params;
   const identifier = resolvedParams.subdomain;
   const headersList = await headers();
-  
+
   // Middleware'den gelen header'a güveniyoruz, ancak subdomain parametresini de kullanabiliriz
   let siteId = headersList.get("x-site-id");
 
@@ -25,7 +24,7 @@ export default async function SitePage({
       where: { domain: identifier },
       select: { id: true },
     });
-    
+
     if (siteBySubdomain) {
       siteId = siteBySubdomain.id;
     } else {
@@ -49,7 +48,5 @@ export default async function SitePage({
   const initialState = site.content ? JSON.stringify(site.content) : undefined;
   const initialTheme = site.themeConfig ? JSON.stringify(site.themeConfig) : undefined;
 
-  return (
-    <PreviewClient initialState={initialState} initialTheme={initialTheme} />
-  );
+  return <PreviewClient initialState={initialState} initialTheme={initialTheme} />;
 }

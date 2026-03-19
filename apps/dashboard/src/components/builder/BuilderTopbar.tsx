@@ -84,8 +84,6 @@ export const BuilderTopbar = ({
 
       const data = await res.json();
       if (data.success && data.site) {
-        console.log("AI Generated Site Structure:", data.site);
-
         // 1. Yeni düğümleri React Element'lerine çeviriyoruz (componentMap ile).
         data.site.nodes.forEach((node: BuilderNode) => {
           const reactElement = parseAITreeToReactNode(node, dashboardComponentMap);
@@ -124,7 +122,6 @@ export const BuilderTopbar = ({
         });
       }
 
-      console.log("Loading Pre-built Template:", template);
       // Canvas'a enjekte et (componentMap ile)
       template.nodes.forEach((node: BuilderNode) => {
         const reactElement = parseAITreeToReactNode(node, dashboardComponentMap);
@@ -329,9 +326,9 @@ export const BuilderTopbar = ({
         >
           <Redo className="h-4 w-4" />
         </Button>
-        <Button 
-          variant="outline" 
-          size="sm" 
+        <Button
+          variant="outline"
+          size="sm"
           onClick={() => window.open(`/preview/${siteId}`, "_blank")}
           className="gap-2"
         >

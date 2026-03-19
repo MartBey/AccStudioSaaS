@@ -13,4 +13,3 @@
 
 - **Competitor (`packages/modules/competitor`)**
   - `services/scraper.ts`: Rakip URL için `seo` modülünün `analyzeUrl` fonksiyonunu kullanarak SEO metrikleri toplar.
-

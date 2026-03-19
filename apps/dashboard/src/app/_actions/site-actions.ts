@@ -1,9 +1,10 @@
 "use server";
 
-import { auth } from "@/auth";
 import { prisma } from "database";
 import { revalidatePath } from "next/cache";
 import { Site } from "types";
+
+import { auth } from "@/auth";
 
 export async function getUserSites(): Promise<Site[]> {
   const session = await auth();
@@ -41,10 +42,7 @@ export async function createSite(name: string): Promise<Site | null> {
   return site as Site;
 }
 
-export async function getSiteById(
-  siteId: string,
-  requireOwnership = false
-): Promise<Site | null> {
+export async function getSiteById(siteId: string, requireOwnership = false): Promise<Site | null> {
   const session = await auth();
   const userId = session?.user?.id;
 
@@ -67,7 +65,11 @@ export async function getSiteById(
   return site as Site | null;
 }
 
-export async function saveSiteContent(siteId: string, contentJson: string, themeConfigJson?: string) {
+export async function saveSiteContent(
+  siteId: string,
+  contentJson: string,
+  themeConfigJson?: string
+) {
   const session = await auth();
   const userId = session?.user?.id;
 

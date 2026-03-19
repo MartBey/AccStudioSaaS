@@ -7,12 +7,13 @@ import TeslimClient from "./_components/teslim-client";
 
 export const dynamic = "force-dynamic";
 
-export default async function GorevTeslimPage({ params }: { params: { id: string } }) {
+export default async function GorevTeslimPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
+  const { id } = await params;
   const task = await prisma.task.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       project: { select: { name: true } },
     },

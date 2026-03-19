@@ -2,6 +2,8 @@
 
 import { Editor, Frame } from "@craftjs/core";
 import React from "react";
+import { ThemeConfig } from "types";
+
 import {
   AnimatedHeroBlock,
   ButtonBlock,
@@ -16,7 +18,6 @@ import {
   TextBlock,
   VideoReviewBlock,
 } from "@/components/builder/blocks";
-import { ThemeConfig } from "types";
 
 interface PreviewClientProps {
   initialState?: string;
@@ -31,9 +32,9 @@ export const PreviewClient = ({ initialState, initialTheme }: PreviewClientProps
   return (
     <div
       className="min-h-screen w-full bg-white"
-      style={{ 
-        fontFamily: themeConfig.font, 
-        ...({ "--primary": themeConfig.primary } as React.CSSProperties)
+      style={{
+        fontFamily: themeConfig.font,
+        ...({ "--primary": themeConfig.primary } as React.CSSProperties),
       }}
     >
       <Editor

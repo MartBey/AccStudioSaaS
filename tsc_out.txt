@@ -1,0 +1,27 @@
+.next/types/app/(ajans)/ajans/projeler/[id]/atama/page.ts(34,29): error TS2344: Type '{ params: { id: string; }; }' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ id: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+.next/types/app/(freelancer)/freelancer/gorevler/[id]/page.ts(34,29): error TS2344: Type '{ params: { id: string; }; }' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ id: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+.next/types/app/(marka)/marka/projeler/[id]/page.ts(34,29): error TS2344: Type '{ params: { id: string; }; }' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ id: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+.next/types/app/(marka)/marka/projeler/[id]/teslimat/page.ts(34,29): error TS2344: Type '{ params: { id: string; }; }' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ id: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+.next/types/app/topluluk/[slug]/page.ts(34,29): error TS2344: Type '{ params: { slug: string; }; }' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ slug: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+.next/types/app/topluluk/[slug]/page.ts(38,31): error TS2344: Type '{ params: { slug: string; }; }' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ slug: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+.next/types/app/topluluk/page.ts(34,29): error TS2344: Type '{ searchParams: { category?: string | undefined; page?: string | undefined; }; }' does not satisfy the constraint 'PageProps'.
+  Types of property 'searchParams' are incompatible.
+    Type '{ category?: string | undefined; page?: string | undefined; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+.next/types/app/vitrin/[slug]/page.ts(34,29): error TS2344: Type '{ params: { slug: string; }; }' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ slug: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+.next/types/app/vitrin/[slug]/page.ts(38,31): error TS2344: Type '{ params: { slug: string; }; }' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ slug: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]

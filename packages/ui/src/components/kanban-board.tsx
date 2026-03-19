@@ -2,13 +2,19 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, CheckCircle2, Clock, DollarSign } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { Badge, Button, Card, CardContent, CardFooter, CardHeader, CardTitle, toast } from "ui";
+import {
+  Badge,
+  Button,
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  toast,
+} from "../index";
 
-import { updateTaskStatus } from "../_actions/task-actions";
-
-interface TaskItem {
+export interface KanbanTaskItem {
   id: string;
   title: string;
   description: string;
@@ -18,11 +24,14 @@ interface TaskItem {
   deadline: string;
 }
 
-interface KanbanClientProps {
-  tasks: TaskItem[];
+export interface KanbanBoardProps {
+  tasks: KanbanTaskItem[];
+  onStatusChange: (
+    taskId: string,
+    newStatus: string
+  ) => Promise<{ success: boolean; error?: string }>;
 }
 
-// DB status → Türkçe label eşlemesi
 const statusColumns = [
   {
     dbStatus: "TODO",
@@ -46,8 +55,7 @@ const statusColumns = [
   },
 ];
 
-export default function KanbanClient({ tasks: initialTasks }: KanbanClientProps) {
-  const router = useRouter();
+export function KanbanBoard({ tasks: initialTasks, onStatusChange }: KanbanBoardProps) {
   const [tasks, setTasks] = useState(initialTasks);
   const [isPending, startTransition] = useTransition();
 
@@ -56,19 +64,21 @@ export default function KanbanClient({ tasks: initialTasks }: KanbanClientProps)
     setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, status: newDbStatus } : t)));
 
     // Server action
-    startTransition(async () => {
-      const res = await updateTaskStatus(taskId, newDbStatus);
-      if (!res.success) {
-        // Rollback on error
-        setTasks((prev) =>
-          prev.map((t) =>
-            t.id === taskId
-              ? { ...t, status: initialTasks.find((it) => it.id === taskId)?.status || t.status }
-              : t
-          )
-        );
-        toast.error(res.error || "Görev durumu güncellenemedi.");
-      }
+    startTransition(() => {
+      (async () => {
+        const res = await onStatusChange(taskId, newDbStatus);
+        if (!res.success) {
+          // Rollback on error
+          setTasks((prev) =>
+            prev.map((t) =>
+              t.id === taskId
+                ? { ...t, status: initialTasks.find((it) => it.id === taskId)?.status || t.status }
+                : t
+            )
+          );
+          toast.error(res.error || "Görev durumu güncellenemedi.");
+        }
+      })();
     });
   };
 
@@ -86,7 +96,6 @@ export default function KanbanClient({ tasks: initialTasks }: KanbanClientProps)
         </Badge>
       </div>
 
-      {/* KANBAN BOARD */}
       <div className="grid flex-1 grid-cols-1 gap-4 overflow-x-auto pb-4 md:grid-cols-2 lg:grid-cols-4">
         {statusColumns.map((col, colIndex) => {
           const colTasks = tasks.filter((t) => t.status === col.dbStatus);
@@ -159,7 +168,6 @@ export default function KanbanClient({ tasks: initialTasks }: KanbanClientProps)
                           </CardContent>
 
                           <CardFooter className="justify-between bg-muted/20 p-2">
-                            {/* Geri butonu */}
                             {colIndex > 0 ? (
                               <Button
                                 variant="ghost"
@@ -175,8 +183,6 @@ export default function KanbanClient({ tasks: initialTasks }: KanbanClientProps)
                             ) : (
                               <div className="w-6" />
                             )}
-
-                            {/* İleri butonu */}
                             {colIndex < statusColumns.length - 1 ? (
                               <Button
                                 variant="outline"

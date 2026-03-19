@@ -1,18 +1,19 @@
 import { prisma } from "database";
 import { redirect } from "next/navigation";
+import { DeliveryManagement } from "ui";
 
+import { approveDelivery, requestRevision } from "@/app/_actions/delivery-actions";
 import { auth } from "@/auth";
-
-import TeslimatYonetimClient from "./_components/teslimat-client";
 
 export const dynamic = "force-dynamic";
 
-export default async function MarkaTeslimatPage({ params }: { params: { id: string } }) {
+export default async function MarkaTeslimatPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
+  const { id } = await params;
   const project = await prisma.project.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       tasks: {
         include: {
@@ -49,5 +50,12 @@ export default async function MarkaTeslimatPage({ params }: { params: { id: stri
     freelancerName: t.freelancer?.profile?.user?.name || "İsimsiz Freelancer",
   }));
 
-  return <TeslimatYonetimClient projectTitle={project.name} deliveries={deliveries} />;
+  return (
+    <DeliveryManagement
+      projectTitle={project.name}
+      deliveries={deliveries}
+      onApprove={(id) => approveDelivery(id) as any}
+      onRevision={(taskId, revisionNote) => requestRevision({ taskId, revisionNote }) as any}
+    />
+  );
 }

@@ -68,7 +68,10 @@ const ButtonSettings = () => {
           className="rounded-md border bg-background p-2 text-sm"
           value={variant}
           onChange={(e) =>
-            setProp((props: ButtonBlockProps) => (props.variant = e.target.value as ButtonBlockProps["variant"]))
+            setProp(
+              (props: ButtonBlockProps) =>
+                (props.variant = e.target.value as ButtonBlockProps["variant"])
+            )
           }
         >
           <option value="default">Default</option>
@@ -86,7 +89,9 @@ const ButtonSettings = () => {
           className="rounded-md border bg-background p-2 text-sm"
           value={size}
           onChange={(e) =>
-            setProp((props: ButtonBlockProps) => (props.size = e.target.value as ButtonBlockProps["size"]))
+            setProp(
+              (props: ButtonBlockProps) => (props.size = e.target.value as ButtonBlockProps["size"])
+            )
           }
         >
           <option value="default">Default</option>

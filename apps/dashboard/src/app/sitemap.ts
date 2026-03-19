@@ -1,8 +1,9 @@
+import { prisma } from "database";
 import type { MetadataRoute } from "next";
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || "https://accstudio.com";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Statik sayfalar
   const staticPages: MetadataRoute.Sitemap = [
     {
@@ -31,14 +32,29 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // TODO: Dinamik sayfalar (vitrin, blog) veritabanından çekilecek
-  // const vitrins = await prisma.vitrin.findMany({ select: { slug: true, updatedAt: true } });
-  // const vitrinPages = vitrins.map(v => ({
-  //   url: `${BASE_URL}/vitrin/${v.slug}`,
-  //   lastModified: v.updatedAt,
-  //   changeFrequency: "weekly" as const,
-  //   priority: 0.7,
-  // }));
+  try {
+    const vitrins = await prisma.vitrin.findMany({ select: { slug: true, updatedAt: true } });
+    const vitrinPages: MetadataRoute.Sitemap = vitrins.map((v) => ({
+      url: `${BASE_URL}/vitrin/${v.slug}`,
+      lastModified: v.updatedAt,
+      changeFrequency: "weekly",
+      priority: 0.7,
+    }));
 
-  return [...staticPages];
+    const posts = await prisma.blogPost.findMany({
+      where: { published: true },
+      select: { slug: true, updatedAt: true },
+    });
+    const blogPages: MetadataRoute.Sitemap = posts.map((p) => ({
+      url: `${BASE_URL}/topluluk/${p.slug}`,
+      lastModified: p.updatedAt,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    }));
+
+    return [...staticPages, ...vitrinPages, ...blogPages];
+  } catch (err) {
+    console.error("Sitemap generation error:", err);
+    return staticPages;
+  }
 }

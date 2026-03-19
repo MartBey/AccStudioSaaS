@@ -22,10 +22,11 @@ const categoryGradients: Record<string, string> = {
 export default async function ToplulukPage({
   searchParams,
 }: {
-  searchParams: { category?: string; page?: string };
+  searchParams: Promise<{ category?: string; page?: string }>;
 }) {
-  const category = searchParams.category || undefined;
-  const page = Number(searchParams.page) || 1;
+  const resolvedParams = await searchParams;
+  const category = resolvedParams.category || undefined;
+  const page = Number(resolvedParams.page) || 1;
   const { posts, totalPages } = await getBlogPosts({ category, page });
 
   const featuredPost = page === 1 && !category && posts.length > 0 ? posts[0] : null;

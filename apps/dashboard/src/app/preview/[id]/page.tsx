@@ -1,8 +1,9 @@
-import React from "react";
+import { prisma } from "database";
 import { notFound } from "next/navigation";
+import React from "react";
 
 import { auth } from "@/auth";
-import { prisma } from "database";
+
 import { PreviewClient } from "./PreviewClient";
 
 export default async function PreviewPage({ params }: { params: Promise<{ id: string }> }) {
@@ -31,7 +32,5 @@ export default async function PreviewPage({ params }: { params: Promise<{ id: st
   const initialState = site.content ? JSON.stringify(site.content) : undefined;
   const initialTheme = site.themeConfig ? JSON.stringify(site.themeConfig) : undefined;
 
-  return (
-    <PreviewClient initialState={initialState} initialTheme={initialTheme} />
-  );
+  return <PreviewClient initialState={initialState} initialTheme={initialTheme} />;
 }

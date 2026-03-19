@@ -200,9 +200,7 @@ export const AnimatedHeroSettings = () => {
           className="rounded-md border bg-background p-2 text-sm"
           value={primaryButtonText || ""}
           onChange={(e) =>
-            setProp(
-              (props: AnimatedHeroBlockProps) => (props.primaryButtonText = e.target.value)
-            )
+            setProp((props: AnimatedHeroBlockProps) => (props.primaryButtonText = e.target.value))
           }
           placeholder="Start Building"
         />
@@ -215,9 +213,7 @@ export const AnimatedHeroSettings = () => {
           className="rounded-md border bg-background p-2 text-sm"
           value={secondaryButtonText || ""}
           onChange={(e) =>
-            setProp(
-              (props: AnimatedHeroBlockProps) => (props.secondaryButtonText = e.target.value)
-            )
+            setProp((props: AnimatedHeroBlockProps) => (props.secondaryButtonText = e.target.value))
           }
           placeholder="View Showcase"
         />

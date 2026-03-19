@@ -1,5 +1,6 @@
 "use client";
 
+import { UserPlus } from "lucide-react";
 import { useState } from "react";
 import {
   Button,
@@ -14,7 +15,7 @@ import {
   Label,
   toast,
 } from "ui";
-import { UserPlus } from "lucide-react";
+
 import { addEmployee } from "../../../../_actions/agency-actions";
 
 export function AddMemberDialog() {
@@ -45,7 +46,6 @@ export function AddMemberDialog() {
       setLoading(false);
     }
   };
-
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

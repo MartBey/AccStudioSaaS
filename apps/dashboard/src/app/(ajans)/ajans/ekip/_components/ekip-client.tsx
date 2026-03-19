@@ -1,3 +1,5 @@
+"use client";
+
 import { Mail, MoreHorizontal, Search } from "lucide-react";
 import { useState } from "react";
 import {
@@ -17,10 +19,10 @@ import {
   TableHeader,
   TableRow,
 } from "ui";
-
-import { AddMemberDialog } from "./add-member-dialog";
-import { removeEmployee } from "../../../../_actions/agency-actions";
 import { toast } from "ui";
+
+import { removeEmployee } from "../../../../_actions/agency-actions";
+import { AddMemberDialog } from "./add-member-dialog";
 
 interface TeamMember {
   id: string;
@@ -47,8 +49,8 @@ export default function EkipClient({ members }: EkipClientProps) {
 
   const handleRemove = async (id: string) => {
     if (!confirm("Bu ekip üyesini silmek istediğinize emin misiniz?")) return;
-    
-    setRemovingIds(prev => [...prev, id]);
+
+    setRemovingIds((prev) => [...prev, id]);
     try {
       const result = await removeEmployee(id);
       if (result.success) {
@@ -60,7 +62,7 @@ export default function EkipClient({ members }: EkipClientProps) {
       console.error(error);
       toast.error("Bir hata oluştu.");
     } finally {
-      setRemovingIds(prev => prev.filter(rid => rid !== id));
+      setRemovingIds((prev) => prev.filter((rid) => rid !== id));
     }
   };
 
@@ -115,7 +117,10 @@ export default function EkipClient({ members }: EkipClientProps) {
               </TableRow>
             ) : (
               filteredTeam.map((member) => (
-                <TableRow key={member.id} className={removingIds.includes(member.id) ? "opacity-50" : ""}>
+                <TableRow
+                  key={member.id}
+                  className={removingIds.includes(member.id) ? "opacity-50" : ""}
+                >
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Avatar className="h-10 w-10 border border-primary/20">
@@ -151,7 +156,7 @@ export default function EkipClient({ members }: EkipClientProps) {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem>Profili İncele</DropdownMenuItem>
                         <DropdownMenuItem>Rolü Değiştir</DropdownMenuItem>
-                        <DropdownMenuItem 
+                        <DropdownMenuItem
                           className="text-destructive"
                           onClick={() => handleRemove(member.id)}
                           disabled={removingIds.includes(member.id)}
@@ -170,4 +175,3 @@ export default function EkipClient({ members }: EkipClientProps) {
     </div>
   );
 }
-

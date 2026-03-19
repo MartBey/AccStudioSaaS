@@ -139,9 +139,13 @@ function renderAnimatedHero(node: BuilderNode, theme: ThemeConfig): string {
   return `
     <section style="padding: 120px 20px; background: #0a0a0a; text-align: center;">
       <div class="container">
-        ${badge ? `<div style="display: inline-block; padding: 6px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); margin-bottom: 24px;">
+        ${
+          badge
+            ? `<div style="display: inline-block; padding: 6px 16px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); backdrop-filter: blur(8px); margin-bottom: 24px;">
           <span style="font-size: 14px; font-weight: 500; color: #a78bfa;">${badge}</span>
-        </div>` : ""}
+        </div>`
+            : ""
+        }
         <h1 style="font-size: 64px; font-weight: 700; color: #ffffff; margin-bottom: 24px; line-height: 1.2;">${title || ""}</h1>
         ${subtitle ? `<p style="font-size: 20px; color: #a1a1aa; max-width: 672px; margin: 0 auto 32px; line-height: 1.6;">${subtitle}</p>` : ""}
         <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">

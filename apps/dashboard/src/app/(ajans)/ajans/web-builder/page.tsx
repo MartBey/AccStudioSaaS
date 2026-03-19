@@ -230,13 +230,15 @@ export default function WebBuilderPage() {
                       Önizleme Bağlantısı
                     </p>
                     {(() => {
-                      const isDev = window.location.hostname === "localhost" || window.location.hostname.includes(".local");
+                      const isDev =
+                        window.location.hostname === "localhost" ||
+                        window.location.hostname.includes(".local");
                       const domain = isDev ? "accstudio.local:3000" : "accstudio.co";
                       const protocol = isDev ? "http" : "https";
-                      const previewUrl = result.subdomain 
+                      const previewUrl = result.subdomain
                         ? `${protocol}://${result.subdomain}.${domain}`
                         : `${protocol}://${domain}/preview/${result.id}`;
-                      
+
                       return (
                         <a
                           href={previewUrl}
@@ -253,10 +255,12 @@ export default function WebBuilderPage() {
                 <Button
                   variant="secondary"
                   onClick={() => {
-                    const isDev = window.location.hostname === "localhost" || window.location.hostname.includes(".local");
+                    const isDev =
+                      window.location.hostname === "localhost" ||
+                      window.location.hostname.includes(".local");
                     const domain = isDev ? "accstudio.local:3000" : "accstudio.co";
                     const protocol = isDev ? "http" : "https";
-                    const previewUrl = result.subdomain 
+                    const previewUrl = result.subdomain
                       ? `${protocol}://${result.subdomain}.${domain}`
                       : `${protocol}://${domain}/preview/${result.id}`;
                     window.open(previewUrl, "_blank");
@@ -265,7 +269,6 @@ export default function WebBuilderPage() {
                   Canlı Önizleme
                 </Button>
               </div>
-
 
               <div className="flex w-full gap-4">
                 <Button

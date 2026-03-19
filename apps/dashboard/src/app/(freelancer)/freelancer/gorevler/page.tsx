@@ -1,9 +1,10 @@
 import { prisma } from "database";
 import { redirect } from "next/navigation";
+import { KanbanBoard } from "ui";
 
 import { auth } from "@/auth";
 
-import KanbanClient from "./_components/kanban-client";
+import { updateTaskStatus } from "./_actions/task-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -56,5 +57,10 @@ export default async function FreelancerGorevlerPage() {
     deadline: formatDeadline(t.dueDate),
   }));
 
-  return <KanbanClient tasks={formattedTasks} />;
+  return (
+    <KanbanBoard
+      tasks={formattedTasks}
+      onStatusChange={(id, status) => updateTaskStatus(id, status) as any}
+    />
+  );
 }

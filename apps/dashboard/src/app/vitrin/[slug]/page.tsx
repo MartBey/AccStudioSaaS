@@ -8,9 +8,10 @@ import VitrinView from "./_components/vitrin-view";
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const vitrin = await getVitrinBySlug(params.slug);
+  const { slug } = await params;
+  const vitrin = await getVitrinBySlug(slug);
   if (!vitrin) return { title: "Vitrin Bulunamadı" };
   return {
     title: `${vitrin.freelancerName} — ${vitrin.headline || "Freelancer"} | AccStudio`,
@@ -22,8 +23,9 @@ export async function generateMetadata({
   };
 }
 
-export default async function PublicVitrinPage({ params }: { params: { slug: string } }) {
-  const vitrin = await getVitrinBySlug(params.slug);
+export default async function PublicVitrinPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const vitrin = await getVitrinBySlug(slug);
   const formattedVitrin = vitrin
     ? {
         ...vitrin,

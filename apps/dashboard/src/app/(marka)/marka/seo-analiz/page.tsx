@@ -1,6 +1,15 @@
 "use client";
 
-import { Activity, AlertCircle, AlertTriangle, Globe, History, Info, LayoutDashboard, Search } from "lucide-react";
+import {
+  Activity,
+  AlertCircle,
+  AlertTriangle,
+  Globe,
+  History,
+  Info,
+  LayoutDashboard,
+  Search,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import { SeoResponse } from "types";
 import {
@@ -89,7 +98,7 @@ export default function SeoAnalyzerPage() {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2 max-w-[400px]">
+        <TabsList className="grid w-full max-w-[400px] grid-cols-2">
           <TabsTrigger value="analyze" className="gap-2">
             <LayoutDashboard className="h-4 w-4" />
             Analiz Et
@@ -237,7 +246,10 @@ export default function SeoAnalyzerPage() {
                   <CardContent className="space-y-4">
                     <div className="flex items-center justify-between border-b py-2">
                       <span className="text-sm text-muted-foreground">Hedef URL</span>
-                      <span className="max-w-[150px] truncate text-sm font-medium" title={result.url}>
+                      <span
+                        className="max-w-[150px] truncate text-sm font-medium"
+                        title={result.url}
+                      >
                         {result.url}
                       </span>
                     </div>
@@ -293,14 +305,22 @@ export default function SeoAnalyzerPage() {
                       </div>
                       <div className="flex items-center gap-6">
                         <div className="text-center">
-                          <p className="text-xs text-muted-foreground uppercase font-semibold">SEO</p>
+                          <p className="text-xs font-semibold uppercase text-muted-foreground">
+                            SEO
+                          </p>
                           <p className="text-lg font-bold text-blue-500">{item.scores.seo}</p>
                         </div>
                         <div className="text-center">
-                          <p className="text-xs text-muted-foreground uppercase font-semibold">PERF</p>
-                          <p className="text-lg font-bold text-amber-500">{item.scores.performance}</p>
+                          <p className="text-xs font-semibold uppercase text-muted-foreground">
+                            PERF
+                          </p>
+                          <p className="text-lg font-bold text-amber-500">
+                            {item.scores.performance}
+                          </p>
                         </div>
-                        <Button variant="ghost" size="sm">Görüntüle</Button>
+                        <Button variant="ghost" size="sm">
+                          Görüntüle
+                        </Button>
                       </div>
                     </div>
                   ))}

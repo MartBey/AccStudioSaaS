@@ -1,19 +1,19 @@
-import React from "react";
+import { prisma } from "database";
 import { redirect } from "next/navigation";
 import { notFound } from "next/navigation";
+import React from "react";
 
 import { auth } from "@/auth";
-import { prisma } from "database";
+
 import { BuilderClient } from "./BuilderClient";
 
-export default async function BuilderPage({ 
+export default async function BuilderPage({
   params,
-  searchParams 
-}: { 
+  searchParams,
+}: {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-
   const session = await auth();
 
   if (!session?.user?.id) {

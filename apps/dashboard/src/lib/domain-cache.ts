@@ -1,4 +1,4 @@
-import NodeCache from 'node-cache';
+import NodeCache from "node-cache";
 
 // TTL: 5 minutes (300 seconds)
 const cache = new NodeCache({ stdTTL: 300, checkperiod: 60 });

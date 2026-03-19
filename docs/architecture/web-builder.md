@@ -8,4 +8,3 @@
 - **Dashboard Entegrasyonu**:
   - API route'ları: `apps/dashboard/src/app/api/builder/generate/route.ts` ve `.../export/route.ts`.
   - Ajans web-builder akışı: `apps/dashboard/src/app/(ajans)/ajans/web-builder/page.tsx` üzerinden başlar ve `web-builder` modül aksiyonlarını kullanır.
-

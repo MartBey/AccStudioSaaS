@@ -1,16 +1,11 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { prisma } from "database";
+import { revalidatePath } from "next/cache";
 
 import { auth } from "@/auth";
 
-
-export async function addEmployee(data: {
-  name: string;
-  role: string;
-  email?: string;
-}) {
+export async function addEmployee(data: { name: string; role: string; email?: string }) {
   try {
     const session = await auth();
     if (!session?.user?.id) throw new Error("Oturum bulunamadı.");
@@ -55,7 +50,7 @@ export async function removeEmployee(employeeId: string) {
     });
 
     const agencyId = user?.profile?.agency?.id;
-    
+
     // Çalışanı bul ve ajans ID'sini kontrol et
     const employee = await prisma.employee.findUnique({
       where: { id: employeeId },

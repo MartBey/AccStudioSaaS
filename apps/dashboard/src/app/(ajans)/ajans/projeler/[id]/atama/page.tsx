@@ -7,7 +7,7 @@ import GorevAtamaClient from "./_components/gorev-atama-client";
 
 export const dynamic = "force-dynamic";
 
-export default async function AjansGorevAtamaPage({ params }: { params: { id: string } }) {
+export default async function AjansGorevAtamaPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
@@ -21,8 +21,9 @@ export default async function AjansGorevAtamaPage({ params }: { params: { id: st
   if (!agencyId) redirect("/ajans");
 
   // Proje ve görevleri
+  const { id } = await params;
   const project = await prisma.project.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       tasks: {
         include: {

@@ -3,7 +3,7 @@
 import { Editor, Element, Frame } from "@craftjs/core";
 import React, { useState } from "react";
 
-import { AnimatedHeroBlock } from "@/components/builder/blocks/AnimatedHeroBlock";
+import { saveSiteContent } from "@/app/_actions/site-actions";
 import {
   ButtonBlock,
   ContactBlock,
@@ -17,13 +17,11 @@ import {
   TextBlock,
   VideoReviewBlock,
 } from "@/components/builder/blocks";
-
+import { AnimatedHeroBlock } from "@/components/builder/blocks/AnimatedHeroBlock";
 import { ContainerSettings } from "@/components/builder/blocks/ContainerBlock";
 import { BuilderSettingsPanel } from "@/components/builder/BuilderSettingsPanel";
 import { BuilderSidebar } from "@/components/builder/BuilderSidebar";
 import { BuilderTopbar } from "@/components/builder/BuilderTopbar";
-
-import { saveSiteContent } from "@/app/_actions/site-actions";
 
 interface BuilderClientProps {
   initialState?: string;

@@ -6,12 +6,13 @@ import { auth } from "@/auth";
 
 export const dynamic = "force-dynamic";
 
-export default async function MarkaProjeDetayPage({ params }: { params: { id: string } }) {
+export default async function MarkaProjeDetayPage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth();
   if (!session?.user?.id) redirect("/login");
 
+  const { id } = await params;
   const project = await prisma.project.findUnique({
-    where: { id: params.id },
+    where: { id },
     include: {
       agency: true,
       tasks: {

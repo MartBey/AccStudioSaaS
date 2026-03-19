@@ -42,4 +42,3 @@ export interface WebBuilderResponse {
   siteStructure?: any;
   subdomain?: string;
 }
-

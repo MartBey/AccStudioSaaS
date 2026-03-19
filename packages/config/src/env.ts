@@ -20,7 +20,7 @@ const envSchema = z.object({
   PUSHER_CLUSTER: z.string().optional(),
 
   // Google / AI
-  GOOGLE_GENERATIVE_AI_API_KEY: z.string().optional()
+  GOOGLE_GENERATIVE_AI_API_KEY: z.string().optional(),
 });
 
 type Env = z.infer<typeof envSchema>;
@@ -42,4 +42,3 @@ export function getEnv(): Env {
   cachedEnv = parsed.data;
   return cachedEnv;
 }
-

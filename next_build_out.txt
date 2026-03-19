@@ -1,0 +1,27 @@
+   Ôû▓ Next.js 15.0.3
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+Error:   x You're importing a component that needs `useState`. This React hook only works in a client component. To fix, mark the file (or its parent) with the `"use client"` directive.
+  | 
+  |  Learn more: https://nextjs.org/docs/app/building-your-application/rendering/client-components
+  | 
+  | 
+   ,-[C:\AccStudioAGENT\apps\dashboard\src\app\(ajans)\ajans\ekip\_components\ekip-client.tsx:2:1]
+ 1 | import { Mail, MoreHorizontal, Search } from "lucide-react";
+ 2 | import { useState } from "react";
+   :          ^^^^^^^^
+ 3 | import {
+ 4 |   Avatar,
+ 5 |   AvatarFallback,
+   `----
+
+Import trace for requested module:
+./src/app/(ajans)/ajans/ekip/_components/ekip-client.tsx
+./src/app/(ajans)/ajans/ekip/page.tsx
+
+
+> Build failed because of webpack errors

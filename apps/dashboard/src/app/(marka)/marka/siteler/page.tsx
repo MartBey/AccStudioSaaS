@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Plus, Globe, Edit, Trash2, ExternalLink, Loader2 } from "lucide-react";
+import { Edit, ExternalLink, Globe, Loader2, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Site } from "types";
 import {
   Button,
   Card,
@@ -11,7 +12,6 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  Input,
   Dialog,
   DialogContent,
   DialogDescription,
@@ -19,10 +19,11 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  Input,
 } from "ui";
 import { toast } from "ui";
-import { getUserSites, createSite, deleteSite } from "@/app/_actions/site-actions";
-import { Site } from "types";
+
+import { createSite, deleteSite, getUserSites } from "@/app/_actions/site-actions";
 
 export default function SitelerPage() {
   const [sites, setSites] = useState<Site[]>([]);
@@ -107,7 +108,9 @@ export default function SitelerPage() {
               />
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsCreateOpen(false)}>İptal</Button>
+              <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
+                İptal
+              </Button>
               <Button onClick={handleCreate} disabled={creating}>
                 {creating && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                 Oluştur
@@ -136,7 +139,7 @@ export default function SitelerPage() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {sites.map((site) => (
             <Card key={site.id} className="overflow-hidden transition-all hover:shadow-md">
-              <div className="aspect-video w-full bg-muted flex items-center justify-center border-b">
+              <div className="flex aspect-video w-full items-center justify-center border-b bg-muted">
                 <Globe className="h-12 w-12 text-muted-foreground/50" />
               </div>
               <CardHeader className="p-4">
@@ -162,9 +165,9 @@ export default function SitelerPage() {
                     <ExternalLink className="h-4 w-4" />
                   </Link>
                 </Button>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
+                <Button
+                  variant="ghost"
+                  size="icon"
                   className="text-destructive hover:bg-destructive/10 hover:text-destructive"
                   onClick={() => handleDelete(site.id)}
                 >

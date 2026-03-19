@@ -1,9 +1,10 @@
 "use server";
 
-import { auth } from "@/auth";
 import { prisma } from "database";
 import { analyzeWebsite } from "seo";
 import { SeoRequest, SeoResponse } from "types";
+
+import { auth } from "@/auth";
 
 export async function analyzeAndSaveWebsite(request: SeoRequest): Promise<SeoResponse> {
   const session = await auth();
