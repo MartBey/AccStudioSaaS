@@ -36,7 +36,6 @@ export function Header({ items }: HeaderProps) {
   const pathname = usePathname();
   const { data: session } = useSession();
 
-  // Bulunduğumuz sayfanın başlığını title olarak çek
   const currentItem = items.find(
     (i) => pathname === i.href || (i.href !== "/" && pathname?.startsWith(i.href))
   );
@@ -46,7 +45,6 @@ export function Header({ items }: HeaderProps) {
     await signOut({ callbackUrl: "/" });
   };
 
-  // Rol bazlı link hesaplayıcılar
   const rolePrefix = pathname?.startsWith("/marka")
     ? "/marka"
     : pathname?.startsWith("/ajans")
@@ -58,19 +56,39 @@ export function Header({ items }: HeaderProps) {
   const isFreelancer = pathname?.startsWith("/freelancer") || session?.user?.role === "FREELANCER";
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b bg-background/80 px-4 backdrop-blur-md md:px-6">
+    // Glassmorphism header — surface-container 60% + backdrop-blur-20
+    <header
+      className={cn(
+        "glass sticky top-0 z-30 flex h-16 w-full items-center justify-between px-4 md:px-6",
+        // Ghost Border fallback bottom — outline-variant at 20%
+        "border-b border-ghost"
+      )}
+    >
+      {/* Left: Mobile menu + Page title */}
       <div className="flex items-center gap-4">
         <Sheet>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="md:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden text-[hsl(var(--on-surface-variant))] hover:text-white hover:bg-[hsl(var(--surface-high))]"
+            >
               <Menu className="h-5 w-5" />
               <span className="sr-only">Menüyü aç/kapa</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-64 p-0">
-            <div className="p-6">
-              <h2 className="mb-6 text-2xl font-bold text-primary">AccStudio</h2>
-              <nav className="flex flex-col gap-1">
+          <SheetContent
+            side="left"
+            className="w-64 p-0 border-r-0 surface-low"
+          >
+            <div className="px-6 py-8">
+              <h2
+                className="mb-8 font-manrope text-2xl font-extrabold"
+                style={{ color: "hsl(var(--primary))" }}
+              >
+                AccStudio
+              </h2>
+              <nav className="flex flex-col gap-0.5">
                 {items.map((item, index) => {
                   const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
                   const IconComponent = (LucideIcons[item.icon as keyof typeof LucideIcons] ||
@@ -80,13 +98,20 @@ export function Header({ items }: HeaderProps) {
                       key={index}
                       href={item.href}
                       className={cn(
-                        "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all",
+                        "relative flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200",
                         isActive
-                          ? "bg-primary/10 text-primary"
-                          : "text-muted-foreground hover:bg-muted hover:text-primary"
+                          ? "light-bar-active bg-[hsl(var(--surface-high))] text-white"
+                          : "text-[hsl(var(--on-surface-variant))] hover:bg-[hsl(var(--surface-high))/0.6] hover:text-white"
                       )}
                     >
-                      <IconComponent className="h-5 w-5" />
+                      <IconComponent
+                        className={cn(
+                          "h-5 w-5",
+                          isActive
+                            ? "text-[hsl(var(--secondary))]"
+                            : "text-[hsl(var(--on-surface-variant))]"
+                        )}
+                      />
                       {item.title}
                     </Link>
                   );
@@ -96,24 +121,38 @@ export function Header({ items }: HeaderProps) {
           </SheetContent>
         </Sheet>
 
-        <h1 className="hidden text-xl font-semibold md:block">{pageTitle}</h1>
+        {/* Page Title — Manrope headline */}
+        <h1
+          className="hidden font-manrope text-lg font-bold tracking-tight text-white md:block"
+        >
+          {pageTitle}
+        </h1>
       </div>
 
-      <div className="flex items-center gap-4">
+      {/* Right: actions */}
+      <div className="flex items-center gap-2">
+        {/* Freelancer rank chip */}
         {isFreelancer && (
           <TooltipProvider>
             <Tooltip delayDuration={300}>
               <TooltipTrigger asChild>
-                <div className="mr-2 flex hidden cursor-help items-center gap-1.5 rounded-full border bg-background px-3 py-1.5 text-sm font-medium text-muted-foreground shadow-sm transition-colors hover:text-foreground sm:flex">
-                  <LucideIcons.Star className="h-4 w-4" />
+                <div
+                  className="mr-1 hidden cursor-help items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold sm:flex border-ghost"
+                  style={{
+                    background: "hsl(var(--surface-high))",
+                    color: "hsl(var(--on-surface-variant))",
+                  }}
+                >
+                  <LucideIcons.Star className="h-3.5 w-3.5" style={{ color: "hsl(var(--secondary))" }} />
                   <span>Sıralamam: 524</span>
-                  <LucideIcons.Info className="ml-1 h-4 w-4 text-muted-foreground/70" />
                 </div>
               </TooltipTrigger>
-              <TooltipContent className="max-w-[280px] p-3 shadow-lg" sideOffset={8}>
-                <p className="text-sm font-medium leading-relaxed">
-                  Burada diğer hizmet verenlere kıyasla performansını görebilirsin. İş kazanmak ve
-                  sıralamanı yükseltmek için teklif ver!
+              <TooltipContent
+                className="shadow-ambient glass max-w-[280px] border-ghost p-3"
+                sideOffset={8}
+              >
+                <p className="text-sm leading-relaxed" style={{ color: "hsl(var(--on-surface-variant))" }}>
+                  Diğer profesyonellere kıyasla performansını görüyorsun. Teklif ver, sıralamanı yükselt!
                 </p>
               </TooltipContent>
             </Tooltip>
@@ -122,46 +161,70 @@ export function Header({ items }: HeaderProps) {
 
         <ThemeToggle />
 
+        {/* Bell */}
         <Link href={getNotificationLink()} className="inline-flex">
           <Button
             variant="ghost"
             size="icon"
-            className="relative text-muted-foreground hover:text-foreground"
+            className="relative text-[hsl(var(--on-surface-variant))] hover:text-white hover:bg-[hsl(var(--surface-high))]"
           >
             <Bell className="h-5 w-5" />
-            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-destructive"></span>
+            {/* Notification dot — tertiary (#ff6c95) */}
+            <span
+              className="absolute right-2 top-2 h-2 w-2 rounded-full"
+              style={{ background: "hsl(var(--tertiary))" }}
+            />
           </Button>
         </Link>
 
+        {/* Avatar dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-              <Avatar className="h-9 w-9">
-                <AvatarFallback className="bg-primary/10 text-primary">
-                  <User className="h-5 w-5" />
+            <Button
+              variant="ghost"
+              className="relative h-9 w-9 rounded-full hover:bg-[hsl(var(--surface-high))]"
+            >
+              <Avatar className="h-9 w-9 border-ghost">
+                <AvatarFallback
+                  className="font-semibold text-sm"
+                  style={{
+                    background: "hsl(var(--primary-container))",
+                    color: "hsl(var(--primary))",
+                  }}
+                >
+                  {session?.user?.name?.[0]?.toUpperCase() || <User className="h-4 w-4" />}
                 </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuContent
+            align="end"
+            className="w-56 surface-high shadow-ambient border-ghost"
+          >
             <DropdownMenuLabel className="font-normal">
-              <div className="flex flex-col space-y-1">
-                <p className="text-sm font-medium leading-none">
+              <div className="flex flex-col space-y-0.5">
+                <p className="text-sm font-semibold text-white">
                   {session?.user?.name || session?.user?.email || "Kullanıcı"}
                 </p>
-                <p className="text-xs leading-none text-muted-foreground">
-                  {session?.user?.role || "Misafir"} Profili
+                <p className="label-md" style={{ color: "hsl(var(--on-surface-variant))" }}>
+                  {session?.user?.role || "Misafir"}
                 </p>
               </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className="bg-[hsl(var(--outline-variant)/0.2)]" />
             <DropdownMenuItem asChild>
-              <Link href={getSettingsLink()}>Ayarlar</Link>
+              <Link
+                href={getSettingsLink()}
+                className="text-[hsl(var(--on-surface-variant))] hover:text-white focus:text-white"
+              >
+                Ayarlar
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className="bg-[hsl(var(--outline-variant)/0.2)]" />
             <DropdownMenuItem
               onClick={handleLogout}
-              className="text-destructive focus:bg-destructive/10"
+              className="focus:bg-[hsl(var(--tertiary)/0.1)]"
+              style={{ color: "hsl(var(--tertiary))" }}
             >
               Çıkış Yap
             </DropdownMenuItem>

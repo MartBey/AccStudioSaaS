@@ -2,61 +2,181 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Google Fonts ── */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap");
+
 @layer base {
+  /* ============================================
+     "The Midnight Architect" — Design System
+     Creative North Star: "The Digital Obsidian"
+     ============================================ */
+
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%; /* slate-900 */
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 226 70% 55%; /* indigo-600 */
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%; /* slate-100 */
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%; /* red-600 */
-    --destructive-foreground: 210 40% 98%;
-    --success: 160 84% 39%; /* emerald-600 */
-    --warning: 38 92% 50%; /* amber-500 */
-    --info: 199 89% 48%; /* sky-500 */
-    --border: 214.3 31.8% 91.4%; /* slate-200 */
-    --input: 214.3 31.8% 91.4%;
-    --ring: 226 70% 55%;
-    --radius: 0.5rem;
+    /* Surface Hierarchy (Light — intentionally minimal) */
+    --surface:               0 0% 99%;
+    --surface-low:           0 0% 96%;
+    --surface-container:     0 0% 92%;
+    --surface-high:          0 0% 87%;
+    --surface-highest:       0 0% 82%;
+
+    /* Primary Accent — Electric Violet */
+    --primary:               258 100% 80%;         /* #b6a0ff */
+    --primary-dim:           258 98% 72%;           /* #a98fff */
+    --primary-container:     258 100% 15%;
+    --on-primary:            258 100% 20%;          /* #340090 */
+    --on-primary-fg:         0 0% 100%;
+
+    /* Secondary — Cyan Luminous */
+    --secondary:             187 100% 50%;          /* #00e3fd */
+    --secondary-foreground:  222 60% 6%;
+
+    /* Tertiary — Neon Rose */
+    --tertiary:              341 100% 71%;          /* #ff6c95 */
+
+    /* Backgrounds (shadcn compat) */
+    --background:            0 0% 99%;
+    --foreground:            222 84% 5%;
+    --card:                  0 0% 96%;
+    --card-foreground:       222 84% 5%;
+    --popover:               0 0% 99%;
+    --popover-foreground:    222 84% 5%;
+    --muted:                 0 0% 92%;
+    --muted-foreground:      215 16% 47%;
+    --accent:                0 0% 92%;
+    --accent-foreground:     222 84% 5%;
+    --destructive:           0 84% 60%;
+    --destructive-foreground:0 0% 100%;
+    --on-surface:            0 0% 100%;
+    --on-surface-variant:    0 0% 67%;             /* #adaaaa */
+    --outline-variant:       0 0% 28%;             /* #484847 */
+    --border:                0 0% 88%;
+    --input:                 0 0% 88%;
+    --ring:                  258 100% 80%;
+    --radius:                0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    /* ── Dark mode is the PRIMARY mode for "The Midnight Architect" ── */
+
+    /* Surface Hierarchy — Nested Tonal Sheets */
+    --surface:               0 0% 6%;              /* #0e0e0e — Base Layer */
+    --surface-low:           0 0% 7.5%;            /* #131313 — Sidebar/Sectional */
+    --surface-container:     0 0% 10%;             /* #1a1a1a — Cards */
+    --surface-high:          0 0% 12.5%;           /* #20201f — Hover/Popovers */
+    --surface-highest:       0 0% 15%;             /* #262626 — Elevated elements */
+
+    /* Backgrounds (shadcn compat → map to surface hierarchy) */
+    --background:            0 0% 6%;              /* surface */
+    --foreground:            0 0% 95%;
+    --card:                  0 0% 10%;             /* surface-container */
+    --card-foreground:       0 0% 95%;
+    --popover:               0 0% 10%;
+    --popover-foreground:    0 0% 95%;
+    --muted:                 0 0% 10%;
+    --muted-foreground:      0 0% 67%;             /* on-surface-variant */
+    --accent:                0 0% 12.5%;
+    --accent-foreground:     0 0% 95%;
+    --destructive:           0 63% 31%;
+    --destructive-foreground:0 0% 95%;
+
+    /* Primary — Electric Violet */
+    --primary:               258 100% 80%;         /* #b6a0ff */
+    --primary-dim:           258 98% 72%;           /* #a98fff */
+    --primary-container:     258 100% 15%;
+    --on-primary:            258 100% 20%;          /* #340090 */
+    --on-primary-fg:         0 0% 100%;
+    --primary-foreground:    258 100% 20%;
+
+    /* Secondary — Cyan Luminous */
+    --secondary:             187 100% 50%;          /* #00e3fd */
+    --secondary-foreground:  222 60% 6%;
+
+    /* Tertiary — Neon Rose */
+    --tertiary:              341 100% 71%;          /* #ff6c95 */
+
+    /* Surface text */
+    --on-surface:            0 0% 100%;
+    --on-surface-variant:    0 0% 67%;             /* #adaaaa */
+    --outline-variant:       0 0% 28%;             /* #484847 */
+
+    /* Borders — Ghost Border Rule: never full opacity (handled in utilities) */
+    --border:                0 0% 28%;
+    --input:                 0 0% 28%;
+    --ring:                  258 100% 80%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    box-sizing: border-box;
+    /* The "No-Line" Rule: remove default borders */
+    border-color: hsl(var(--outline-variant) / 0.2);
   }
+
+  html {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
     @apply bg-background text-foreground;
   }
+
+  /* Editorial Authority: Manrope for all headings */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Manrope", sans-serif;
+  }
+}
+
+@layer utilities {
+  /* ── Surface Utilities ── */
+  .surface           { background-color: hsl(var(--surface)); }
+  .surface-low       { background-color: hsl(var(--surface-low)); }
+  .surface-container { background-color: hsl(var(--surface-container)); }
+  .surface-high      { background-color: hsl(var(--surface-high)); }
+  .surface-highest   { background-color: hsl(var(--surface-highest)); }
+
+  /* ── Primary Gradient CTA (Metallic Sheen) ── */
+  .gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary-dim)) 100%);
+  }
+
+  /* ── Glassmorphism ── */
+  .glass {
+    background: hsl(var(--surface-container) / 0.60);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  /* ── Ambient Shadow (for floating elements) ── */
+  .shadow-ambient {
+    box-shadow: 0 20px 40px -5px hsl(var(--on-surface) / 0.04);
+  }
+
+  /* ── Ghost Border (accessible fallback) ── */
+  .border-ghost {
+    border: 1px solid hsl(var(--outline-variant) / 0.20);
+  }
+
+  /* ── Light Bar (sidebar active state) ── */
+  .light-bar-active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 60%;
+    border-radius: 0 2px 2px 0;
+    background-color: hsl(var(--secondary));
+  }
+
+  /* ── Typography Scale ── */
+  .display-lg  { font-family: "Manrope", sans-serif; font-size: 3.5rem;  font-weight: 800; line-height: 1.1; }
+  .headline-lg { font-family: "Manrope", sans-serif; font-size: 2.25rem; font-weight: 700; line-height: 1.2; }
+  .headline-md { font-family: "Manrope", sans-serif; font-size: 1.75rem; font-weight: 700; line-height: 1.3; }
+  .body-md     { font-family: "Inter",   sans-serif; font-size: 0.875rem; font-weight: 400; }
+  .body-sm     { font-family: "Inter",   sans-serif; font-size: 0.75rem;  font-weight: 400; }
+  .label-md    { font-family: "Inter",   sans-serif; font-size: 0.75rem;  font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
 }

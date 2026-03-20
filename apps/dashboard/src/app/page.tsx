@@ -13,32 +13,32 @@ import {
   Zap,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Badge, Button, Card } from "ui";
 
 export default function LandingPage() {
-  const router = useRouter();
-
   const features = [
     {
-      icon: <Shield className="h-6 w-6 text-blue-500" />,
+      icon: <Shield className="h-6 w-6" />,
       title: "Güvenilir Platform",
       description: "Doğrulanmış freelancer ve ajanslarla çalışın. Şeffaflık garantisi.",
+      accent: "var(--primary)",
     },
     {
-      icon: <Users className="h-6 w-6 text-emerald-500" />,
+      icon: <Users className="h-6 w-6" />,
       title: "3'lü Ekosistem",
       description: "Markalar, ajanslar ve freelancer'lar tek platformda buluşuyor.",
+      accent: "var(--secondary)",
     },
     {
-      icon: <BarChart3 className="h-6 w-6 text-purple-500" />,
+      icon: <BarChart3 className="h-6 w-6" />,
       title: "Akıllı Analitik",
       description: "Proje ilerlemesi, bütçe takibi ve ROI analizleri gerçek zamanlı.",
+      accent: "var(--primary)",
     },
     {
-      icon: <Zap className="h-6 w-6 text-amber-500" />,
+      icon: <Zap className="h-6 w-6" />,
       title: "Hızlı İş Akışı",
       description: "İlan yayınla, teklif al, proje yönet — hepsi dakikalar içinde.",
+      accent: "var(--tertiary)",
     },
   ];
 
@@ -49,168 +49,339 @@ export default function LandingPage() {
     { value: "✓", label: "Doğrulama Sistemi", icon: <UserCheck className="h-5 w-5" /> },
   ];
 
+  const roles = [
+    {
+      title: "Marka",
+      desc: "Proje oluştur, ilan yayınla, teklifleri değerlendir. SEO ve AI araçlarıyla büyü.",
+      href: "/login",
+      icon: "🏢",
+      accentVar: "--primary",
+    },
+    {
+      title: "Ajans",
+      desc: "Ekibini yönet, freelancer keşfet, müşteri projelerini takip et.",
+      href: "/login",
+      icon: "🏗️",
+      accentVar: "--secondary",
+    },
+    {
+      title: "Freelancer",
+      desc: "İş ilanlarına başvur, görevlerini yönet, portföyünü oluştur.",
+      href: "/login",
+      icon: "💻",
+      accentVar: "--tertiary",
+    },
+  ];
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-background via-background to-muted/30">
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="bg-grid-pattern absolute inset-0 opacity-5"></div>
-        <div className="relative mx-auto max-w-6xl px-6 pb-16 pt-20 text-center">
-          <Badge className="mb-6 border-primary/20 bg-primary/10 px-4 py-1.5 text-primary hover:bg-primary/15">
-            🚀 AccStudio Platform v1.0
-          </Badge>
+    // Base layer: surface (#0e0e0e)
+    <main className="min-h-screen surface" style={{ fontFamily: "Inter, sans-serif" }}>
 
-          <h1 className="bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text pb-2 text-5xl font-extrabold tracking-tight text-transparent md:text-7xl">
-            Dijital Hizmetlerin
-            <br />
-            Yeni Merkezi
-          </h1>
+      {/* ── NAV BAR ── */}
+      <nav
+        className="glass sticky top-0 z-30 flex items-center justify-between px-8 py-4"
+        style={{ borderBottom: "1px solid hsl(var(--outline-variant) / 0.15)" }}
+      >
+        <span
+          className="font-manrope text-2xl font-extrabold tracking-tight"
+          style={{ color: "hsl(var(--primary))" }}
+        >
+          AccStudio
+        </span>
+        <div className="flex items-center gap-3">
+          <Link href="/login">
+            <button
+              className="rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200 hover:brightness-125"
+              style={{ color: "hsl(var(--on-surface-variant))" }}
+            >
+              Giriş Yap
+            </button>
+          </Link>
+          <Link href="/register">
+            <button
+              className="gradient-primary rounded-lg px-5 py-2 text-sm font-semibold text-white transition-all duration-200 hover:brightness-125"
+            >
+              Ücretsiz Başla
+            </button>
+          </Link>
+        </div>
+      </nav>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl">
-            Markalar, ajanslar ve freelancer'ları bir araya getiren
-            <strong className="text-foreground"> şeffaf</strong> ve
-            <strong className="text-foreground"> güvenilir</strong> iş platformu. Haksız rekabetle
-            mücadele, doğrulanmış profesyonellerle çalışma garantisi.
-          </p>
+      {/* ── HERO ── */}
+      <section className="relative overflow-hidden px-6 pb-20 pt-28 text-center md:pb-28 md:pt-36">
+        {/* Ambient glow blobs */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[700px] -translate-x-1/2 rounded-full opacity-10 blur-[120px]"
+          style={{ background: "hsl(var(--primary))" }}
+        />
+        <div
+          className="pointer-events-none absolute -left-32 top-40 h-72 w-72 rounded-full opacity-8 blur-[100px]"
+          style={{ background: "hsl(var(--secondary))" }}
+        />
 
-          <div className="mt-8 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/register">
-              <Button
-                size="lg"
-                className="h-12 gap-2 px-8 text-base shadow-lg shadow-primary/25 transition-all hover:shadow-xl hover:shadow-primary/30"
-              >
-                Hemen Başla <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
-            <Link href="/login">
-              <Button size="lg" variant="outline" className="h-12 gap-2 px-8 text-base">
-                Giriş Yap
-              </Button>
-            </Link>
-          </div>
+        {/* Badge */}
+        <div className="relative mb-8 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold"
+          style={{
+            background: "hsl(var(--primary-container))",
+            color: "hsl(var(--primary))",
+            border: "1px solid hsl(var(--primary) / 0.25)",
+          }}
+        >
+          <Sparkles className="h-3.5 w-3.5" />
+          AccStudio Platform v1.0
+        </div>
+
+        {/* Display Headline — Manrope 3.5rem */}
+        <h1
+          className="display-lg relative mx-auto mb-6 max-w-4xl"
+          style={{
+            background: "linear-gradient(135deg, #ffffff 0%, hsl(var(--primary)) 60%, hsl(var(--secondary)) 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+          }}
+        >
+          Dijital Hizmetlerin
+          <br />
+          Komuta Merkezi
+        </h1>
+
+        {/* Body text — on-surface-variant (#adaaaa) for dark comfort */}
+        <p
+          className="mx-auto mb-10 max-w-2xl text-lg leading-relaxed"
+          style={{ color: "hsl(var(--on-surface-variant))" }}
+        >
+          Markalar, ajanslar ve freelancer&apos;ları bir araya getiren{" "}
+          <span className="font-semibold text-white">şeffaf</span> ve{" "}
+          <span className="font-semibold text-white">güvenilir</span> iş platformu.
+          Haksız rekabetle mücadele, doğrulanmış profesyonellerle çalışma garantisi.
+        </p>
+
+        {/* CTAs */}
+        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <Link href="/register">
+            <button
+              className="gradient-primary flex items-center gap-2 rounded-lg px-8 py-3.5 text-base font-bold text-white shadow-ambient transition-all duration-200 hover:brightness-125"
+              style={{ boxShadow: "0 0 32px hsl(var(--primary) / 0.25)" }}
+            >
+              Hemen Başla <ArrowRight className="h-4 w-4" />
+            </button>
+          </Link>
+          <Link href="/login">
+            <button
+              className="flex items-center gap-2 rounded-lg px-8 py-3.5 text-base font-semibold text-white transition-all duration-200 hover:brightness-125"
+              style={{
+                border: "1px solid hsl(var(--outline-variant) / 0.30)",
+                background: "hsl(var(--surface-high))",
+              }}
+            >
+              Giriş Yap
+            </button>
+          </Link>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="mx-auto -mt-4 max-w-5xl px-6">
+      {/* ── STATS ── */}
+      <section className="mx-auto max-w-5xl px-6 pb-20">
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {stats.map((stat, i) => (
-            <Card
+            <div
               key={i}
-              className="bg-card/80 py-6 text-center backdrop-blur-sm transition-shadow hover:shadow-md"
+              className="rounded-xl p-6 text-center transition-all duration-200 hover:brightness-110"
+              style={{
+                background: "hsl(var(--surface-container))",
+                // No divider lines — surface shift only
+              }}
             >
-              <div className="mb-2 flex justify-center text-muted-foreground">{stat.icon}</div>
-              <div className="text-3xl font-bold text-primary">{stat.value}</div>
-              <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
-            </Card>
+              <div className="mb-3 flex justify-center" style={{ color: "hsl(var(--secondary))" }}>
+                {stat.icon}
+              </div>
+              <div
+                className="font-manrope mb-1 text-3xl font-extrabold"
+                style={{ color: "hsl(var(--primary))" }}
+              >
+                {stat.value}
+              </div>
+              <div className="label-md" style={{ color: "hsl(var(--on-surface-variant))" }}>
+                {stat.label}
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Features */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <div className="mb-12 text-center">
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-            Neden <span className="text-primary">AccStudio</span>?
+      {/* ── FEATURES ── */}
+      <section className="mx-auto max-w-6xl px-6 pb-24">
+        {/* Editorial header — 2.5rem gap before body (no divider line) */}
+        <div className="mb-16 text-center">
+          <h2
+            className="headline-md mb-10"
+            style={{ color: "white" }}
+          >
+            Neden{" "}
+            <span style={{ color: "hsl(var(--primary))" }}>AccStudio</span>?
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-lg text-muted-foreground">
+          <p
+            className="mx-auto max-w-xl text-base leading-relaxed"
+            style={{ color: "hsl(var(--on-surface-variant))" }}
+          >
             Sektördeki şeffaflık sorununu çözen, profesyonelleri doğrulayan platform.
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
           {features.map((f, i) => (
-            <Card
+            <div
               key={i}
-              className="group bg-card/80 p-6 backdrop-blur-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+              className="group rounded-xl p-8 transition-all duration-300"
+              style={{
+                // Component Layer: surface-container (#1a1a1a)
+                background: "hsl(var(--surface-container))",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "hsl(var(--surface-high))";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "hsl(var(--surface-container))";
+              }}
             >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-muted transition-transform group-hover:scale-110">
+              {/* Icon with luminous accent */}
+              <div
+                className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl"
+                style={{
+                  background: `hsl(${f.accent} / 0.12)`,
+                  color: `hsl(${f.accent})`,
+                }}
+              >
                 {f.icon}
               </div>
-              <h3 className="mt-4 text-lg font-semibold">{f.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.description}</p>
-            </Card>
+              <h3
+                className="font-manrope mb-3 text-base font-bold text-white"
+              >
+                {f.title}
+              </h3>
+              <p className="text-sm leading-relaxed" style={{ color: "hsl(var(--on-surface-variant))" }}>
+                {f.description}
+              </p>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Roles */}
-      <section className="mx-auto max-w-5xl px-6 pb-20">
-        <div className="mb-10 text-center">
-          <h2 className="text-3xl font-bold tracking-tight">Her Rol İçin Özel Panel</h2>
+      {/* ── ROLES ── */}
+      <section className="mx-auto max-w-5xl px-6 pb-24">
+        <div className="mb-16 text-center">
+          <h2 className="headline-md text-white">Her Rol İçin Özel Panel</h2>
         </div>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-          {[
-            {
-              title: "Marka",
-              desc: "Proje oluştur, ilan yayınla, teklifleri değerlendir. SEO ve AI araçlarıyla büyü.",
-              href: "/login",
-              color: "from-blue-500/20 to-blue-600/5",
-              icon: "🏢",
-            },
-            {
-              title: "Ajans",
-              desc: "Ekibini yönet, freelancer keşfet, müşteri projelerini takip et.",
-              href: "/login",
-              color: "from-emerald-500/20 to-emerald-600/5",
-              icon: "🏗️",
-            },
-            {
-              title: "Freelancer",
-              desc: "İş ilanlarına başvur, görevlerini yönet, portföyünü oluştur.",
-              href: "/login",
-              color: "from-purple-500/20 to-purple-600/5",
-              icon: "💻",
-            },
-          ].map((role, i) => (
-            <Card
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+          {roles.map((role, i) => (
+            <div
               key={i}
-              className={`bg-gradient-to-br ${role.color} p-6 transition-all hover:shadow-lg`}
+              className="group rounded-xl p-8 transition-all duration-300"
+              style={{
+                background: "hsl(var(--surface-container))",
+                border: "1px solid hsl(var(--outline-variant) / 0.12)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "hsl(var(--surface-high))";
+                (e.currentTarget as HTMLElement).style.borderColor = `hsl(var(${role.accentVar}) / 0.30)`;
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "hsl(var(--surface-container))";
+                (e.currentTarget as HTMLElement).style.borderColor = "hsl(var(--outline-variant) / 0.12)";
+              }}
             >
-              <span className="text-4xl">{role.icon}</span>
-              <h3 className="mt-3 text-xl font-bold">{role.title} Paneli</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{role.desc}</p>
+              <span className="mb-4 block text-4xl">{role.icon}</span>
+              <h3
+                className="font-manrope mb-2 text-xl font-bold text-white"
+              >
+                {role.title} Paneli
+              </h3>
+              {/* 2.5rem gap between headline and body via margin-top-10 */}
+              <p
+                className="mb-8 text-sm leading-relaxed"
+                style={{ color: "hsl(var(--on-surface-variant))" }}
+              >
+                {role.desc}
+              </p>
               <Link href={role.href}>
-                <Button variant="outline" size="sm" className="mt-4 gap-1">
-                  Keşfet <ArrowRight className="h-3 w-3" />
-                </Button>
+                <button
+                  className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-200 hover:brightness-125"
+                  style={{
+                    border: `1px solid hsl(var(${role.accentVar}) / 0.40)`,
+                    color: `hsl(var(${role.accentVar}))`,
+                    background: `hsl(var(${role.accentVar}) / 0.08)`,
+                  }}
+                >
+                  Keşfet <ArrowRight className="h-3.5 w-3.5" />
+                </button>
               </Link>
-            </Card>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="border-t bg-muted/30">
-        <div className="mx-auto max-w-3xl px-6 py-16 text-center">
-          <h2 className="text-3xl font-bold tracking-tight">Hemen Ücretsiz Kaydolun</h2>
-          <p className="mt-3 text-lg text-muted-foreground">
-            Platformun tüm özelliklerinden faydalanmak için hemen hesap oluşturun.
-          </p>
-          <div className="mt-6 flex justify-center gap-3">
-            <Link href="/register">
-              <Button size="lg" className="h-12 gap-2 px-8 shadow-lg">
-                Ücretsiz Kaydol <ArrowRight className="h-4 w-4" />
-              </Button>
-            </Link>
-          </div>
-          <div className="mt-6 flex items-center justify-center gap-6 text-sm text-muted-foreground">
-            <span className="flex items-center gap-1">
-              <CheckCircle2 className="h-4 w-4 text-emerald-500" /> Ücretsiz başlangıç
+      {/* ── CTA SECTION ── */}
+      <section
+        className="mx-6 mb-16 rounded-2xl px-8 py-16 text-center"
+        style={{
+          // Elevated: surface-highest (#262626)
+          background: "hsl(var(--surface-highest))",
+          border: "1px solid hsl(var(--outline-variant) / 0.12)",
+          boxShadow: "0 20px 40px -5px hsl(var(--on-surface) / 0.04)",
+        }}
+      >
+        <h2
+          className="headline-md mb-10 text-white"
+        >
+          Hemen Ücretsiz Kaydolun
+        </h2>
+        <p
+          className="mx-auto mb-8 max-w-lg text-base leading-relaxed"
+          style={{ color: "hsl(var(--on-surface-variant))" }}
+        >
+          Platformun tüm özelliklerinden faydalanmak için hemen hesap oluşturun.
+        </p>
+        <Link href="/register">
+          <button
+            className="gradient-primary mx-auto flex items-center gap-2 rounded-lg px-8 py-3.5 text-base font-bold text-white transition-all duration-200 hover:brightness-125"
+            style={{ boxShadow: "0 0 40px hsl(var(--primary) / 0.3)" }}
+          >
+            Ücretsiz Kaydol <ArrowRight className="h-4 w-4" />
+          </button>
+        </Link>
+
+        {/* Trust indicators */}
+        <div
+          className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm"
+          style={{ color: "hsl(var(--on-surface-variant))" }}
+        >
+          {["Ücretsiz başlangıç", "Kredi kartı gerekmez", "Anında erişim"].map((item) => (
+            <span key={item} className="flex items-center gap-2">
+              <CheckCircle2
+                className="h-4 w-4"
+                style={{ color: "hsl(var(--secondary))" }}
+              />
+              {item}
             </span>
-            <span className="flex items-center gap-1">
-              <CheckCircle2 className="h-4 w-4 text-emerald-500" /> Kredi kartı gerekmez
-            </span>
-            <span className="flex items-center gap-1">
-              <CheckCircle2 className="h-4 w-4 text-emerald-500" /> Anında erişim
-            </span>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between px-6 text-sm text-muted-foreground md:flex-row">
-          <span className="font-semibold text-foreground">AccStudio © 2026</span>
-          <span>Dijital hizmet profesyonellerinin güvenilir platformu</span>
+      {/* ── FOOTER ── */}
+      <footer
+        className="px-8 py-8"
+        style={{ borderTop: "1px solid hsl(var(--outline-variant) / 0.15)" }}
+      >
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between text-sm md:flex-row">
+          <span
+            className="font-manrope font-bold text-white"
+          >
+            AccStudio © 2026
+          </span>
+          <span style={{ color: "hsl(var(--on-surface-variant))" }}>
+            Dijital hizmet profesyonellerinin güvenilir platformu
+          </span>
         </div>
       </footer>
     </main>

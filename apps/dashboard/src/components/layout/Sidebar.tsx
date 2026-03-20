@@ -18,21 +18,35 @@ export function Sidebar({ items, collapsed = false }: SidebarProps) {
   return (
     <nav
       className={cn(
-        "hidden min-h-screen flex-col gap-2 border-r bg-card/50 p-4 backdrop-blur-sm md:flex",
+        // Surface-low (#131313) per design: Sectional Layer
+        "hidden min-h-screen flex-col surface-low md:flex",
         collapsed ? "w-20 items-center" : "w-64"
       )}
     >
-      <div className="mb-6 flex h-14 items-center pl-2">
-        <h2 className={cn("text-2xl font-bold text-primary", collapsed && "hidden")}>AccStudio</h2>
-        {collapsed && (
-          <span className="w-full text-center text-2xl font-bold text-primary">AS</span>
+      {/* Logo — no border below, use spacing gap per design */}
+      <div className={cn("flex h-20 items-center px-6", collapsed && "justify-center px-0")}>
+        {!collapsed ? (
+          <span
+            className="font-manrope text-2xl font-extrabold tracking-tight"
+            style={{ color: "hsl(var(--primary))" }}
+          >
+            AccStudio
+          </span>
+        ) : (
+          <span
+            className="font-manrope text-2xl font-extrabold"
+            style={{ color: "hsl(var(--primary))" }}
+          >
+            AS
+          </span>
         )}
       </div>
 
-      <div className="flex-1 space-y-1">
+      {/* Nav Items — 10rem spacing below logo per design (spacer via padding) */}
+      <div className="flex-1 space-y-0.5 px-3 pb-6">
         {items.map((item, index) => {
           const isActive = pathname === item.href || pathname?.startsWith(`${item.href}/`);
-          // @ts-ignore
+          // @ts-expect-error: item.icon is string but LucideIcons expects specific keys
           const IconComponent = (LucideIcons[item.icon as keyof typeof LucideIcons] ||
             LucideIcons.Circle) as React.ElementType;
 
@@ -41,15 +55,31 @@ export function Sidebar({ items, collapsed = false }: SidebarProps) {
               key={index}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all hover:text-primary",
-                isActive ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted",
+                // No box for active — use light-bar-active pseudo-element (2px cyan bar)
+                "group relative flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-all duration-200",
+                isActive
+                  ? "light-bar-active text-white"
+                  : "text-[hsl(var(--on-surface-variant))] hover:text-white hover:bg-[hsl(var(--surface-high)/0.6)]",
                 collapsed && "justify-center px-0"
               )}
             >
-              <IconComponent className="h-5 w-5 flex-shrink-0" />
+              <IconComponent
+                className={cn(
+                  "h-5 w-5 flex-shrink-0 transition-colors",
+                  isActive
+                    ? "text-[hsl(var(--secondary))]"
+                    : "text-[hsl(var(--on-surface-variant))] group-hover:text-[hsl(var(--primary))]"
+                )}
+              />
               {!collapsed && <span>{item.title}</span>}
               {!collapsed && item.badge && (
-                <span className="ml-auto flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
+                <span
+                  className="ml-auto flex h-4 w-4 items-center justify-center rounded-full text-[10px] font-bold"
+                  style={{
+                    background: "hsl(var(--secondary))",
+                    color: "hsl(var(--secondary-foreground))",
+                  }}
+                >
                   {item.badge}
                 </span>
               )}
@@ -57,6 +87,15 @@ export function Sidebar({ items, collapsed = false }: SidebarProps) {
           );
         })}
       </div>
+
+      {/* Bottom brand credit */}
+      {!collapsed && (
+        <div className="px-6 pb-6">
+          <p className="label-md" style={{ color: "hsl(var(--on-surface-variant))" }}>
+            v1.0 · The Midnight Architect
+          </p>
+        </div>
+      )}
     </nav>
   );
 }
